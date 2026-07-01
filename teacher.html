@@ -393,10 +393,62 @@ function renderMain() {
   }
 }
 
+function buildTeachTodayCard() {
+  if (!roster.length) return '';
+
+  const skillActive = {}, skillStuck = {};
+  roster.forEach(s => {
+    const data = readStudentData(s.name);
+    if (!data) return;
+    const skills = data.skills || {};
+    ALL_SKILLS.forEach(sk => {
+      const ss = skills[sk.id];
+      if (!ss || !ss.attempts) return;
+      if (ss.pMastery >= 0.30 && ss.pMastery < 0.90) {
+        skillActive[sk.id] = (skillActive[sk.id] || 0) + 1;
+      } else if (ss.pMastery < 0.30 && ss.attempts >= 2) {
+        skillStuck[sk.id] = (skillStuck[sk.id] || 0) + 1;
+      }
+    });
+  });
+
+  let bestSkill = null, bestCount = 0;
+  ALL_SKILLS.forEach(sk => {
+    const n = (skillActive[sk.id] || 0) + (skillStuck[sk.id] || 0);
+    if (n > bestCount) { bestCount = n; bestSkill = sk; }
+  });
+
+  if (!bestSkill || bestCount === 0) {
+    return `<div style="background:linear-gradient(135deg,var(--forest),#2d5a3a);border-radius:14px;padding:20px 22px;margin-bottom:24px;border:1px solid rgba(255,255,255,.1)">
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(247,240,223,.5);margin-bottom:8px">📍 FOCO DE HOY</div>
+      <div style="font-family:var(--serif);font-size:18px;color:var(--ochre-soft);margin-bottom:4px">Esperando datos</div>
+      <div style="font-size:13px;color:rgba(247,240,223,.6);line-height:1.5">Cuando los estudiantes practiquen, aquí verás qué habilidad reforzar en clase hoy.</div>
+    </div>`;
+  }
+
+  const active = skillActive[bestSkill.id] || 0;
+  const stuck = skillStuck[bestSkill.id] || 0;
+  const total = active + stuck;
+  const detail = stuck > 0
+    ? `${active} aprendiendo · <strong style="color:#f4a87c">${stuck} necesitan apoyo</strong>`
+    : `${active} de ${roster.length} estudiantes en progreso`;
+
+  return `<div style="background:linear-gradient(135deg,var(--forest),#2d5a3a);border-radius:14px;padding:20px 22px;margin-bottom:24px;border:1px solid rgba(255,255,255,.1)">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(247,240,223,.5);margin-bottom:10px">📍 FOCO DE HOY</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="min-width:0">
+        <div style="font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(247,240,223,.45);margin-bottom:4px">${bestSkill.subjName}</div>
+        <div style="font-family:var(--serif);font-size:20px;color:var(--ochre-soft);font-weight:600;margin-bottom:5px;line-height:1.2">${bestSkill.name}</div>
+        <div style="font-size:13px;color:rgba(247,240,223,.65);line-height:1.45">${detail}</div>
+      </div>
+      <div style="background:rgba(200,144,48,.2);border:2px solid rgba(200,144,48,.4);border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ochre-soft)">${total}</div>
+    </div>
+  </div>`;
+}
+
 function renderClassOverview(area) {
-  // Priority alerts
+  const teachToday = buildTeachTodayCard();
   const alerts = buildAlerts();
-  // Heat map
   const heatmap = buildHeatmap();
 
   area.innerHTML = `
@@ -407,6 +459,7 @@ function renderClassOverview(area) {
       </div>
       <button onclick="exportReport()" style="background:var(--forest);color:var(--paper);border:none;border-radius:8px;padding:9px 18px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;cursor:pointer;flex-shrink:0">📋 Copiar reporte</button>
     </div>
+    ${teachToday}
     ${alerts}
     <div class="tabs">
       <div class="tab act" onclick="switchTab('heatmap',this)">Mapa de Habilidades</div>

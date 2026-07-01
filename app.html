@@ -101,11 +101,11 @@ input{font-family:inherit;font-size:inherit;color:inherit}
 /* ─────────────────────────────────────
    EXERCISE SCREEN
 ───────────────────────────────────── */
-#s-exercise{background:var(--paper)}
+#s-exercise{background:var(--paper);height:100dvh;min-height:0}
 .ex-top{background:var(--forest);padding:14px 20px;display:flex;align-items:center;gap:14px;flex-shrink:0}
 .ex-back{color:rgba(247,240,223,.7);font-size:20px;padding:4px 8px;margin-left:-8px;border-radius:6px}
 .ex-back:hover{background:rgba(255,255,255,.1);color:var(--paper)}
-.ex-skill-name{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ochre-soft);font-weight:300;flex:1}
+.ex-skill-name{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ochre-soft);font-weight:300;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ex-progress{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .hearts{display:flex;gap:4px}
 .heart{font-size:16px}
@@ -117,7 +117,7 @@ input{font-family:inherit;font-size:inherit;color:inherit}
 .ex-bar-fill{height:100%;background:var(--ochre-soft);transition:.35s;will-change:width}
 
 /* Question area */
-.ex-body{flex:1;padding:28px 20px;display:flex;flex-direction:column;max-width:600px;margin:0 auto;width:100%}
+.ex-body{flex:1;padding:28px 20px;display:flex;flex-direction:column;max-width:600px;margin:0 auto;width:100%;overflow-y:auto}
 .q-type-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--ink-faint);text-transform:uppercase;font-weight:700;margin-bottom:14px}
 .q-text{font-family:var(--serif);font-size:clamp(20px,5vw,28px);font-weight:400;color:var(--ink);line-height:1.3;margin-bottom:8px}
 .q-image{width:100%;max-height:200px;object-fit:contain;border-radius:10px;margin:10px 0 16px;background:var(--paper-3)}
@@ -193,14 +193,14 @@ input{font-family:inherit;font-size:inherit;color:inherit}
 #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:300;display:none}
 
 /* ── NEW: badge toast */
-.badge-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--forest);border:2px solid var(--ochre);color:var(--paper);border-radius:14px;padding:14px 22px;font-size:14px;display:flex;align-items:center;gap:12px;transition:.4s cubic-bezier(.34,1.56,.64,1);z-index:150;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.badge-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-300px);background:var(--forest);border:2px solid var(--ochre);color:var(--paper);border-radius:14px;padding:14px 22px;font-size:14px;display:flex;align-items:center;gap:12px;transition:.4s cubic-bezier(.34,1.56,.64,1);z-index:150;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.25)}
 .badge-toast.show{transform:translateX(-50%) translateY(0)}
 .badge-toast .bi{font-size:26px}
 .badge-toast .bt-body .bt-title{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ochre-soft);font-weight:700;margin-bottom:2px}
 .badge-toast .bt-body .bt-name{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--paper)}
 
 /* ── NEW: level-up toast */
-.level-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(120px);background:linear-gradient(135deg,var(--forest),var(--forest-2));border:2px solid var(--ochre-soft);color:var(--paper);border-radius:16px;padding:18px 28px;text-align:center;transition:.4s cubic-bezier(.34,1.56,.64,1);z-index:150;white-space:nowrap;box-shadow:0 8px 40px rgba(0,0,0,.3)}
+.level-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(300px);background:linear-gradient(135deg,var(--forest),var(--forest-2));border:2px solid var(--ochre-soft);color:var(--paper);border-radius:16px;padding:18px 28px;text-align:center;transition:.4s cubic-bezier(.34,1.56,.64,1);z-index:150;white-space:nowrap;box-shadow:0 8px 40px rgba(0,0,0,.3)}
 .level-toast.show{transform:translateX(-50%) translateY(0)}
 .level-toast .lt-new{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ochre-soft)}
 .level-toast .lt-sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(247,240,223,.55);margin-top:4px}
