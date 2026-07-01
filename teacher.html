@@ -400,9 +400,12 @@ function renderClassOverview(area) {
   const heatmap = buildHeatmap();
 
   area.innerHTML = `
-    <div class="main-header">
-      <div class="main-h">Resumen de <em>clase</em></div>
-      <div class="main-sub">Haz clic en un estudiante para ver su detalle.</div>
+    <div class="main-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div class="main-h">Resumen de <em>clase</em></div>
+        <div class="main-sub">Haz clic en un estudiante para ver su detalle.</div>
+      </div>
+      <button onclick="exportReport()" style="background:var(--forest);color:var(--paper);border:none;border-radius:8px;padding:9px 18px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;cursor:pointer;flex-shrink:0">📋 Copiar reporte</button>
     </div>
     ${alerts}
     <div class="tabs">
@@ -452,7 +455,7 @@ function buildAlerts() {
 }
 
 function buildHeatmap() {
-  const skillsToShow = ALL_SKILLS.slice(0, 12); // first 12 skills
+  const skillsToShow = ALL_SKILLS; // all 17 skills
 
   let head = '<tr><th>Estudiante</th>' +
     skillsToShow.map(sk => `<th title="${sk.subjName}: ${sk.name}">${sk.icon} ${sk.name.split(':')[0].split(' ').slice(0,2).join(' ')}</th>`).join('') +
@@ -546,6 +549,12 @@ function renderStudentDetail(name, area) {
     </div>`;
   }).join('');
 
+  const badgeHtml = (data?.badges||[]).length ? `
+    <div style="margin-bottom:20px">
+      <div style="font-family:var(--mono);font-size:9.5px;letter-spacing:.20em;color:var(--ink-faint);text-transform:uppercase;font-weight:700;margin-bottom:10px">🏅 Insignias obtenidas</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">${(data.badges||[]).map(id=>{const b=BADGE_INFO[id];return b?`<div title="${b.name}" style="font-size:24px">${b.icon}</div>`:''}).join('')}</div>
+    </div>` : '';
+
   area.innerHTML = `
     <button onclick="activeStudent=null;renderRoster();renderMain();" style="font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:16px;padding:6px 0">← Volver a clase</button>
     <div class="student-detail">
@@ -562,8 +571,12 @@ function renderStudentDetail(name, area) {
           <div class="sd-stat"><div class="v">${mastered}</div><div class="l">Dominadas</div></div>
         </div>
       </div>
-      ${!data ? '<div class="empty" style="padding:40px 0"><span class="empty-icon">📱</span><h3>Sin datos aún</h3><p>Este estudiante no ha usado la app todavía.</p></div>' : subjSections}
+      ${!data ? '<div class="empty" style="padding:40px 0"><span class="empty-icon">📱</span><h3>Sin datos aún</h3><p>Este estudiante no ha usado la app todavía.</p></div>' : badgeHtml + subjSections}
     </div>
+    ${data ? `<div style="padding:16px 0;border-top:0.5px solid var(--line);margin-top:16px">
+      <div style="font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:12px">📌 Asignar habilidad prioritaria</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">${ALL_SKILLS.filter(sk=>sk.grade.includes(data.grade||5)).map(sk=>`<button onclick="assignSkill('${name}','${sk.id}')" style="background:var(--paper-3);border:1px solid var(--line-2);border-radius:7px;padding:7px 12px;font-size:12px;cursor:pointer;transition:.15s" onmouseover="this.style.background='var(--forest)';this.style.color='var(--paper)'" onmouseout="this.style.background='var(--paper-3)';this.style.color=''">${sk.icon||'📚'} ${sk.name}</button>`).join('')}</div>
+    </div>` : ''}
   `;
 }
 
@@ -594,6 +607,49 @@ function clearAll() {
   saveRoster(roster);
   activeStudent = null;
   render();
+}
+
+// ═══════════════════════════════════════════════════════
+//  ASSIGN SKILL (teacher → student notification)
+// ═══════════════════════════════════════════════════════
+const BADGE_INFO = {
+  'primera-semilla':  {icon:'🌱', name:'Primera Semilla'},
+  'primera-estrella': {icon:'⭐', name:'Primera Estrella'},
+  'semana-fuego':     {icon:'🔥', name:'Semana de Fuego'},
+  'matematico':       {icon:'🧮', name:'Matemático'},
+  'escritor':         {icon:'📖', name:'Escritor'},
+  'cientifico':       {icon:'🌿', name:'Científico'},
+  'explorador-soc':   {icon:'🗺️', name:'Explorador'},
+  'maestro-ceiba':    {icon:'👑', name:'Maestro Ceiba'},
+};
+
+function assignSkill(studentName, skillId) {
+  const key = 'ceiba.assign.' + studentName;
+  const sk = ALL_SKILLS.find(x => x.id === skillId);
+  localStorage.setItem(key, JSON.stringify({skillId, assignedBy:'maestra', date: new Date().toISOString()}));
+  alert('✅ Habilidad "' + (sk?.name||skillId) + '" asignada a ' + studentName + '.\nAparecerá en la app del estudiante la próxima vez que abra Ceiba.');
+}
+
+// ═══════════════════════════════════════════════════════
+//  EXPORT REPORT (copy to clipboard)
+// ═══════════════════════════════════════════════════════
+function exportReport() {
+  const today = new Date().toLocaleDateString('es-PA');
+  let report = `REPORTE CEIBA — ${today}\n${'='.repeat(40)}\n`;
+  report += `Clase: ${roster.length} estudiante(s)\n\n`;
+  roster.forEach(s => {
+    const data = readStudentData(s.name);
+    const skills = data?.skills || {};
+    const mastered = Object.values(skills).filter(x => x.pMastery >= 0.90).length;
+    const total = Object.values(skills).reduce((a,x)=>a+x.attempts,0);
+    const xp = data?.xp || 0;
+    const struggling = ALL_SKILLS.filter(sk => { const ss=skills[sk.id]; return ss && ss.pMastery < 0.30 && ss.attempts > 2; }).map(sk=>sk.name);
+    report += `${s.name} (${s.grade}°)\n`;
+    report += `  XP: ${xp} · Dominadas: ${mastered}/${ALL_SKILLS.filter(sk=>sk.grade.includes(s.grade)).length} · Preguntas: ${total}\n`;
+    if (struggling.length) report += `  ⚠️ Necesita ayuda con: ${struggling.join(', ')}\n`;
+    report += '\n';
+  });
+  navigator.clipboard.writeText(report).then(()=>alert('✅ Reporte copiado al portapapeles.')).catch(()=>prompt('Copia el reporte:',report));
 }
 
 // ═══════════════════════════════════════════════════════
