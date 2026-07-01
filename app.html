@@ -1,0 +1,1606 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ceiba · Aprende</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231d3a2c'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-weight='400' fill='%23e0b466' font-style='italic'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f0df;--paper-2:#fcf6e6;--paper-3:#ede4ca;
+  --ink:#14110c;--ink-2:#2a251d;--ink-faint:#8a7e6a;
+  --forest:#1d3a2c;--forest-2:#2a5440;--forest-3:#3a6e54;
+  --ochre:#c89030;--ochre-soft:#e0b466;--ochre-deep:#a17225;
+  --correct:#4a7848;--wrong:#b54a2a;--neutral:#5a7082;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--forest);min-height:100vh;font-family:var(--sans);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:0;background:transparent;color:inherit}
+input{font-family:inherit;font-size:inherit;color:inherit}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
+
+/* ─────────────────────────────────────
+   WELCOME SCREEN
+───────────────────────────────────── */
+#s-welcome{background:var(--forest);align-items:center;justify-content:center;padding:32px 24px}
+.wlc-inner{max-width:480px;width:100%;text-align:center}
+.wlc-logo{font-family:var(--serif);font-style:italic;font-size:64px;font-weight:300;color:var(--ochre-soft);letter-spacing:-.02em;line-height:1;margin-bottom:8px}
+.wlc-sub{font-family:var(--mono);font-size:10px;letter-spacing:.28em;color:rgba(247,240,223,.5);text-transform:uppercase;font-weight:600;margin-bottom:48px}
+.wlc-label{font-family:var(--sans);font-size:13px;color:rgba(247,240,223,.7);margin-bottom:10px;text-align:left}
+.wlc-input{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:16px 18px;font-size:18px;font-family:var(--serif);font-style:italic;color:var(--paper);outline:0;transition:.2s}
+.wlc-input:focus{border-color:var(--ochre-soft);background:rgba(255,255,255,.12)}
+.wlc-input::placeholder{color:rgba(247,240,223,.3)}
+.wlc-grades{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 32px}
+.wlc-grade{background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:16px;font-size:15px;color:rgba(247,240,223,.8);font-weight:600;transition:.2s}
+.wlc-grade.sel{background:var(--ochre);color:var(--forest);border-color:var(--ochre)}
+.wlc-grade:hover:not(.sel){border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.12)}
+.btn-start{width:100%;background:var(--ochre-soft);color:var(--forest);border-radius:10px;padding:18px;font-size:17px;font-weight:700;letter-spacing:.01em;transition:.15s}
+.btn-start:hover{background:#edd080;transform:translateY(-1px)}
+.btn-start:active{transform:translateY(0)}
+.btn-start:disabled{opacity:.4;pointer-events:none}
+
+/* ─────────────────────────────────────
+   HOME / MAP SCREEN
+───────────────────────────────────── */
+#s-home{background:var(--paper);flex-direction:column}
+.topbar{background:var(--forest);padding:14px 20px;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.tb-name{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ochre-soft);font-weight:300}
+.tb-grade{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:rgba(247,240,223,.55);text-transform:uppercase;font-weight:600}
+.tb-spacer{flex:1}
+.xp-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:6px 14px;display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ochre-soft)}
+.xp-pill .star{font-size:13px}
+.streak-pill{background:rgba(255,120,30,.12);border:1px solid rgba(255,120,30,.2);border-radius:20px;padding:6px 14px;font-family:var(--mono);font-size:11px;font-weight:600;color:#f4864a}
+
+.home-body{flex:1;padding:24px 20px;overflow-y:auto}
+.home-h{font-family:var(--serif);font-weight:600;font-size:26px;color:var(--ink);margin-bottom:4px}
+.home-sub{font-family:var(--sans);font-size:13.5px;color:var(--ink-faint);margin-bottom:24px}
+
+/* Subject categories */
+.subjects{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:32px}
+.subj-card{background:var(--paper-2);border:1px solid rgba(20,17,12,.1);border-radius:12px;padding:18px 16px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
+.subj-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08)}
+.subj-card .subj-icon{font-size:28px;margin-bottom:10px;display:block}
+.subj-card .subj-name{font-family:var(--serif);font-weight:600;font-size:16px;color:var(--ink);margin-bottom:4px}
+.subj-card .subj-prog{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--ink-faint);text-transform:uppercase}
+.subj-card .prog-bar{height:3px;background:rgba(0,0,0,.08);border-radius:2px;margin-top:8px}
+.subj-card .prog-fill{height:100%;border-radius:2px;transition:.4s}
+.subj-card.mat .prog-fill{background:#4a7ac8}
+.subj-card.esp .prog-fill{background:#c84a7a}
+.subj-card.nat .prog-fill{background:var(--correct)}
+.subj-card.soc .prog-fill{background:var(--ochre)}
+
+/* Skill list */
+.skill-section{margin-bottom:28px}
+.skill-section h4{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--ink-faint);text-transform:uppercase;font-weight:700;margin-bottom:10px;padding-bottom:6px;border-bottom:0.5px solid rgba(20,17,12,.1)}
+.skill-list{display:flex;flex-direction:column;gap:6px}
+.skill-item{background:var(--paper);border:1px solid rgba(20,17,12,.09);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:.15s}
+.skill-item:hover{background:var(--paper-2);border-color:rgba(20,17,12,.18)}
+.skill-item.locked{opacity:.45;pointer-events:none}
+.skill-item.mastered{border-color:var(--correct);background:rgba(74,120,72,.06)}
+.skill-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.skill-icon.mat{background:rgba(74,122,200,.12)}
+.skill-icon.esp{background:rgba(200,74,122,.12)}
+.skill-icon.nat{background:rgba(74,120,72,.12)}
+.skill-icon.soc{background:rgba(200,144,48,.12)}
+.skill-info{flex:1}
+.skill-name{font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.skill-meta{font-family:var(--mono);font-size:10px;letter-spacing:.10em;color:var(--ink-faint);text-transform:uppercase}
+.skill-status{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:5px;flex-shrink:0}
+.skill-status.st-new{background:rgba(74,122,200,.12);color:#4a7ac8}
+.skill-status.st-learning{background:rgba(200,144,48,.12);color:var(--ochre-deep)}
+.skill-status.st-review{background:rgba(181,74,42,.10);color:var(--wrong)}
+.skill-status.st-mastered{background:rgba(74,120,72,.12);color:var(--correct)}
+
+/* ─────────────────────────────────────
+   EXERCISE SCREEN
+───────────────────────────────────── */
+#s-exercise{background:var(--paper)}
+.ex-top{background:var(--forest);padding:14px 20px;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.ex-back{color:rgba(247,240,223,.7);font-size:20px;padding:4px 8px;margin-left:-8px;border-radius:6px}
+.ex-back:hover{background:rgba(255,255,255,.1);color:var(--paper)}
+.ex-skill-name{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ochre-soft);font-weight:300;flex:1}
+.ex-progress{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.hearts{display:flex;gap:4px}
+.heart{font-size:16px}
+.heart.lost{opacity:.25}
+.q-num{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:rgba(247,240,223,.5);text-transform:uppercase}
+
+/* Progress bar */
+.ex-bar{height:5px;background:rgba(255,255,255,.15)}
+.ex-bar-fill{height:100%;background:var(--ochre-soft);transition:.35s;will-change:width}
+
+/* Question area */
+.ex-body{flex:1;padding:28px 20px;display:flex;flex-direction:column;max-width:600px;margin:0 auto;width:100%}
+.q-type-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--ink-faint);text-transform:uppercase;font-weight:700;margin-bottom:14px}
+.q-text{font-family:var(--serif);font-size:clamp(20px,5vw,28px);font-weight:400;color:var(--ink);line-height:1.3;margin-bottom:8px}
+.q-image{width:100%;max-height:200px;object-fit:contain;border-radius:10px;margin:10px 0 16px;background:var(--paper-3)}
+.q-context{font-family:var(--serif);font-size:15px;font-style:italic;color:var(--ink-2);margin-bottom:20px;padding:14px 18px;background:var(--paper-2);border-left:3px solid var(--ochre);border-radius:0 8px 8px 0;line-height:1.55}
+
+/* MCQ options */
+.options{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.opt{background:var(--paper-2);border:2px solid rgba(20,17,12,.1);border-radius:12px;padding:16px 18px;font-size:16px;font-family:var(--sans);color:var(--ink);text-align:left;transition:.15s;line-height:1.4}
+.opt:hover:not(:disabled){border-color:var(--ochre);background:rgba(200,144,48,.06);transform:translateX(2px)}
+.opt.selected{border-color:var(--ochre);background:rgba(200,144,48,.09)}
+.opt.correct{border-color:var(--correct);background:rgba(74,120,72,.1);color:var(--correct)}
+.opt.wrong{border-color:var(--wrong);background:rgba(181,74,42,.08);color:var(--wrong)}
+.opt:disabled{cursor:default}
+
+/* Fill-in-the-blank */
+.fill-wrap{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.fill-input{background:var(--paper-2);border:2px solid rgba(20,17,12,.12);border-radius:12px;padding:16px 18px;font-size:18px;font-family:var(--serif);font-style:italic;color:var(--ink);outline:0;transition:.2s;width:100%}
+.fill-input:focus{border-color:var(--ochre);background:var(--paper)}
+.fill-input.correct{border-color:var(--correct);background:rgba(74,120,72,.08)}
+.fill-input.wrong{border-color:var(--wrong);background:rgba(181,74,42,.06)}
+
+/* Feedback */
+.feedback{margin-top:20px;padding:16px 18px;border-radius:12px;font-family:var(--sans);font-size:14px;line-height:1.5;display:none}
+.feedback.show{display:block}
+.feedback.fb-correct{background:rgba(74,120,72,.12);border:1px solid rgba(74,120,72,.25);color:#2a5028}
+.feedback.fb-wrong{background:rgba(181,74,42,.1);border:1px solid rgba(181,74,42,.2);color:#7a2010}
+.feedback .fb-icon{font-size:20px;margin-bottom:6px;display:block}
+.feedback .fb-title{font-weight:700;font-size:15px;margin-bottom:4px}
+.feedback .fb-explain{font-style:italic;color:inherit;opacity:.85}
+
+/* Action button */
+.ex-action{padding:20px;flex-shrink:0;max-width:600px;margin:0 auto;width:100%}
+.btn-check{width:100%;background:var(--forest);color:var(--paper);border-radius:12px;padding:18px;font-size:16px;font-weight:700;letter-spacing:.02em;transition:.15s}
+.btn-check:hover:not(:disabled){background:var(--forest-2)}
+.btn-check:disabled{opacity:.35;pointer-events:none}
+.btn-check.btn-next{background:var(--ochre);color:var(--forest)}
+.btn-check.btn-next:hover{background:var(--ochre-soft)}
+
+/* ─────────────────────────────────────
+   RESULT SCREEN
+───────────────────────────────────── */
+#s-result{background:var(--forest);align-items:center;justify-content:center;padding:32px 24px}
+.res-inner{max-width:420px;width:100%;text-align:center}
+.res-icon{font-size:64px;margin-bottom:16px;display:block}
+.res-title{font-family:var(--serif);font-size:36px;font-weight:600;color:var(--ochre-soft);margin-bottom:8px;line-height:1.1}
+.res-sub{font-family:var(--sans);font-size:15px;color:rgba(247,240,223,.7);margin-bottom:32px;line-height:1.5}
+.res-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:32px}
+.res-stat{background:rgba(255,255,255,.08);border-radius:10px;padding:16px 12px}
+.res-stat .s-v{font-family:var(--serif);font-size:28px;font-weight:600;color:var(--ochre-soft);line-height:1}
+.res-stat .s-l{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:rgba(247,240,223,.5);text-transform:uppercase;margin-top:4px}
+.btn-home{background:var(--ochre-soft);color:var(--forest);border-radius:12px;padding:16px 40px;font-size:16px;font-weight:700;transition:.15s}
+.btn-home:hover{background:#edd080}
+
+/* Animations */
+@keyframes pop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes slide-up{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.pop{animation:pop .35s ease forwards}
+.slide-up{animation:slide-up .25s ease forwards}
+
+/* Mastery badge */
+.mastery-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--ochre);color:var(--forest);border-radius:30px;padding:12px 24px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px;transition:.4s;z-index:100;white-space:nowrap}
+.mastery-toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── NEW: XP float */
+.xp-float{position:fixed;z-index:200;font-family:var(--mono);font-size:15px;font-weight:800;color:var(--ochre-soft);text-shadow:0 1px 4px rgba(0,0,0,.5);pointer-events:none;animation:xp-up 1.1s ease forwards}
+@keyframes xp-up{0%{transform:translateY(0) scale(1);opacity:1}60%{transform:translateY(-45px) scale(1.25);opacity:1}100%{transform:translateY(-80px) scale(.9);opacity:0}}
+
+/* ── NEW: shake wrong answer */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .38s ease}
+
+/* ── NEW: confetti canvas overlay */
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:300;display:none}
+
+/* ── NEW: badge toast */
+.badge-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--forest);border:2px solid var(--ochre);color:var(--paper);border-radius:14px;padding:14px 22px;font-size:14px;display:flex;align-items:center;gap:12px;transition:.4s cubic-bezier(.34,1.56,.64,1);z-index:150;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.badge-toast.show{transform:translateX(-50%) translateY(0)}
+.badge-toast .bi{font-size:26px}
+.badge-toast .bt-body .bt-title{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ochre-soft);font-weight:700;margin-bottom:2px}
+.badge-toast .bt-body .bt-name{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--paper)}
+
+/* ── NEW: level-up toast */
+.level-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(120px);background:linear-gradient(135deg,var(--forest),var(--forest-2));border:2px solid var(--ochre-soft);color:var(--paper);border-radius:16px;padding:18px 28px;text-align:center;transition:.4s cubic-bezier(.34,1.56,.64,1);z-index:150;white-space:nowrap;box-shadow:0 8px 40px rgba(0,0,0,.3)}
+.level-toast.show{transform:translateX(-50%) translateY(0)}
+.level-toast .lt-new{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ochre-soft)}
+.level-toast .lt-sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(247,240,223,.55);margin-top:4px}
+
+/* ── NEW: daily goal ring */
+.goal-ring{position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:default}
+.goal-ring span{position:absolute;font-family:var(--mono);font-size:7.5px;color:var(--ochre-soft);font-weight:700;line-height:1;text-align:center}
+
+/* ── NEW: recommended card */
+.rec-card{background:linear-gradient(135deg,var(--forest),var(--forest-2));border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;margin-bottom:20px;cursor:pointer;transition:.15s;border:1px solid rgba(255,255,255,.08)}
+.rec-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(29,58,44,.3)}
+.rec-icon{font-size:30px;flex-shrink:0}
+.rec-body{flex:1}
+.rec-reason{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:rgba(247,240,223,.55);text-transform:uppercase;font-weight:700;margin-bottom:3px}
+.rec-name{font-family:var(--serif);font-size:18px;color:var(--ochre-soft);font-weight:600}
+.rec-meta{font-size:12.5px;color:rgba(247,240,223,.55);margin-top:2px}
+.rec-cta{background:var(--ochre);color:var(--forest);border-radius:9px;padding:10px 18px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;flex-shrink:0;transition:.15s}
+.rec-cta:hover{background:var(--ochre-soft)}
+
+/* ── NEW: daily practice button */
+.daily-btn{width:100%;background:var(--ochre-soft);color:var(--forest);border-radius:12px;padding:16px;font-size:16px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:10px;transition:.15s}
+.daily-btn:hover{background:#edd080;transform:translateY(-1px)}
+
+/* ── NEW: level badge in topbar */
+.level-pill{background:rgba(200,144,48,.15);border:1px solid rgba(200,144,48,.25);border-radius:20px;padding:5px 12px;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--ochre-soft);letter-spacing:.10em;flex-shrink:0}
+
+/* ── NEW: roster picker (classroom mode) */
+#wlc-mode-roster{display:none}
+.roster-pick-label{font-family:var(--sans);font-size:13px;color:rgba(247,240,223,.7);margin-bottom:14px;text-align:left}
+.roster-pick-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.roster-btn{background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;color:var(--paper);font-size:15px;font-weight:600;transition:.15s;text-align:left}
+.roster-btn:hover{background:rgba(255,255,255,.14);border-color:var(--ochre-soft)}
+.roster-avatar{width:34px;height:34px;border-radius:50%;background:var(--ochre);color:var(--forest);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-size:16px;font-weight:700;flex-shrink:0}
+.roster-grade-tag{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:rgba(247,240,223,.45);text-transform:uppercase;margin-left:auto}
+.new-student-link{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(247,240,223,.4);text-align:center;cursor:pointer;padding:8px;border:none;background:none;text-decoration:underline;margin-top:8px}
+.new-student-link:hover{color:rgba(247,240,223,.7)}
+
+/* ── NEW: session skill badge (for multi-skill sessions) */
+.skill-transition{background:rgba(200,144,48,.15);border:1px solid rgba(200,144,48,.2);border-radius:8px;padding:6px 14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ochre-soft);font-weight:700;display:none;margin-bottom:12px}
+.skill-transition.show{display:block}
+
+/* ── NEW: stars on result */
+.res-stars{display:flex;justify-content:center;gap:8px;margin-bottom:20px;font-size:36px}
+.res-star{transition:.3s;filter:grayscale(1);opacity:.3}
+.res-star.lit{filter:none;opacity:1;animation:star-pop .4s ease forwards}
+@keyframes star-pop{0%{transform:scale(0)}70%{transform:scale(1.3)}100%{transform:scale(1)}}
+
+/* ── NEW: sound toggle */
+#btn-sound{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:6px 11px;font-size:14px;color:rgba(247,240,223,.6);flex-shrink:0;transition:.15s}
+#btn-sound:hover{background:rgba(255,255,255,.18);color:var(--paper)}
+#btn-sound.active{color:var(--ochre-soft)}
+</style>
+</head>
+<canvas id="confetti-canvas"></canvas>
+<div class="mastery-toast" id="mastery-toast">🏆 ¡Habilidad dominada!</div>
+<div class="badge-toast" id="badge-toast"><span class="bi" id="badge-toast-icon">⭐</span><div class="bt-body"><div class="bt-title">¡Insignia obtenida!</div><div class="bt-name" id="badge-toast-name">Primera estrella</div></div></div>
+<div class="level-toast" id="level-toast"><div class="lt-new" id="level-toast-name">Explorador</div><div class="lt-sub">¡Nuevo nivel alcanzado! 🎉</div></div>
+
+<body>
+
+<!-- ══════════════════════════════════
+     SCREEN 1: WELCOME
+══════════════════════════════════ -->
+<div class="screen active" id="s-welcome">
+  <div class="wlc-inner">
+    <div class="wlc-logo">ceiba</div>
+    <div class="wlc-sub">aprende · crece · explora</div>
+
+    <!-- ROSTER MODE (classroom): shown when ceiba.roster.v1 exists -->
+    <div id="wlc-mode-roster">
+      <div class="roster-pick-label">¿Quién eres tú?</div>
+      <div class="roster-pick-list" id="roster-pick-list"></div>
+      <button class="new-student-link" id="btn-new-student">Soy nuevo/a →</button>
+    </div>
+
+    <!-- SOLO MODE: shown when no roster -->
+    <div id="wlc-mode-solo">
+      <div class="wlc-label">¿Cómo te llamas?</div>
+      <input class="wlc-input" id="inp-name" type="text" placeholder="Tu nombre..." autocomplete="off" maxlength="40">
+      <div class="wlc-label" style="margin-top:20px">¿En qué grado estás?</div>
+      <div class="wlc-grades">
+        <button class="wlc-grade" data-grade="5">5° Grado</button>
+        <button class="wlc-grade" data-grade="6">6° Grado</button>
+      </div>
+      <button class="btn-start" id="btn-start" disabled>¡Empezar a aprender!</button>
+      <p style="font-family:var(--serif);font-style:italic;font-size:13px;color:rgba(247,240,223,.35);margin-top:20px">Tu progreso se guarda en este dispositivo.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 2: HOME / SKILL MAP
+══════════════════════════════════ -->
+<div class="screen" id="s-home">
+  <div class="topbar">
+    <div>
+      <div class="tb-name" id="tb-name">Estudiante</div>
+      <div class="tb-grade" id="tb-grade">5° Grado</div>
+    </div>
+    <div class="tb-spacer"></div>
+    <div class="goal-ring" id="goal-ring" title="Meta diaria">
+      <svg viewBox="0 0 36 36" width="32" height="32">
+        <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="3.5"/>
+        <circle id="goal-arc" cx="18" cy="18" r="14" fill="none" stroke="#e0b466" stroke-width="3.5"
+          stroke-dasharray="0 88" stroke-linecap="round" transform="rotate(-90 18 18)" style="transition:.5s"/>
+      </svg>
+      <span id="goal-count">0</span>
+    </div>
+    <div class="level-pill" id="tb-level">Aprendiz</div>
+    <div class="xp-pill"><span class="star">⭐</span> <span id="tb-xp">0</span> XP</div>
+    <div class="streak-pill" id="tb-streak">🔥 0</div>
+  </div>
+
+  <div class="home-body">
+    <div class="home-h" id="home-greeting">¡Hola!</div>
+    <div class="home-sub">¿Qué quieres practicar hoy?</div>
+
+    <div id="rec-area"></div>
+    <button class="daily-btn" id="btn-daily-practice">📅 Práctica del día · 10 preguntas</button>
+
+    <div class="subjects" id="subjects-grid"></div>
+    <div id="skill-area"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 3: EXERCISE
+══════════════════════════════════ -->
+<div class="screen" id="s-exercise">
+  <div class="ex-top">
+    <button class="ex-back" id="btn-back" title="Volver">←</button>
+    <div class="ex-skill-name" id="ex-skill-name">Nombre de la habilidad</div>
+    <button id="btn-sound" title="Sonido" onclick="toggleSound()">🔔</button>
+    <button id="btn-audio" title="Leer en voz alta" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:6px 11px;font-size:16px;color:var(--ochre-soft);flex-shrink:0;transition:.15s" onclick="toggleAudio()">🔊</button>
+    <div class="ex-progress">
+      <div class="hearts" id="hearts-display"></div>
+      <div class="q-num" id="q-num">1/5</div>
+    </div>
+  </div>
+  <div class="ex-bar"><div class="ex-bar-fill" id="ex-bar-fill" style="width:0%"></div></div>
+
+  <div class="ex-body" id="ex-body">
+    <div class="skill-transition" id="skill-transition"></div>
+    <div class="q-type-label" id="q-type-label">Pregunta</div>
+    <div class="q-context" id="q-context" style="display:none"></div>
+    <div class="q-text" id="q-text"></div>
+    <div id="q-answer-area"></div>
+    <div class="feedback" id="q-feedback">
+      <span class="fb-icon" id="fb-icon"></span>
+      <div class="fb-title" id="fb-title"></div>
+      <div class="fb-explain" id="fb-explain"></div>
+    </div>
+  </div>
+
+  <div class="ex-action">
+    <button class="btn-check" id="btn-check" disabled>Comprobar</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 4: SESSION RESULT
+══════════════════════════════════ -->
+<div class="screen" id="s-result">
+  <div class="res-inner">
+    <span class="res-icon" id="res-icon">🌟</span>
+    <div class="res-title" id="res-title">¡Excelente!</div>
+    <div class="res-sub" id="res-sub">Sigue así, estás progresando.</div>
+    <div class="res-stars" id="res-stars">
+      <span class="res-star" id="star1">⭐</span>
+      <span class="res-star" id="star2">⭐</span>
+      <span class="res-star" id="star3">⭐</span>
+    </div>
+    <div class="res-stats">
+      <div class="res-stat"><div class="s-v" id="rs-correct">0</div><div class="s-l">Correctas</div></div>
+      <div class="res-stat"><div class="s-v" id="rs-xp">+0</div><div class="s-l">XP ganado</div></div>
+      <div class="res-stat"><div class="s-v" id="rs-streak">0</div><div class="s-l">Racha días</div></div>
+    </div>
+    <button class="btn-home" id="btn-home">Volver al inicio</button>
+  </div>
+</div>
+
+<!-- Mastery toast -->
+<div class="mastery-toast" id="mastery-toast">🏆 ¡Habilidad dominada!</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  CURRICULUM — Panama MEDUCA 5th & 6th grade skills
+// ═══════════════════════════════════════════════════════
+const CURRICULUM = {
+  mat: {
+    name: 'Matemáticas', icon: '🔢', color: '#4a7ac8',
+    skills: [
+      {
+        id:'mat-frac-1', name:'Fracciones: partes del entero', grade:[5,6],
+        questions:[
+          {type:'mcq', text:'¿Qué fracción representa 3 de 8 partes iguales?',
+           opts:['3/8','8/3','3/5','5/8'], answer:0,
+           explain:'Numerador (partes tomadas) = 3, denominador (partes totales) = 8. Fracción: 3/8.'},
+          {type:'mcq', text:'Una pizza se cortó en 6 porciones y comiste 2. ¿Qué fracción comiste?',
+           opts:['2/4','4/6','2/6','6/2'], answer:2,
+           explain:'Comiste 2 de 6 porciones: 2/6, que también es igual a 1/3.'},
+          {type:'fill', text:'Escribe la fracción: cinco de doce partes.', answer:'5/12',
+           alts:['5 / 12'],
+           explain:'5 partes de un total de 12 → 5/12.'},
+          {type:'mcq', text:'¿Cuál fracción es mayor?',
+           opts:['1/4','1/2','1/8','1/3'], answer:1,
+           explain:'Con el mismo numerador, mayor fracción = menor denominador. 1/2 es la mayor.'},
+          {type:'mcq', text:'¿Qué número falta? 3/_ = 6/8',
+           opts:['3','4','5','2'], answer:1,
+           explain:'6/8 = 3/4. Si multiplicamos numerador y denominador por 2: 3/4 → 6/8. El denominador es 4.'},
+        ]
+      },
+      {
+        id:'mat-dec-1', name:'Decimales: suma y resta', grade:[5,6],
+        prereqs:['mat-frac-1'],
+        questions:[
+          {type:'mcq', text:'¿Cuánto es 3.5 + 2.8?',
+           opts:['5.3','6.3','6.13','5.13'], answer:1,
+           explain:'3.5 + 2.8: suma primero los décimos (5+8=13, escribes 3 y llevas 1), luego los enteros (3+2+1=6). Resultado: 6.3'},
+          {type:'fill', text:'Calcula: 7.20 − 3.45 =', answer:'3.75',
+           alts:['3,75'],
+           explain:'7.20 − 3.45: 7.20 − 3.45 = 3.75. Recuerda alinear los puntos decimales.'},
+          {type:'mcq', text:'Un libro cuesta $4.75 y una libreta $2.30. ¿Cuánto es en total?',
+           opts:['$6.95','$7.05','$7.00','$6.05'], answer:1, /* actually 7.05 */
+           explain:'4.75 + 2.30 = 7.05. Suma centavos: 75+30=105 → escribes 05 y llevas 1. Dólares: 4+2+1=7.'},
+          {type:'mcq', text:'¿Cuál número decimal está entre 2.3 y 2.4?',
+           opts:['2.5','2.35','2.2','3.0'], answer:1,
+           explain:'2.35 está después de 2.30 y antes de 2.40.'},
+          {type:'fill', text:'Ordena de menor a mayor: 0.8, 0.08, 0.80 → el mayor es:', answer:'0.8',
+           alts:['0.80'],
+           explain:'0.08 < 0.8 = 0.80. Los dos últimos son iguales (0.8 = 0.80). El mayor es 0.8.'},
+        ]
+      },
+      {
+        id:'mat-geo-1', name:'Perímetro y área', grade:[5,6],
+        prereqs:['mat-dec-1'],
+        questions:[
+          {type:'mcq', text:'¿Cuál es el perímetro de un cuadrado con lado de 5 cm?',
+           opts:['10 cm','15 cm','20 cm','25 cm'], answer:2,
+           explain:'Perímetro = 4 × lado = 4 × 5 = 20 cm.'},
+          {type:'fill', text:'Un rectángulo mide 6 m de largo y 4 m de ancho. ¿Cuál es su área en m²?', answer:'24',
+           alts:['24 m2','24 m²'],
+           explain:'Área del rectángulo = largo × ancho = 6 × 4 = 24 m².'},
+          {type:'mcq', text:'¿Qué fórmula se usa para el área de un triángulo?',
+           opts:['base + altura','base × altura','(base × altura) ÷ 2','base × altura × 2'], answer:2,
+           explain:'Área del triángulo = (base × altura) ÷ 2.'},
+          {type:'mcq', text:'Un jardín cuadrado tiene perímetro de 36 m. ¿Cuánto mide cada lado?',
+           opts:['6 m','9 m','12 m','8 m'], answer:1,
+           explain:'Perímetro cuadrado = 4 × lado. Entonces lado = 36 ÷ 4 = 9 m.'},
+          {type:'fill', text:'¿Cuántas baldosas cuadradas de 1m × 1m necesito para cubrir un cuarto de 5m × 3m?', answer:'15',
+           alts:['15 baldosas'],
+           explain:'Área = 5 × 3 = 15 m². Necesitas 15 baldosas.'},
+        ]
+      },
+      {
+        id:'mat-mul-1', name:'Multiplicación y división', grade:[5,6],
+        questions:[
+          {type:'mcq', text:'¿Cuánto es 7 × 8?',
+           opts:['54','56','64','48'], answer:1,
+           explain:'7 × 8 = 56. Truco: 7 × 8 = (7 × 4) + (7 × 4) = 28 + 28 = 56.'},
+          {type:'fill', text:'56 ÷ 7 =', answer:'8',
+           alts:['8.0'],
+           explain:'Si 7 × 8 = 56, entonces 56 ÷ 7 = 8. La división es la operación inversa de la multiplicación.'},
+          {type:'mcq', text:'Una caja tiene 9 filas con 12 manzanas cada una. ¿Cuántas manzanas hay en total?',
+           opts:['98','106','108','112'], answer:2,
+           explain:'9 × 12 = 108. Descompon: 9 × 10 = 90, más 9 × 2 = 18. Total: 90 + 18 = 108.'},
+          {type:'mcq', text:'¿Cuánto es 144 ÷ 12?',
+           opts:['10','11','12','13'], answer:2,
+           explain:'144 ÷ 12 = 12. Porque 12 × 12 = 144.'},
+          {type:'mcq', text:'Si repartes 37 caramelos entre 5 niños por igual, ¿cuántos le sobran?',
+           opts:['1','2','3','4'], answer:1,
+           explain:'37 ÷ 5 = 7 con residuo 2. Porque 5 × 7 = 35, y 37 − 35 = 2.'},
+        ]
+      },
+      {
+        id:'mat-frac-ops', name:'Sumas y restas de fracciones', grade:[5,6],
+        prereqs:['mat-frac-1'],
+        questions:[
+          {type:'mcq', text:'¿Cuánto es 1/4 + 2/4?',
+           opts:['3/8','3/4','2/4','1/2'], answer:1,
+           explain:'Con el mismo denominador, suma los numeradores: 1 + 2 = 3. Resultado: 3/4.'},
+          {type:'fill', text:'3/5 − 1/5 =', answer:'2/5',
+           alts:['2 / 5'],
+           explain:'Mismo denominador: 3 − 1 = 2. Resultado: 2/5.'},
+          {type:'mcq', text:'¿Cuánto es 1/3 + 1/6? (Pista: busca el denominador común)',
+           opts:['2/9','1/2','2/6','3/6'], answer:1,
+           explain:'1/3 = 2/6. Entonces 2/6 + 1/6 = 3/6 = 1/2. Busca siempre el mínimo común múltiplo.'},
+          {type:'mcq', text:'Comiste 2/8 de una sandía en la mañana y 3/8 en la tarde. ¿Qué fracción comiste en total?',
+           opts:['5/16','5/8','6/8','1/2'], answer:1,
+           explain:'2/8 + 3/8 = 5/8. Mismo denominador, suma los numeradores.'},
+          {type:'fill', text:'¿Cuánto es 7/10 − 3/10?', answer:'4/10',
+           alts:['2/5','4 / 10'],
+           explain:'7/10 − 3/10 = 4/10 = 2/5. Ambas respuestas son correctas.'},
+        ]
+      },
+      {
+        id:'mat-pct-1', name:'Porcentajes', grade:[6],
+        prereqs:['mat-dec-1'],
+        questions:[
+          {type:'mcq', text:'¿Cuánto es el 50% de 80?',
+           opts:['20','30','40','50'], answer:2,
+           explain:'50% = la mitad. 80 ÷ 2 = 40.'},
+          {type:'fill', text:'¿Cuánto es el 25% de 200?', answer:'50',
+           alts:['50.0'],
+           explain:'25% = una cuarta parte. 200 ÷ 4 = 50.'},
+          {type:'mcq', text:'3 es el ___% de 12.',
+           opts:['15%','20%','25%','30%'], answer:2,
+           explain:'3/12 = 1/4 = 25%. Divide 3 entre 12: 0.25 × 100 = 25%.'},
+          {type:'mcq', text:'Un par de zapatos cuesta $40. Hay un descuento del 10%. ¿Cuánto pagas?',
+           opts:['$30','$32','$36','$34'], answer:2,
+           explain:'10% de $40 = $4. Precio final: $40 − $4 = $36.'},
+          {type:'fill', text:'¿Cuánto es el 10% de 150?', answer:'15',
+           alts:['15.0'],
+           explain:'Para calcular el 10%, divide entre 10. 150 ÷ 10 = 15.'},
+        ]
+      }
+    ]
+  },
+  esp: {
+    name: 'Español', icon: '📖', color: '#c84a7a',
+    skills: [
+      {
+        id:'esp-comp-1', name:'Comprensión lectora', grade:[5,6],
+        questions:[
+          {type:'mcq',
+           context:'Andrés llegó tarde a la escuela porque el autobús se descompuso. Al entrar al aula, la maestra lo miró con sorpresa y le preguntó la razón. Andrés explicó lo que ocurrió. La maestra asintió y le indicó que tomara su lugar.',
+           text:'¿Por qué llegó tarde Andrés?',
+           opts:['Porque se quedó dormido','Porque el autobús se descompuso','Porque olvidó sus útiles','Porque había mucho tráfico'], answer:1,
+           explain:'El texto dice claramente: "el autobús se descompuso".'},
+          {type:'mcq',
+           context:'Andrés llegó tarde a la escuela porque el autobús se descompuso. Al entrar al aula, la maestra lo miró con sorpresa y le preguntó la razón. Andrés explicó lo que ocurrió. La maestra asintió y le indicó que tomara su lugar.',
+           text:'¿Cómo reaccionó la maestra al ver que Andrés explicó lo ocurrido?',
+           opts:['Se enojó mucho','Lo regañó','Aceptó la razón','Le puso una nota a sus padres'], answer:2,
+           explain:'"La maestra asintió" significa que aceptó o estuvo de acuerdo con la explicación.'},
+          {type:'mcq', text:'¿Cuál es el sinónimo de "veloz"?',
+           opts:['Lento','Rápido','Grande','Suave'], answer:1,
+           explain:'Veloz significa rápido. Ambas palabras describen algo que se mueve con rapidez.'},
+          {type:'fill', text:'Escribe el plural de la palabra: "el árbol"', answer:'los árboles',
+           alts:['árboles','Los árboles'],
+           explain:'El plural de "el árbol" es "los árboles". Se agrega -es a palabras terminadas en consonante.'},
+          {type:'mcq', text:'¿Cuál de estas oraciones tiene un error de ortografía?',
+           opts:['La niña corrió muy rápido.','El perro se llama Toby.','Mi mamá fue al mercado.','Mañana voy a mi casa de mi abuela.'], answer:3,
+           explain:'"Voy a mi casa de mi abuela" tiene redundancia. Lo correcto sería "Voy a casa de mi abuela".'},
+        ]
+      },
+      {
+        id:'esp-ort-1', name:'Ortografía y puntuación', grade:[5,6],
+        questions:[
+          {type:'mcq', text:'¿Cuál de estas palabras está escrita correctamente?',
+           opts:['habia','había','abia','havía'], answer:1,
+           explain:'"Había" lleva tilde en la "i" porque es una palabra esdrújula (el acento cae en la antepenúltima sílaba).'},
+          {type:'mcq', text:'¿Qué signo va al inicio de una pregunta en español?',
+           opts:['¿','¡','«','"'], answer:0,
+           explain:'En español, las preguntas llevan ¿ al inicio y ? al final. Es único del español.'},
+          {type:'fill', text:'Escribe la palabra con su acento correcto: "el arbol"', answer:'el árbol',
+           alts:['árbol','Árbol'],
+           explain:'"Árbol" es una palabra esdrújula: el acento cae en "Ár". Las esdrújulas siempre llevan tilde.'},
+          {type:'mcq', text:'¿Dónde va la coma en esta oración? "Compré pan leche y huevos"',
+           opts:['Compré pan, leche y huevos.','Compré, pan leche y huevos.','Compré pan leche, y huevos.','No necesita coma.'], answer:0,
+           explain:'La coma separa elementos de una lista. Va después de cada elemento excepto antes del último "y".'},
+          {type:'mcq', text:'¿Cuál oración usa correctamente el punto?',
+           opts:['Hoy llueve. ¿Tienes paraguas?','Hoy llueve ¿tienes paraguas?','Hoy llueve? Tienes paraguas.','Hoy. llueve tienes paraguas.'], answer:0,
+           explain:'El punto cierra una oración completa. Después del punto, la siguiente oración empieza con mayúscula.'},
+        ]
+      },
+      {
+        id:'esp-gram-1', name:'Gramática: sujeto y predicado', grade:[5,6],
+        prereqs:['esp-comp-1'],
+        questions:[
+          {type:'mcq', text:'En la oración "Los estudiantes estudian mucho", ¿cuál es el sujeto?',
+           opts:['estudian mucho','Los estudiantes','mucho','Los estudiantes estudian'], answer:1,
+           explain:'El sujeto es quien realiza la acción: "Los estudiantes".'},
+          {type:'mcq', text:'¿Cuál es el predicado de: "Mi perro ladra de noche"?',
+           opts:['Mi perro','ladra de noche','de noche','Mi perro ladra'], answer:1,
+           explain:'El predicado expresa lo que hace el sujeto: "ladra de noche".'},
+          {type:'fill', text:'Completa: En "El sol sale cada mañana", el verbo es:', answer:'sale',
+           alts:['Sale'],
+           explain:'"Sale" es el verbo: la acción que realiza el sujeto (el sol).'},
+          {type:'mcq', text:'¿Cuál oración tiene sujeto implícito (no escrito)?',
+           opts:['María canta muy bien.','Canta muy bien.','La niña canta.','Todos cantan.'], answer:1,
+           explain:'"Canta muy bien" no tiene sujeto escrito, pero se sobreentiende que es "ella". Sujeto implícito.'},
+          {type:'mcq', text:'¿Cuál es el sujeto de: "Juegan fútbol en el parque"?',
+           opts:['en el parque','fútbol','Ellos (implícito)','Juegan fútbol'], answer:2,
+           explain:'No hay sujeto escrito. El sujeto es implícito: "ellos" o "ellas".'},
+        ]
+      },
+      {
+        id:'esp-verb-1', name:'Tiempos verbales', grade:[5,6],
+        prereqs:['esp-gram-1'],
+        questions:[
+          {type:'mcq', text:'"María estudia todos los días." ¿En qué tiempo verbal está?',
+           opts:['Pasado','Presente','Futuro','Imperativo'], answer:1,
+           explain:'"Estudia" está en presente: describe lo que ocurre ahora o habitualmente.'},
+          {type:'fill', text:'Completa en pasado: "Ayer yo __ (ir) al mercado."', answer:'fui',
+           alts:['Fui'],
+           explain:'"Fui" es el pasado (pretérito) del verbo ir en primera persona: yo fui.'},
+          {type:'mcq', text:'¿Cuál oración está en tiempo futuro?',
+           opts:['Corrí 5 km ayer.','Corro todos los días.','Mañana correré en el parque.','Estoy corriendo ahora.'], answer:2,
+           explain:'"Correré" es futuro. Terminaciones del futuro: -é, -ás, -á, -emos, -éis, -án.'},
+          {type:'mcq', text:'¿Cómo se conjuga "hablar" en pasado, tercera persona? (él/ella)',
+           opts:['habló','hablaba','ha hablado','hablará'], answer:0,
+           explain:'"Habló" es el pretérito perfecto simple de "hablar" para él/ella. Se usa para acciones completas en el pasado.'},
+          {type:'mcq', text:'Identifica el tiempo: "Cuando sea grande, seré doctor."',
+           opts:['Pasado','Presente','Futuro','Presente y futuro'], answer:3,
+           explain:'"Sea" es presente subjuntivo, "seré" es futuro. La oración combina ambos tiempos.'},
+        ]
+      }
+    ]
+  },
+  nat: {
+    name: 'Ciencias', icon: '🌿', color: '#4a7848',
+    skills: [
+      {
+        id:'nat-eco-1', name:'Ecosistemas de Panamá', grade:[5,6],
+        questions:[
+          {type:'mcq', text:'¿Cuál es el ecosistema con mayor biodiversidad en Panamá?',
+           opts:['El desierto','El bosque tropical húmedo','La sabana','El páramo'], answer:1,
+           explain:'El bosque tropical húmedo tiene la mayor biodiversidad. Panamá está en el corredor biológico mesoamericano.'},
+          {type:'mcq', text:'¿Qué es una cadena alimenticia?',
+           opts:['Una serie de animales que viven juntos','La relación de quien come a quién en un ecosistema','Un tipo de planta tropical','Una red de ríos'], answer:1,
+           explain:'La cadena alimenticia muestra quién come a quién: plantas → herbívoros → carnívoros → descomponedores.'},
+          {type:'fill', text:'Los organismos que producen su propio alimento con luz solar se llaman:', answer:'productores',
+           alts:['Productores','plantas productoras','autótrofos','Autótrofos'],
+           explain:'Las plantas son "productores" o "autótrofos": producen alimento mediante fotosíntesis.'},
+          {type:'mcq', text:'¿Cuál animal es endémico de Panamá (solo existe aquí)?',
+           opts:['El jaguar','La rana dorada de Panamá','El cocodrilo americano','El tucán'], answer:1,
+           explain:'La rana dorada de Panamá (Atelopus zeteki) es endémica. Hoy está críticamente amenazada.'},
+          {type:'mcq', text:'¿Qué hace un organismo descomponedor en un ecosistema?',
+           opts:['Caza a otros animales','Come plantas','Desintegra materia muerta y devuelve nutrientes al suelo','Produce su propio alimento'], answer:2,
+           explain:'Los hongos y bacterias son descomponedores: reciclan nutrientes devolviendo materia orgánica al suelo.'},
+        ]
+      },
+      {
+        id:'nat-cuerpo-1', name:'El cuerpo humano', grade:[5,6],
+        prereqs:['nat-eco-1'],
+        questions:[
+          {type:'mcq', text:'¿Cuál es la función principal del sistema circulatorio?',
+           opts:['Respirar oxígeno','Transportar sangre, nutrientes y oxígeno por el cuerpo','Digerir los alimentos','Controlar los movimientos'], answer:1,
+           explain:'El corazón bombea sangre que lleva oxígeno y nutrientes a todas las células del cuerpo.'},
+          {type:'fill', text:'El órgano que filtra la sangre y produce orina se llama:', answer:'riñón',
+           alts:['riñones','el riñón','los riñones'],
+           explain:'Los riñones filtran la sangre y producen orina para eliminar desechos del cuerpo.'},
+          {type:'mcq', text:'¿Cuántos huesos tiene aproximadamente el cuerpo humano adulto?',
+           opts:['106','206','306','406'], answer:1,
+           explain:'Un adulto tiene 206 huesos. Los bebés nacen con ~270, algunos se fusionan al crecer.'},
+          {type:'mcq', text:'¿Qué sistema conecta el cerebro con el resto del cuerpo?',
+           opts:['Sistema digestivo','Sistema endocrino','Sistema nervioso','Sistema muscular'], answer:2,
+           explain:'El sistema nervioso (cerebro + médula espinal + nervios) controla y coordina todo el cuerpo.'},
+          {type:'mcq', text:'¿Qué nutriente es más importante para el crecimiento de músculos y tejidos?',
+           opts:['Carbohidratos','Proteínas','Grasas','Vitaminas'], answer:1,
+           explain:'Las proteínas son los bloques de construcción de músculos, órganos y tejidos.'},
+        ]
+      },
+      {
+        id:'nat-agua-1', name:'El ciclo del agua', grade:[5,6],
+        questions:[
+          {type:'mcq', text:'¿Cómo se llama el proceso por el cual el agua del mar se convierte en vapor?',
+           opts:['Condensación','Precipitación','Evaporación','Infiltración'], answer:2,
+           explain:'Evaporación: el calor del sol convierte el agua líquida en vapor de agua que sube a la atmósfera.'},
+          {type:'mcq', text:'¿Qué ocurre cuando el vapor de agua sube y se enfría?',
+           opts:['Se evapora','Se condensa y forma nubes','Se precipita','Se infiltra'], answer:1,
+           explain:'Condensación: el vapor se enfría, las partículas se juntan y forman gotas que crean nubes.'},
+          {type:'fill', text:'El agua que cae de las nubes en forma de lluvia o nieve se llama:', answer:'precipitación',
+           alts:['precipitacion','lluvia','Precipitación'],
+           explain:'Precipitación es cuando el agua de las nubes cae a la Tierra como lluvia, nieve o granizo.'},
+          {type:'mcq', text:'¿Cuál es la fuente de energía que impulsa el ciclo del agua?',
+           opts:['El viento','El Sol','La Luna','El calor interno de la Tierra'], answer:1,
+           explain:'El Sol provee la energía para evaporar el agua y mover el vapor en la atmósfera.'},
+          {type:'mcq', text:'¿Qué porcentaje del agua del planeta es agua dulce disponible para beber?',
+           opts:['50%','25%','10%','menos del 3%'], answer:3,
+           explain:'Solo ~2.5% del agua terrestre es dulce, y la mayoría está en glaciares. Menos del 1% es accesible.'},
+        ]
+      },
+      {
+        id:'nat-mat-1', name:'Estados de la materia', grade:[5,6],
+        prereqs:['nat-agua-1'],
+        questions:[
+          {type:'mcq', text:'¿Cuáles son los tres estados principales de la materia?',
+           opts:['Duro, blando, líquido','Sólido, líquido, gaseoso','Frío, caliente, tibio','Pesado, ligero, mediano'], answer:1,
+           explain:'Los tres estados son sólido (forma fija), líquido (forma variable, volumen fijo), y gaseoso (sin forma ni volumen fijos).'},
+          {type:'mcq', text:'El paso de sólido a líquido se llama:',
+           opts:['Evaporación','Solidificación','Fusión','Condensación'], answer:2,
+           explain:'Fusión (o derretimiento): el sólido absorbe calor y sus moléculas se mueven más rápido hasta volverse líquido.'},
+          {type:'fill', text:'El paso de líquido a gas (como cuando hierve el agua) se llama:', answer:'evaporación',
+           alts:['evaporacion','ebullición','ebullicion','Evaporación'],
+           explain:'Evaporación o ebullición: el líquido gana calor hasta que sus moléculas escapan como gas.'},
+          {type:'mcq', text:'¿Cuál es un ejemplo de materia en estado gaseoso?',
+           opts:['Hielo','Mercurio','Vapor de agua','Madera'], answer:2,
+           explain:'El vapor de agua es agua en estado gaseoso. El hielo es sólido, el mercurio es líquido, la madera es sólida.'},
+          {type:'mcq', text:'Cuando se enfría el vapor de agua y vuelve a ser líquido, ¿qué ocurre con sus moléculas?',
+           opts:['Se mueven más rápido','Se destruyen','Se mueven más lento y se juntan más','Desaparecen'], answer:2,
+           explain:'Al enfriarse, las moléculas pierden energía, se mueven más lento y se acercan: el gas pasa a líquido.'},
+        ]
+      }
+    ]
+  },
+  soc: {
+    name: 'Sociales', icon: '🗺️', color: '#c89030',
+    skills: [
+      {
+        id:'soc-pan-1', name:'Panamá: historia y geografía', grade:[5,6],
+        questions:[
+          {type:'mcq', text:'¿En qué año se inauguró el Canal de Panamá?',
+           opts:['1903','1914','1921','1999'], answer:1,
+           explain:'El Canal de Panamá se inauguró el 15 de agosto de 1914, bajo administración estadounidense.'},
+          {type:'mcq', text:'¿Cuál es la capital de Panamá?',
+           opts:['Colón','David','Ciudad de Panamá','Chitré'], answer:2,
+           explain:'La Ciudad de Panamá es la capital y ciudad más poblada del país.'},
+          {type:'fill', text:'El istmo de Panamá une dos continentes: América del __ y América del __. Escribe el primero:', answer:'Norte',
+           alts:['norte','NORTE'],
+           explain:'El istmo une América del Norte y América del Sur, haciendo de Panamá un puente biogeográfico único.'},
+          {type:'mcq', text:'¿En qué año se separó Panamá de Colombia?',
+           opts:['1821','1856','1903','1945'], answer:2,
+           explain:'El 3 de noviembre de 1903, Panamá se separó de Colombia y se proclamó república independiente.'},
+          {type:'mcq', text:'¿Cuál es el río más largo de Panamá?',
+           opts:['Río Chagres','Río Tuira','Río Santa María','Río Bayano'], answer:1,
+           explain:'El Río Tuira, en la provincia de Darién, es el más largo de Panamá (~230 km).'},
+        ]
+      },
+      {
+        id:'soc-dem-1', name:'La democracia panameña', grade:[5,6],
+        prereqs:['soc-pan-1'],
+        questions:[
+          {type:'mcq', text:'¿Qué tipo de gobierno tiene Panamá?',
+           opts:['Monarquía','República democrática','Dictadura','Oligarquía'], answer:1,
+           explain:'Panamá es una República democrática representativa. Los ciudadanos eligen a sus gobernantes.'},
+          {type:'mcq', text:'¿A qué edad pueden votar los ciudadanos panameños?',
+           opts:['16 años','18 años','21 años','25 años'], answer:1,
+           explain:'En Panamá, el derecho al voto se obtiene a los 18 años.'},
+          {type:'fill', text:'¿En qué año se aprobó la Constitución de Panamá que está vigente?', answer:'1972',
+           alts:['1972.'],
+           explain:'La Constitución Política de Panamá fue aprobada en 1972, con varias reformas posteriores.'},
+          {type:'mcq', text:'¿Cuántos poderes del Estado tiene Panamá?',
+           opts:['2','3','4','5'], answer:1,
+           explain:'Panamá tiene 3 poderes: Ejecutivo (Presidente), Legislativo (Asamblea Nacional) y Judicial (Corte Suprema).'},
+          {type:'mcq', text:'¿Cuál es la función de la Asamblea Nacional de Panamá?',
+           opts:['Dirigir el ejército','Crear y aprobar las leyes','Impartir justicia','Controlar el Canal'], answer:1,
+           explain:'La Asamblea Nacional es el poder legislativo: crea, modifica y aprueba las leyes del país.'},
+        ]
+      },
+      {
+        id:'soc-latam-1', name:'América Latina: geografía', grade:[6],
+        questions:[
+          {type:'mcq', text:'¿Cuál es la capital de Colombia?',
+           opts:['Medellín','Cali','Bogotá','Cartagena'], answer:2,
+           explain:'Bogotá es la capital y ciudad más grande de Colombia, ubicada en los Andes a 2,600 m de altura.'},
+          {type:'mcq', text:'¿Cuál es el país más grande de América del Sur?',
+           opts:['Argentina','Colombia','Perú','Brasil'], answer:3,
+           explain:'Brasil es el país más grande de América del Sur y el quinto más grande del mundo.'},
+          {type:'fill', text:'¿Cuál es la capital de Costa Rica?', answer:'San José',
+           alts:['san jose','san josé','San jose'],
+           explain:'San José es la capital y ciudad más poblada de Costa Rica.'},
+          {type:'mcq', text:'¿Qué país comparte frontera con Panamá por el este?',
+           opts:['Costa Rica','Venezuela','Colombia','Ecuador'], answer:2,
+           explain:'Panamá limita con Colombia al este y con Costa Rica al oeste.'},
+          {type:'mcq', text:'¿En cuál país se encuentra la mayor parte del río Amazonas?',
+           opts:['Perú','Venezuela','Colombia','Brasil'], answer:3,
+           explain:'El Amazonas recorre varios países, pero el 60% de su cuenca está en Brasil.'},
+        ]
+      }
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+//  BAYESIAN KNOWLEDGE TRACING (simplified BKT)
+//  P(mastery) updated after each response
+// ═══════════════════════════════════════════════════════
+const BKT = {
+  pLearn: 0.25,   // prob of learning after each correct answer
+  pForget: 0.02,  // prob of forgetting
+  pGuess: 0.25,   // prob of getting right despite not knowing (MCQ ~1/4)
+  pSlip:  0.08,   // prob of getting wrong despite knowing
+
+  update(pMastery, correct) {
+    // P(mastered | correct or wrong)
+    const pCorrectGivenMastered = 1 - this.pSlip;
+    const pCorrectGivenNotMastered = this.pGuess;
+    const pWrongGivenMastered = this.pSlip;
+    const pWrongGivenNotMastered = 1 - this.pGuess;
+
+    let posterior;
+    if (correct) {
+      const num = pCorrectGivenMastered * pMastery;
+      const denom = num + pCorrectGivenNotMastered * (1 - pMastery);
+      posterior = num / denom;
+    } else {
+      const num = pWrongGivenMastered * pMastery;
+      const denom = num + pWrongGivenNotMastered * (1 - pMastery);
+      posterior = num / denom;
+    }
+
+    // Transition: apply learning / forgetting
+    return posterior * (1 - this.pForget) + (1 - posterior) * this.pLearn;
+  },
+
+  statusLabel(p) {
+    if (p >= 0.90) return 'mastered';
+    if (p >= 0.60) return 'learning';
+    if (p >= 0.30) return 'review';
+    return 'new';
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+//  SM-2 SPACED REPETITION (layered on top of BKT)
+// ═══════════════════════════════════════════════════════
+const SM2 = {
+  update(ss, score) { // score 0–5 from session accuracy
+    const ease = Math.max(1.3, (ss.easiness||2.5) + 0.1 - (5-score)*(0.08 + (5-score)*0.02));
+    let interval;
+    if (score < 3) {
+      interval = 1;
+    } else if (!ss.interval || ss.interval <= 1) {
+      interval = score >= 4 ? 6 : 3;
+    } else {
+      interval = Math.round(ss.interval * ease);
+    }
+    const due = new Date(); due.setDate(due.getDate() + interval);
+    return { ...ss, interval, easiness: ease, nextDue: due.toISOString().split('T')[0] };
+  },
+  isDue(ss) {
+    if (!ss || !ss.nextDue) return true;
+    return ss.nextDue <= new Date().toISOString().split('T')[0];
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+//  BADGES
+// ═══════════════════════════════════════════════════════
+const BADGE_DEFS = [
+  {id:'primera-semilla', icon:'🌱', name:'Primera Semilla',     check: s => Object.values(s.skills).some(k=>k.correct>0)},
+  {id:'primera-estrella',icon:'⭐', name:'Primera Estrella',    check: s => Object.values(s.skills).some(k=>k.pMastery>=0.90)},
+  {id:'semana-fuego',    icon:'🔥', name:'Semana de Fuego',     check: s => s.streak >= 7},
+  {id:'matematico',      icon:'🧮', name:'Matemático',          check: s => CURRICULUM.mat.skills.filter(sk=>sk.grade.includes(s.grade)).every(sk=>(s.skills[sk.id]?.pMastery||0)>=0.90)},
+  {id:'escritor',        icon:'📖', name:'Escritor',            check: s => CURRICULUM.esp.skills.filter(sk=>sk.grade.includes(s.grade)).every(sk=>(s.skills[sk.id]?.pMastery||0)>=0.90)},
+  {id:'cientifico',      icon:'🌿', name:'Científico',          check: s => CURRICULUM.nat.skills.filter(sk=>sk.grade.includes(s.grade)).every(sk=>(s.skills[sk.id]?.pMastery||0)>=0.90)},
+  {id:'explorador-soc',  icon:'🗺️', name:'Explorador',          check: s => CURRICULUM.soc.skills.filter(sk=>sk.grade.includes(s.grade)).every(sk=>(s.skills[sk.id]?.pMastery||0)>=0.90)},
+  {id:'maestro-ceiba',   icon:'👑', name:'Maestro Ceiba',       check: s => Object.values(CURRICULUM).flatMap(sub=>sub.skills).filter(sk=>sk.grade.includes(s.grade)).every(sk=>(s.skills[sk.id]?.pMastery||0)>=0.90)},
+];
+
+function checkAndAwardBadges() {
+  if (!STATE.badges) STATE.badges = [];
+  BADGE_DEFS.forEach(b => {
+    if (!STATE.badges.includes(b.id) && b.check(STATE)) {
+      STATE.badges.push(b.id);
+      showBadgeToast(b);
+    }
+  });
+}
+
+function showBadgeToast(b) {
+  document.getElementById('badge-toast-icon').textContent = b.icon;
+  document.getElementById('badge-toast-name').textContent = b.name;
+  const el = document.getElementById('badge-toast');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+// ═══════════════════════════════════════════════════════
+//  LEVELS
+// ═══════════════════════════════════════════════════════
+const LEVEL_DEFS = [
+  {xp:0,    name:'Aprendiz'},
+  {xp:100,  name:'Explorador'},
+  {xp:300,  name:'Estudiante'},
+  {xp:700,  name:'Académico'},
+  {xp:1500, name:'Maestro'},
+];
+function getLevel(xp) { return [...LEVEL_DEFS].reverse().find(l=>xp>=(l.xp||0))||LEVEL_DEFS[0]; }
+function checkLevelUp(prevXp, newXp) {
+  const prev = getLevel(prevXp), curr = getLevel(newXp);
+  if (curr.name !== prev.name) {
+    document.getElementById('level-toast-name').textContent = curr.name;
+    const el = document.getElementById('level-toast');
+    el.classList.add('show');
+    setTimeout(()=>el.classList.remove('show'), 3000);
+    playLevelUp();
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  SOUND ENGINE  (AudioContext, no external deps)
+// ═══════════════════════════════════════════════════════
+let soundEnabled = false;
+let _actx = null;
+function ensureAudio() { _actx = _actx || new (window.AudioContext||window.webkitAudioContext)(); return _actx; }
+function playTone(freq, dur, type='sine', vol=0.12) {
+  if (!soundEnabled) return;
+  try {
+    const ctx = ensureAudio(); const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    o.start(ctx.currentTime); o.stop(ctx.currentTime + dur);
+  } catch(e){}
+}
+function playCorrect()  { playTone(440,.1); setTimeout(()=>playTone(660,.12),90); }
+function playWrong()    { playTone(160,.18,'sawtooth',.08); }
+function playMastery()  { [440,550,660,880].forEach((f,i)=>setTimeout(()=>playTone(f,.2),i*80)); }
+function playLevelUp()  { [330,440,550,660,770].forEach((f,i)=>setTimeout(()=>playTone(f,.15),i*60)); }
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  const b = document.getElementById('btn-sound');
+  b.classList.toggle('active', soundEnabled);
+  b.textContent = soundEnabled ? '🔔' : '🔕';
+  if (soundEnabled) playCorrect();
+}
+
+// ═══════════════════════════════════════════════════════
+//  CONFETTI  (canvas)
+// ═══════════════════════════════════════════════════════
+function launchConfetti(duration=1600) {
+  const cv = document.getElementById('confetti-canvas');
+  cv.width = window.innerWidth; cv.height = window.innerHeight;
+  cv.style.display = 'block';
+  const ctx = cv.getContext('2d');
+  const colors = ['#c89030','#e0b466','#4a7848','#4a7ac8','#c84a7a','#1d3a2c','#f7f0df'];
+  const ps = Array.from({length:90}, ()=>({
+    x: Math.random()*cv.width, y: -10+Math.random()*-80,
+    vx: (Math.random()-.5)*7, vy: Math.random()*5+2,
+    color: colors[Math.floor(Math.random()*colors.length)],
+    w: Math.random()*10+5, h: Math.random()*6+3,
+    rot: Math.random()*360, rv: (Math.random()-.5)*12,
+  }));
+  const start = performance.now();
+  function frame(now) {
+    const t = now - start;
+    ctx.clearRect(0,0,cv.width,cv.height);
+    const op = Math.max(0,1-t/duration);
+    ps.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=.14; p.rot+=p.rv;
+      ctx.save(); ctx.globalAlpha=op; ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+    });
+    if(t < duration+300) requestAnimationFrame(frame);
+    else { ctx.clearRect(0,0,cv.width,cv.height); cv.style.display='none'; }
+  }
+  requestAnimationFrame(frame);
+}
+
+// ═══════════════════════════════════════════════════════
+//  XP FLOAT ANIMATION
+// ═══════════════════════════════════════════════════════
+function spawnXpFloat(amount) {
+  const pill = document.querySelector('.xp-pill');
+  const el = document.createElement('div');
+  el.className = 'xp-float';
+  el.textContent = '+' + amount + ' XP';
+  if (pill) { const r = pill.getBoundingClientRect(); el.style.left=r.left+'px'; el.style.top=r.top+'px'; }
+  else { el.style.left='50%'; el.style.top='20px'; }
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 1200);
+}
+
+// ═══════════════════════════════════════════════════════
+//  DAILY GOAL
+// ═══════════════════════════════════════════════════════
+function checkDailyGoal() {
+  const today = new Date().toISOString().split('T')[0];
+  if (STATE.dailyGoalDate !== today) { STATE.dailyGoalDate = today; STATE.dailyGoalCount = 0; }
+}
+function incrementDailyGoal() {
+  checkDailyGoal();
+  STATE.dailyGoalCount = (STATE.dailyGoalCount||0) + 1;
+  updateDailyGoalRing();
+  if (STATE.dailyGoalCount === 3) { launchConfetti(1200); }
+}
+function updateDailyGoalRing() {
+  checkDailyGoal();
+  const n = Math.min(STATE.dailyGoalCount||0, 3);
+  const circ = 2*Math.PI*14; // r=14 from SVG
+  const fill = (n/3)*circ;
+  const arc = document.getElementById('goal-arc');
+  if (arc) arc.setAttribute('stroke-dasharray', fill.toFixed(1)+' '+circ.toFixed(1));
+  const cnt = document.getElementById('goal-count');
+  if (cnt) cnt.textContent = n+'/3';
+}
+
+// ═══════════════════════════════════════════════════════
+//  ROSTER (multi-student classroom mode)
+// ═══════════════════════════════════════════════════════
+const ROSTER_KEY = 'ceiba.roster.v1';
+function loadRoster() { try { return JSON.parse(localStorage.getItem(ROSTER_KEY))||[]; } catch { return []; } }
+function studentKey(name) { return 'ceiba.student.'+name+'.v1'; }
+
+// ═══════════════════════════════════════════════════════
+//  RECOMMENDED SKILL LOGIC
+// ═══════════════════════════════════════════════════════
+function getRecommended() {
+  const today = new Date().toISOString().split('T')[0];
+  const allSkills = Object.values(CURRICULUM).flatMap(s=>s.skills).filter(sk=>sk.grade.includes(STATE.grade)&&isUnlocked(sk));
+  const pastDue = allSkills.filter(sk=>{ const ss=STATE.skills[sk.id]; return ss&&ss.attempts>0&&SM2.isDue(ss)&&ss.pMastery<0.90; });
+  if (pastDue.length) { const sk=pastDue[0]; return {skill:sk,reason:'📅 Repaso pendiente',subj:findSubj(sk.id)}; }
+  const learning = allSkills.filter(sk=>{ const p=(STATE.skills[sk.id]?.pMastery||0); return p>=0.30&&p<0.90; });
+  if (learning.length) { const sk=learning[0]; return {skill:sk,reason:'📈 Continuar',subj:findSubj(sk.id)}; }
+  const newSk = allSkills.find(sk=>!(STATE.skills[sk.id]?.attempts));
+  if (newSk) return {skill:newSk,reason:'🆕 Nueva habilidad',subj:findSubj(newSk.id)};
+  return null;
+}
+function findSubj(skillId) {
+  for (const [k,s] of Object.entries(CURRICULUM)) { if (s.skills.find(x=>x.id===skillId)) return {key:k,...s}; }
+}
+
+// ═══════════════════════════════════════════════════════
+//  DAILY PRACTICE (multi-skill adaptive session)
+// ═══════════════════════════════════════════════════════
+function startDailyPractice() {
+  const allSkills = Object.values(CURRICULUM).flatMap(s=>s.skills).filter(sk=>sk.grade.includes(STATE.grade)&&isUnlocked(sk));
+  const pastDue = allSkills.filter(sk=>{const ss=STATE.skills[sk.id];return ss&&ss.attempts>0&&SM2.isDue(ss)&&ss.pMastery<0.90;}).slice(0,2);
+  const learning = allSkills.filter(sk=>{const p=STATE.skills[sk.id]?.pMastery||0;return p>=0.30&&p<0.90;}).filter(sk=>!pastDue.find(x=>x.id===sk.id)).slice(0,2);
+  const newSk = allSkills.filter(sk=>!STATE.skills[sk.id]?.attempts).slice(0,1);
+  let pool = [...pastDue,...learning,...newSk];
+  if (!pool.length) pool = allSkills.sort((a,b)=>(STATE.skills[a.id]?.pMastery||0)-(STATE.skills[b.id]?.pMastery||0)).slice(0,3);
+
+  const questions = [];
+  const perSkill = Math.ceil(10/Math.max(pool.length,1));
+  pool.forEach(sk=>{
+    sk.questions.slice().sort(()=>Math.random()-.5).slice(0,perSkill).forEach(q=>questions.push({...q,_skillId:sk.id,_skillName:sk.name}));
+  });
+  const finalQs = questions.sort(()=>Math.random()-.5).slice(0,10);
+
+  session = {skillId:'daily',questions:finalQs,qi:0,correctCount:0,xpEarned:0,hearts:3,answered:false,isDaily:true};
+  document.getElementById('ex-skill-name').textContent = '📅 Práctica del día';
+  updateHearts(); renderQuestion(); showScreen('s-exercise');
+}
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+const STORAGE_KEY = 'ceiba.student.v1';
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || null; } catch { return null; }
+}
+function saveState(s) {
+  // save to named key AND generic key
+  const namedKey = s.name ? studentKey(s.name) : null;
+  if (namedKey) localStorage.setItem(namedKey, JSON.stringify(s));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+}
+
+let STATE = loadState() || {
+  name: '', grade: 5, xp: 0, streak: 0, lastActivityDate: null,
+  badges: [], dailyGoalDate: null, dailyGoalCount: 0, totalTimeSpent: 0,
+  skills: {}
+};
+if (!STATE.badges) STATE.badges = [];
+if (!STATE.totalTimeSpent) STATE.totalTimeSpent = 0;
+
+function getSkillState(id) {
+  if (!STATE.skills[id]) STATE.skills[id] = {pMastery:0.1,attempts:0,correct:0,lastSeen:null,interval:1,easiness:2.5,nextDue:null};
+  return STATE.skills[id];
+}
+
+function isUnlocked(skill) {
+  if (!skill.prereqs) return true;
+  return skill.prereqs.every(pId => getSkillState(pId).pMastery >= 0.70);
+}
+
+// ═══════════════════════════════════════════════════════
+//  SESSION
+// ═══════════════════════════════════════════════════════
+let session = {
+  skillId: null,
+  questions: [],
+  qi: 0,           // question index
+  correctCount: 0,
+  xpEarned: 0,
+  hearts: 3,
+  answered: false,
+};
+
+// ═══════════════════════════════════════════════════════
+//  SCREENS
+// ═══════════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════════════════════
+//  WELCOME SCREEN
+// ═══════════════════════════════════════════════════════
+const inpName = document.getElementById('inp-name');
+const btnStart = document.getElementById('btn-start');
+let selectedGrade = null;
+
+function initWelcome() {
+  const roster = loadRoster();
+  if (roster && roster.length > 0) {
+    document.getElementById('wlc-mode-roster').style.display = 'block';
+    document.getElementById('wlc-mode-solo').style.display = 'none';
+    const list = document.getElementById('roster-pick-list');
+    list.innerHTML = '';
+    roster.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'roster-btn';
+      btn.innerHTML = `<div class="roster-avatar">${s.name[0].toUpperCase()}</div>${s.name}<span class="roster-grade-tag">${s.grade}°</span>`;
+      btn.addEventListener('click', () => loadStudentFromRoster(s));
+      list.appendChild(btn);
+    });
+    document.getElementById('btn-new-student').addEventListener('click', () => {
+      document.getElementById('wlc-mode-roster').style.display = 'none';
+      document.getElementById('wlc-mode-solo').style.display = 'block';
+    });
+  } else {
+    document.getElementById('wlc-mode-solo').style.display = 'block';
+  }
+}
+
+function loadStudentFromRoster(s) {
+  const saved = JSON.parse(localStorage.getItem(studentKey(s.name)) || localStorage.getItem(STORAGE_KEY) || 'null');
+  if (saved && saved.name === s.name) {
+    STATE = saved; if (!STATE.badges) STATE.badges = []; if (!STATE.totalTimeSpent) STATE.totalTimeSpent = 0;
+  } else {
+    STATE = {name:s.name,grade:s.grade,xp:0,streak:0,lastActivityDate:null,badges:[],dailyGoalDate:null,dailyGoalCount:0,totalTimeSpent:0,skills:{}};
+  }
+  saveState(STATE); goHome();
+}
+
+if (inpName) inpName.addEventListener('input', () => btnStart.disabled = !(inpName.value.trim() && selectedGrade));
+document.querySelectorAll('.wlc-grade').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.wlc-grade').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel');
+    selectedGrade = +b.dataset.grade;
+    if (inpName) btnStart.disabled = !inpName.value.trim();
+  });
+});
+
+if (btnStart) btnStart.addEventListener('click', () => {
+  STATE.name = inpName.value.trim();
+  STATE.grade = selectedGrade;
+  saveState(STATE);
+  goHome();
+});
+
+initWelcome();
+
+// ═══════════════════════════════════════════════════════
+//  HOME SCREEN
+// ═══════════════════════════════════════════════════════
+function goHome() {
+  document.getElementById('tb-name').textContent = STATE.name;
+  document.getElementById('tb-grade').textContent = STATE.grade + '° Grado';
+  document.getElementById('tb-xp').textContent = STATE.xp;
+  document.getElementById('tb-streak').textContent = '🔥 ' + STATE.streak;
+  document.getElementById('tb-level').textContent = getLevel(STATE.xp).name;
+
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? '¡Buenos días, ' : hour < 18 ? '¡Buenas tardes, ' : '¡Buenas noches, ';
+  document.getElementById('home-greeting').textContent = greeting + STATE.name + '!';
+
+  updateDailyGoalRing();
+  renderRecommended();
+  renderSubjects();
+
+  document.getElementById('btn-daily-practice').onclick = startDailyPractice;
+
+  // Check for teacher assignment
+  const assignKey = 'ceiba.assign.' + STATE.name;
+  const assign = JSON.parse(localStorage.getItem(assignKey) || 'null');
+  if (assign) {
+    const sk = findSkillById(assign.skillId);
+    if (sk) {
+      const notice = document.createElement('div');
+      notice.style.cssText = 'background:rgba(181,74,42,.1);border:1px solid rgba(181,74,42,.25);border-radius:12px;padding:14px 18px;margin-bottom:16px;font-size:14px;color:var(--ink-2);display:flex;align-items:center;gap:12px';
+      notice.innerHTML = `<span style="font-size:20px">📌</span><div><b>Tu maestra asignó:</b> ${sk.name}<br><span style="font-size:12px;color:var(--ink-faint)">Practica esta habilidad hoy.</span></div><button onclick="startSession('${sk.id}');localStorage.removeItem('${assignKey}')" style="margin-left:auto;background:var(--forest);color:var(--paper);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer">Practicar</button>`;
+      document.getElementById('rec-area').prepend(notice);
+    }
+  }
+
+  showScreen('s-home');
+}
+
+function findSkillById(id) {
+  for (const s of Object.values(CURRICULUM)) { const sk=s.skills.find(x=>x.id===id); if(sk) return sk; }
+}
+
+function renderRecommended() {
+  const area = document.getElementById('rec-area');
+  area.innerHTML = '';
+  const rec = getRecommended();
+  if (!rec) return;
+  const {skill, reason, subj} = rec;
+  const card = document.createElement('div');
+  card.className = 'rec-card';
+  card.innerHTML = `<div class="rec-icon">${subj?.icon||'📚'}</div><div class="rec-body"><div class="rec-reason">${reason}</div><div class="rec-name">${skill.name}</div><div class="rec-meta">${subj?.name||''} · ~3 min</div></div><button class="rec-cta">Practicar →</button>`;
+  card.addEventListener('click', () => startSession(skill.id));
+  area.appendChild(card);
+}
+
+function renderSubjects() {
+  const grid = document.getElementById('subjects-grid');
+  grid.innerHTML = '';
+  Object.entries(CURRICULUM).forEach(([key, subj]) => {
+    const skills = subj.skills.filter(s => s.grade.includes(STATE.grade));
+    const total = skills.length;
+    const mastered = skills.filter(s => getSkillState(s.id).pMastery >= 0.90).length;
+    const pct = total ? Math.round(mastered / total * 100) : 0;
+
+    const card = document.createElement('div');
+    card.className = 'subj-card ' + key;
+    card.innerHTML = `
+      <span class="subj-icon">${subj.icon}</span>
+      <div class="subj-name">${subj.name}</div>
+      <div class="subj-prog">${mastered}/${total} dominadas</div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${subj.color}"></div></div>
+    `;
+    card.addEventListener('click', () => renderSkills(key));
+    grid.appendChild(card);
+  });
+}
+
+function renderSkills(subjKey) {
+  const subj = CURRICULUM[subjKey];
+  const area = document.getElementById('skill-area');
+  const skills = subj.skills.filter(s => s.grade.includes(STATE.grade));
+
+  area.innerHTML = `<div class="skill-section">
+    <h4>${subj.icon} ${subj.name}</h4>
+    <div class="skill-list" id="sl-${subjKey}"></div>
+  </div>`;
+
+  const list = document.getElementById('sl-' + subjKey);
+  skills.forEach(skill => {
+    const ss = getSkillState(skill.id);
+    const unlocked = isUnlocked(skill);
+    const status = BKT.statusLabel(ss.pMastery);
+    const labels = {new:'nueva',learning:'aprendiendo',review:'repasar',mastered:'dominada'};
+    const item = document.createElement('div');
+    item.className = 'skill-item ' + (unlocked ? '' : 'locked') + (status === 'mastered' ? ' mastered' : '');
+    item.innerHTML = `
+      <div class="skill-icon ${subjKey}" style="background:${subj.color}22">${unlocked ? subj.icon : '🔒'}</div>
+      <div class="skill-info">
+        <div class="skill-name">${skill.name}</div>
+        <div class="skill-meta">${ss.attempts} preguntas intentadas</div>
+      </div>
+      <div class="skill-status st-${status}">${labels[status]}</div>
+    `;
+    if (unlocked) item.addEventListener('click', () => startSession(skill.id));
+    list.appendChild(item);
+  });
+
+  area.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ═══════════════════════════════════════════════════════
+//  EXERCISE SESSION
+// ═══════════════════════════════════════════════════════
+function findSkill(id) {
+  for (const subj of Object.values(CURRICULUM)) {
+    const s = subj.skills.find(x => x.id === id);
+    if (s) return s;
+  }
+}
+
+function startSession(skillId) {
+  const skill = findSkill(skillId);
+  session = {
+    skillId,
+    questions: shuffleQuestions(skill.questions),
+    qi: 0,
+    correctCount: 0,
+    xpEarned: 0,
+    hearts: 3,
+    answered: false,
+  };
+  document.getElementById('ex-skill-name').textContent = skill.name;
+  updateHearts();
+  renderQuestion();
+  showScreen('s-exercise');
+}
+
+function shuffleQuestions(qs) {
+  // Prioritize questions with lower accuracy rate using BKT
+  return [...qs].sort(() => Math.random() - 0.5);
+}
+
+function updateHearts() {
+  const div = document.getElementById('hearts-display');
+  div.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const h = document.createElement('span');
+    h.className = 'heart' + (i >= session.hearts ? ' lost' : '');
+    h.textContent = '❤️';
+    div.appendChild(h);
+  }
+}
+
+function renderQuestion() {
+  const q = session.questions[session.qi];
+  const total = session.questions.length;
+
+  document.getElementById('q-num').textContent = (session.qi + 1) + '/' + total;
+  document.getElementById('ex-bar-fill').style.width = (session.qi / total * 100) + '%';
+
+  const typeLabels = {mcq:'Selección múltiple', fill:'Escribe la respuesta'};
+  document.getElementById('q-type-label').textContent = typeLabels[q.type] || 'Pregunta';
+  document.getElementById('q-text').textContent = q.text;
+
+  const ctx = document.getElementById('q-context');
+  if (q.context) { ctx.textContent = q.context; ctx.style.display = 'block'; }
+  else ctx.style.display = 'none';
+
+  const area = document.getElementById('q-answer-area');
+  area.innerHTML = '';
+  session.answered = false;
+
+  const fb = document.getElementById('q-feedback');
+  fb.className = 'feedback';
+  fb.style.display = 'none';
+
+  const btnCheck = document.getElementById('btn-check');
+  btnCheck.textContent = 'Comprobar';
+  btnCheck.className = 'btn-check';
+  btnCheck.disabled = true;
+
+  if (q.type === 'mcq') {
+    const opts = document.createElement('div');
+    opts.className = 'options';
+    q.opts.forEach((opt, i) => {
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = opt;
+      b.dataset.idx = i;
+      b.addEventListener('click', () => {
+        opts.querySelectorAll('.opt').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+        btnCheck.disabled = false;
+      });
+      opts.appendChild(b);
+    });
+    area.appendChild(opts);
+  } else if (q.type === 'fill') {
+    const wrap = document.createElement('div');
+    wrap.className = 'fill-wrap';
+    const inp = document.createElement('input');
+    inp.className = 'fill-input';
+    inp.placeholder = 'Escribe tu respuesta...';
+    inp.autocomplete = 'off';
+    inp.autocorrect = 'off';
+    inp.spellcheck = false;
+    inp.addEventListener('input', () => btnCheck.disabled = !inp.value.trim());
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !btnCheck.disabled) btnCheck.click(); });
+    wrap.appendChild(inp);
+    area.appendChild(wrap);
+    setTimeout(() => inp.focus(), 50);
+  }
+
+  // Animate in
+  const exBody = document.getElementById('ex-body');
+  exBody.classList.remove('slide-up');
+  void exBody.offsetWidth;
+  exBody.classList.add('slide-up');
+  // Auto-read question after short delay (allows voice to initialize)
+  setTimeout(speakCurrentQuestion, 300);
+}
+
+// Check answer
+document.getElementById('btn-check').addEventListener('click', () => {
+  const btnCheck = document.getElementById('btn-check');
+
+  if (session.answered) {
+    // Next question
+    session.qi++;
+    if (session.qi >= session.questions.length || session.hearts <= 0) {
+      endSession();
+    } else {
+      renderQuestion();
+    }
+    return;
+  }
+
+  session.answered = true;
+  const q = session.questions[session.qi];
+  let correct = false;
+
+  if (q.type === 'mcq') {
+    const sel = document.querySelector('.opt.selected');
+    const idx = +sel.dataset.idx;
+    correct = idx === q.answer;
+    document.querySelectorAll('.opt').forEach((b, i) => {
+      b.disabled = true;
+      if (i === q.answer) b.classList.add('correct');
+      else if (i === idx && !correct) b.classList.add('wrong');
+    });
+  } else if (q.type === 'fill') {
+    const inp = document.querySelector('.fill-input');
+    const val = inp.value.trim().toLowerCase();
+    const expected = q.answer.toLowerCase();
+    const alts = (q.alts || []).map(a => a.toLowerCase());
+    correct = val === expected || alts.includes(val);
+    inp.disabled = true;
+    inp.classList.add(correct ? 'correct' : 'wrong');
+    if (!correct) {
+      const hint = document.createElement('div');
+      hint.style.cssText = 'font-family:var(--sans);font-size:13px;color:var(--correct);margin-top:6px;font-weight:600';
+      hint.textContent = 'Respuesta correcta: ' + q.answer;
+      inp.parentNode.appendChild(hint);
+    }
+  }
+
+  // Update BKT
+  const effectiveSkillId = q._skillId || session.skillId;
+  const ss = getSkillState(effectiveSkillId);
+  const wasMastered = ss.pMastery >= 0.90;
+  ss.pMastery = BKT.update(ss.pMastery, correct);
+  ss.attempts++;
+  if (correct) ss.correct++;
+  ss.lastSeen = new Date().toISOString();
+  saveState(STATE);
+
+  // XP + animations
+  const xp = correct ? 10 : 2;
+  const prevXp = STATE.xp;
+  STATE.xp += xp;
+  session.xpEarned += xp;
+  if (correct) {
+    session.correctCount++;
+    playCorrect();
+    spawnXpFloat(xp);
+  } else {
+    session.hearts--;
+    updateHearts();
+    playWrong();
+    // shake wrong options
+    document.querySelectorAll('.opt.wrong,.fill-input.wrong').forEach(el => {
+      el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
+    });
+  }
+
+  // Level-up check
+  checkLevelUp(prevXp, STATE.xp);
+  document.getElementById('tb-xp').textContent = STATE.xp;
+  document.getElementById('tb-level').textContent = getLevel(STATE.xp).name;
+
+  // In daily practice, show skill badge when question skill changes
+  if (session.isDaily && q._skillName) {
+    const prev = session.qi > 0 ? session.questions[session.qi-1]?._skillName : null;
+    if (q._skillName !== prev) {
+      const badge = document.getElementById('skill-transition');
+      badge.textContent = findSubj(effectiveSkillId)?.icon + ' ' + q._skillName;
+      badge.classList.add('show');
+      setTimeout(()=>badge.classList.remove('show'), 2000);
+    }
+  }
+
+  // Daily goal
+  incrementDailyGoal();
+
+  // Show feedback
+  showFeedback(correct, q.explain);
+
+  // Button → next
+  btnCheck.textContent = session.qi + 1 < session.questions.length && session.hearts > 0 ? 'Siguiente →' : 'Ver resultado';
+  btnCheck.className = 'btn-check btn-next';
+  btnCheck.disabled = false;
+
+  // Check mastery (newly mastered this question)
+  if (!wasMastered && ss.pMastery >= 0.90) {
+    showMasteryToast();
+    playMastery();
+    setTimeout(()=>launchConfetti(1400), 200);
+  }
+
+  // Check badges
+  checkAndAwardBadges();
+  saveState(STATE);
+});
+
+function showFeedback(correct, explain) {
+  const fb = document.getElementById('q-feedback');
+  document.getElementById('fb-icon').textContent = correct ? '✅' : '❌';
+  document.getElementById('fb-title').textContent = correct ? '¡Correcto!' : 'Casi...';
+  document.getElementById('fb-explain').textContent = explain || '';
+  fb.className = 'feedback show ' + (correct ? 'fb-correct' : 'fb-wrong');
+  fb.style.display = 'block';
+}
+
+function showMasteryToast() {
+  const t = document.getElementById('mastery-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ═══════════════════════════════════════════════════════
+//  TEXT-TO-SPEECH (Web Speech API)
+// ═══════════════════════════════════════════════════════
+let audioOn = localStorage.getItem('ceiba.audio') !== 'off';
+
+function toggleAudio() {
+  audioOn = !audioOn;
+  localStorage.setItem('ceiba.audio', audioOn ? 'on' : 'off');
+  const btn = document.getElementById('btn-audio');
+  btn.style.opacity = audioOn ? '1' : '0.4';
+  btn.title = audioOn ? 'Audio encendido (click para apagar)' : 'Audio apagado (click para encender)';
+  if (audioOn) speakCurrentQuestion();
+  else if (window.speechSynthesis) speechSynthesis.cancel();
+}
+
+function speak(text) {
+  if (!audioOn || !window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  // Try Panama Spanish, fall back to any Spanish
+  const voices = speechSynthesis.getVoices();
+  const esVoice = voices.find(v => v.lang === 'es-PA') ||
+                  voices.find(v => v.lang === 'es-MX') ||
+                  voices.find(v => v.lang.startsWith('es'));
+  if (esVoice) utt.voice = esVoice;
+  utt.lang = 'es-PA';
+  utt.rate = 0.88;
+  utt.pitch = 1.05;
+  speechSynthesis.speak(utt);
+}
+
+function speakCurrentQuestion() {
+  const q = session.questions[session.qi];
+  if (!q) return;
+  let text = '';
+  if (q.context) text += q.context + '. ';
+  text += q.text;
+  if (q.type === 'mcq') text += ' Las opciones son: ' + q.opts.join(', ') + '.';
+  speak(text);
+}
+
+// Voices may load async — re-apply preference
+if (window.speechSynthesis) {
+  speechSynthesis.onvoiceschanged = () => {};
+  document.getElementById('btn-audio').style.opacity = audioOn ? '1' : '0.4';
+}
+
+// Back button
+document.getElementById('btn-back').addEventListener('click', () => {
+  if (confirm('¿Salir del ejercicio? Perderás el progreso de esta sesión.')) goHome();
+});
+
+// ═══════════════════════════════════════════════════════
+//  END SESSION / RESULTS
+// ═══════════════════════════════════════════════════════
+function endSession() {
+  // XP was already added per-question; just handle streak
+  const today = new Date().toDateString();
+  if (STATE.lastActivityDate !== today) {
+    if (STATE.lastActivityDate === new Date(Date.now() - 86400000).toDateString()) STATE.streak++;
+    else STATE.streak = 1;
+    STATE.lastActivityDate = today;
+  }
+
+  // SM-2 update on the primary skill (or each unique skill in daily practice)
+  const skillIds = [...new Set(session.questions.map(q => q._skillId || session.skillId).filter(Boolean))];
+  const score = Math.round((session.correctCount / session.questions.length) * 5);
+  skillIds.forEach(id => { STATE.skills[id] = SM2.update(getSkillState(id), score); });
+
+  checkAndAwardBadges();
+  saveState(STATE);
+
+  // Stars (1–3 based on accuracy)
+  const acc = session.correctCount / session.questions.length;
+  const stars = acc >= 0.90 ? 3 : acc >= 0.65 ? 2 : 1;
+  ['star1','star2','star3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.classList.remove('lit');
+    if (i < stars) setTimeout(() => el.classList.add('lit'), 300 + i * 200);
+  });
+
+  let icon, title, sub;
+  if (acc >= 0.90) { icon='🌟'; title='¡Excelente!'; sub='Rendimiento sobresaliente. ¡Sigue así!'; }
+  else if (acc >= 0.70) { icon='⭐'; title='¡Muy bien!'; sub='Buen progreso. Un poco más de práctica y lo dominas.'; }
+  else if (acc >= 0.50) { icon='💪'; title='¡Buen intento!'; sub='Sigue practicando, cada error te enseña algo nuevo.'; }
+  else { icon='🔄'; title='Necesitas practicar'; sub='Vuelve a esta habilidad pronto. ¡Tú puedes!'; }
+
+  document.getElementById('res-icon').textContent = icon;
+  document.getElementById('res-title').textContent = title;
+  document.getElementById('res-sub').textContent = sub;
+  document.getElementById('rs-correct').textContent = session.correctCount + '/' + session.questions.length;
+  document.getElementById('rs-xp').textContent = '+' + session.xpEarned;
+  document.getElementById('rs-streak').textContent = STATE.streak;
+  document.getElementById('tb-xp').textContent = STATE.xp;
+  document.getElementById('tb-streak').textContent = '🔥 ' + STATE.streak;
+
+  if (stars === 3) setTimeout(()=>launchConfetti(1600), 400);
+
+  const resInner = document.querySelector('.res-inner');
+  resInner.classList.remove('pop'); void resInner.offsetWidth; resInner.classList.add('pop');
+  showScreen('s-result');
+}
+
+document.getElementById('btn-home').addEventListener('click', goHome);
+
+// ═══════════════════════════════════════════════════════
+//  INIT — if returning user, skip welcome
+// ═══════════════════════════════════════════════════════
+if (STATE.name) {
+  goHome();
+}
+</script>
+</body>
+</html>

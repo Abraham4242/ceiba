@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CEIBA · Resumen Ejecutivo · La Compañía</title>
+<meta name="description" content="CEIBA — Resumen ejecutivo de la propuesta para MEDUCA, escuelas públicas y comunidades indígenas de Panamá.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23c89030'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-weight='400' fill='%23f7f0df'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f0df;--paper-2:#fcf6e6;--paper-3:#ede4ca;--paper-deep:#e3d9c2;
+  --ink:#14110c;--ink-2:#2a251d;--ink-3:#4b4337;--ink-faint:#8a7e6a;
+  --line:rgba(20,17,12,0.10);--line-2:rgba(20,17,12,0.18);--line-3:rgba(20,17,12,0.32);
+  --ochre:#c89030;--ochre-deep:#a17225;--ochre-soft:#e0b466;
+  --slate:#2c3e44;--slate-2:#3d5158;--forest:#1d3a2c;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#e5dcc4;font-family:var(--sans);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.app{padding:32px 24px 80px;display:flex;flex-direction:column;align-items:center;gap:24px}
+
+.page{width:8.5in;min-height:11in;height:11in;background:var(--paper);position:relative;padding:0.65in 0.85in 0.5in;display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 2px 4px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.10);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0 0.05  0 0 0 0.018 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.head{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:0.5px solid var(--line-2);margin-bottom:22px;flex-shrink:0}
+.head .mark{font-family:var(--serif);font-size:13px;letter-spacing:.18em;color:var(--ink-2);font-weight:500}
+.head .mark em{color:var(--ochre);font-style:normal;font-weight:600}
+.head .pgnum{font-family:var(--mono);font-size:10px;letter-spacing:.20em;color:var(--ink-faint);font-weight:500}
+.foot{margin-top:auto;padding-top:10px;border-top:0.5px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--ink-faint);text-transform:uppercase;flex-shrink:0}
+.foot .sec em{font-style:normal;color:var(--ink-3);font-weight:600}
+
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ochre-deep);font-weight:700;margin-bottom:10px}
+.title{font-family:var(--serif);font-weight:300;line-height:.98;letter-spacing:-.018em;color:var(--ink);margin-bottom:12px}
+.title em{font-style:italic;color:var(--ochre-deep);font-weight:400}
+.lede{font-family:var(--serif);font-style:italic;font-weight:300;color:var(--ink-2);line-height:1.45}
+
+.data-strip{display:grid;border:0.5px solid var(--line-2);border-radius:6px;background:var(--paper-2);margin:10px 0}
+.data-strip .cell{padding:10px 12px;border-right:0.5px solid var(--line-2)}
+.data-strip .cell:last-child{border-right:0}
+.data-strip .v{font-family:var(--serif);font-size:25px;font-weight:300;color:var(--ink);line-height:1;letter-spacing:-.01em}
+.data-strip .v em{font-style:italic;color:var(--ochre-deep);font-weight:400}
+.data-strip .l{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin-top:4px;line-height:1.3}
+
+.bigfig{font-family:var(--serif);font-weight:300;font-size:70px;line-height:.95;letter-spacing:-.025em;color:var(--ochre-deep);font-style:italic}
+.bigfig-l{font-family:var(--mono);font-size:9.5px;letter-spacing:.20em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-top:3px}
+
+.callout{background:var(--ink);color:var(--paper);padding:15px 22px;border-radius:7px;margin:10px 0;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ochre)}
+.callout .clabel{font-family:var(--mono);font-size:9px;letter-spacing:.22em;color:var(--ochre);text-transform:uppercase;font-weight:600;margin-bottom:7px}
+.callout p{font-family:var(--serif);font-size:13.5px;line-height:1.5;color:var(--paper);font-style:italic;font-weight:300}
+.callout p em{color:var(--ochre-soft);font-style:italic;font-weight:400}
+
+.callout-light{background:var(--paper-2);border:0.5px solid var(--line-2);padding:12px 16px;border-radius:6px;margin:10px 0}
+.callout-light .clabel{font-family:var(--mono);font-size:8.5px;letter-spacing:.20em;color:var(--ochre-deep);text-transform:uppercase;font-weight:700;margin-bottom:5px}
+.callout-light p{font-family:var(--sans);font-size:11.5px;line-height:1.5;color:var(--ink-2)}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.tile{border:0.5px solid var(--line-2);border-radius:6px;padding:12px 14px;background:var(--paper-2)}
+.tile .t-num{font-family:var(--mono);font-size:8.5px;letter-spacing:.20em;color:var(--ochre-deep);font-weight:700;margin-bottom:5px;text-transform:uppercase}
+.tile h5{font-family:var(--serif);font-size:14px;color:var(--ink);font-weight:500;margin-bottom:5px;line-height:1.2}
+.tile p{font-family:var(--sans);font-size:11px;color:var(--ink-3);line-height:1.5}
+
+.body p{font-family:var(--sans);font-size:12.5px;line-height:1.55;color:var(--ink-2);margin-bottom:8px}
+.body p strong{color:var(--ink);font-weight:600}
+.body p em{color:var(--ochre-deep);font-style:italic}
+
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.compare .col{padding:14px 16px;border-radius:6px;border:0.5px solid var(--line-2)}
+.compare .col.a{background:var(--paper-2)}
+.compare .col.b{background:var(--slate);color:var(--paper)}
+.compare .col .ttl{font-family:var(--mono);font-size:8.5px;letter-spacing:.20em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.compare .col.a .ttl{color:var(--ink-faint)}
+.compare .col.b .ttl{color:var(--ochre-soft)}
+.compare .col h4{font-family:var(--serif);font-size:16px;font-weight:400;margin-bottom:6px;line-height:1.15}
+.compare .col.a h4{color:var(--ink)}
+.compare .col.b h4{color:var(--paper)}
+.compare .col ul{list-style:none;margin-top:6px}
+.compare .col ul li{font-size:11px;line-height:1.45;padding-left:12px;position:relative;margin-bottom:3px}
+.compare .col.a ul li::before{content:'·';position:absolute;left:4px;color:var(--ochre-deep);font-weight:700}
+.compare .col.b ul li::before{content:'·';position:absolute;left:4px;color:var(--ochre)}
+.compare .col.a ul li{color:var(--ink-3)}
+.compare .col.b ul li{color:rgba(247,240,223,.78)}
+
+.peoples{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:10px 0}
+.peoples .ppl{display:grid;grid-template-columns:auto 1fr auto;gap:10px;padding:6px 11px;border:0.5px solid var(--line);border-radius:5px;background:var(--paper-2);align-items:center}
+.peoples .ppl .glyph{width:22px;height:22px;display:flex;align-items:center;justify-content:center;background:var(--slate);color:var(--ochre-soft);font-family:var(--serif);font-style:italic;font-size:12px;border-radius:50%}
+.peoples .ppl .nm{font-family:var(--serif);font-size:12.5px;color:var(--ink);font-weight:500}
+.peoples .ppl .nm small{display:block;font-family:var(--mono);font-size:8px;color:var(--ink-faint);font-weight:500;margin-top:1px;letter-spacing:.06em}
+.peoples .ppl .cnt{font-family:var(--mono);font-size:11.5px;color:var(--ochre-deep);font-weight:600;min-width:52px;text-align:right}
+
+.tbl{width:100%;border-collapse:collapse;margin:10px 0;font-family:var(--sans)}
+.tbl thead th{font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;padding:6px 8px;text-align:left;border-bottom:1px solid var(--line-3);background:var(--paper-3)}
+.tbl tbody td{padding:6.5px 8px;border-bottom:0.5px solid var(--line);font-size:11.5px;color:var(--ink-2);line-height:1.4}
+.tbl tbody tr:last-child td{border-bottom:0}
+.tbl tbody td strong{color:var(--ink);font-weight:600}
+.tbl tbody td.num{font-family:var(--mono);font-size:11px;text-align:right;letter-spacing:.02em}
+.tbl tbody tr.hi td{background:rgba(200,144,48,.08)}
+.tbl tbody tr.hi td strong{color:var(--ochre-deep)}
+
+.layer{display:grid;grid-template-columns:80px 1fr;gap:12px;padding:10px 14px;border:0.5px solid var(--line-2);border-radius:6px;background:var(--paper-2);align-items:start;margin-bottom:6px}
+.layer .ll{font-family:var(--mono);font-size:8.5px;letter-spacing:.20em;color:var(--ochre-deep);font-weight:700;text-transform:uppercase;line-height:1.3}
+.layer .ll em{display:block;font-style:normal;font-family:var(--serif);font-size:19px;color:var(--ink);font-weight:300;margin-top:3px;letter-spacing:-.01em}
+.layer .lc h5{font-family:var(--serif);font-size:13.5px;color:var(--ink);font-weight:500;margin-bottom:3px;line-height:1.25}
+.layer .lc p{font-family:var(--sans);font-size:11px;color:var(--ink-3);line-height:1.45}
+
+/* COVER */
+.cover{padding:0.9in 0.95in;display:flex;flex-direction:column;justify-content:space-between}
+.cover .top-mark{display:flex;justify-content:space-between;align-items:center}
+.cover .top-mark .stamp{font-family:var(--mono);font-size:9.5px;letter-spacing:.28em;color:var(--ink-faint);text-transform:uppercase}
+.cover .top-mark .stamp em{color:var(--ochre-deep);font-style:normal;font-weight:600}
+.cover .center{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0}
+.cover .word{font-family:var(--serif);font-size:148px;font-weight:300;letter-spacing:-.04em;color:var(--ink);line-height:.85;margin-bottom:20px}
+.cover .word em{font-style:italic;color:var(--ochre-deep);font-weight:400}
+.cover .tag{font-family:var(--serif);font-style:italic;font-size:24px;color:var(--ink-2);max-width:5.5in;line-height:1.3;font-weight:300;margin-bottom:38px}
+.cover .desc{font-family:var(--sans);font-size:13.5px;color:var(--ink-3);max-width:5.2in;line-height:1.6}
+.cover .desc strong{color:var(--ink);font-weight:600}
+.cover .bot{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;padding-top:24px;border-top:0.5px solid var(--line-2)}
+.cover .bot .k{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin-bottom:6px}
+.cover .bot .v{font-family:var(--serif);font-size:15px;color:var(--ink);font-weight:400}
+.cover .bot .v em{font-style:italic;color:var(--ochre-deep)}
+.tree-orn{position:absolute;right:-1in;top:0.8in;width:4.5in;height:7.5in;opacity:.18;pointer-events:none}
+
+/* LANG / PRINT BARS */
+.lang-bar{position:fixed;top:18px;right:24px;display:flex;gap:6px;background:var(--paper);border:0.5px solid var(--line-2);border-radius:6px;padding:5px;z-index:50;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.lang-bar button{padding:6px 11px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;background:transparent;border:0;color:var(--ink-faint);cursor:pointer;font-weight:600;border-radius:4px}
+.lang-bar button.act{background:var(--ink);color:var(--paper)}
+.print-bar{position:fixed;top:18px;left:24px;background:var(--ochre);color:var(--ink);border:0;padding:9px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;font-weight:700;cursor:pointer;border-radius:6px;z-index:50;box-shadow:0 4px 16px rgba(0,0,0,.12);text-transform:uppercase}
+.print-bar:hover{background:var(--ochre-deep);color:var(--paper)}
+
+[data-en]:not([data-es]){display:none}
+html[lang="en"] [data-es]:not([data-en]){display:none}
+html[lang="en"] [data-en]:not([data-es]){display:inline}
+
+@media print{
+  html,body{background:white}
+  .app{padding:0;gap:0}
+  .lang-bar,.print-bar{display:none !important}
+  .page{box-shadow:none;page-break-after:always;page-break-inside:avoid;margin:0}
+  .page:last-child{page-break-after:auto}
+  @page{size:letter portrait;margin:0}
+}
+</style>
+</head>
+<body>
+
+<button class="print-bar no-print" onclick="window.print()" data-es="IMPRIMIR RESUMEN" data-en="PRINT SUMMARY">IMPRIMIR RESUMEN</button>
+<div class="lang-bar no-print">
+  <button class="act" data-lang="es">ES</button>
+  <button data-lang="en">EN</button>
+</div>
+
+<div class="app">
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 01 · COVER                                                  -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<section class="page cover">
+  <svg class="tree-orn" viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#14110c" stroke-width="1.2" stroke-linecap="round">
+      <path d="M100 320 L100 180"/>
+      <path d="M100 240 L60 200 M100 240 L140 200"/>
+      <path d="M100 200 L55 150 M100 200 L145 150 M100 200 L75 130 M100 200 L125 130"/>
+      <path d="M100 170 L45 110 M100 170 L155 110 M100 170 L70 80 M100 170 L130 80 M100 170 L100 60"/>
+      <circle cx="45" cy="110" r="3" fill="#c89030" stroke="none"/>
+      <circle cx="155" cy="110" r="3" fill="#c89030" stroke="none"/>
+      <circle cx="70" cy="80" r="3" fill="#c89030" stroke="none"/>
+      <circle cx="130" cy="80" r="3" fill="#c89030" stroke="none"/>
+      <circle cx="100" cy="60" r="3" fill="#c89030" stroke="none"/>
+    </g>
+  </svg>
+
+  <div class="top-mark">
+    <div class="stamp"><em>LA COMPAÑÍA</em> · MMXXVI</div>
+    <div class="stamp" data-es="RESUMEN EJECUTIVO · 7 PÁGINAS" data-en="EXECUTIVE SUMMARY · 7 PAGES">RESUMEN EJECUTIVO · 7 PÁGINAS</div>
+  </div>
+
+  <div class="center">
+    <div style="font-family:var(--mono);font-size:11px;letter-spacing:.30em;color:var(--ochre-deep);text-transform:uppercase;font-weight:700;margin-bottom:36px">
+      <span data-es="PROPUESTA EDUCATIVA · MEDUCA + COMUNIDADES INDÍGENAS" data-en="EDUCATION PROPOSAL · MEDUCA + INDIGENOUS COMMUNITIES">PROPUESTA EDUCATIVA · MEDUCA + COMUNIDADES INDÍGENAS</span>
+    </div>
+    <div class="word"><em>C</em>eiba</div>
+    <div class="tag" data-es="Tutoría 1-a-1 para cada niño panameño — en su propia lengua, sin internet, financiado sin costo para el Estado en su fase piloto." data-en="1-to-1 tutoring for every Panamanian child — in their own language, without internet, fully funded at no cost to the State in the pilot phase.">Tutoría 1-a-1 para cada niño panameño — en su propia lengua, sin internet, financiado sin costo para el Estado en su fase piloto.</div>
+    <div class="desc" data-es-html="Este resumen presenta el <strong>diagnóstico breve</strong>, la <strong>arquitectura técnica</strong>, el <strong>plan de maestros originarios</strong>, y el <strong>piloto de 90 días</strong> en 5 escuelas de Boquete y la Comarca Ngäbe-Buglé. La versión completa (15 páginas) está disponible bajo solicitud." data-en-html="This summary presents the <strong>brief diagnosis</strong>, the <strong>technical architecture</strong>, the <strong>originario teachers plan</strong>, and the <strong>90-day pilot</strong> across 5 schools in Boquete and the Ngäbe-Buglé Comarca. Full version (15 pages) available on request.">Este resumen presenta el <strong>diagnóstico breve</strong>, la <strong>arquitectura técnica</strong>, el <strong>plan de maestros originarios</strong>, y el <strong>piloto de 90 días</strong> en 5 escuelas de Boquete y la Comarca Ngäbe-Buglé. La versión completa (15 páginas) está disponible bajo solicitud.</div>
+  </div>
+
+  <div class="bot">
+    <div><div class="k" data-es="PRESENTADO POR" data-en="PRESENTED BY">PRESENTADO POR</div><div class="v"><em>La Compañía</em> · Boquete</div></div>
+    <div><div class="k" data-es="AUTOR" data-en="AUTHOR">AUTOR</div><div class="v">Abraham Eid</div></div>
+    <div><div class="k" data-es="VERSIÓN" data-en="VERSION">VERSIÓN</div><div class="v">v1.0 · <em>MMXXVI</em></div></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 02 · EL PROBLEMA                                            -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<section class="page">
+  <div class="head">
+    <div class="mark"><em>C</em>EIBA</div>
+    <div class="pgnum">02 / 07</div>
+  </div>
+
+  <div class="eyebrow" data-es="02 · EL PROBLEMA" data-en="02 · THE PROBLEM">02 · EL PROBLEMA</div>
+  <h1 class="title" style="font-size:38px" data-es-html="Tres crisis <em>simultáneas</em>." data-en-html="Three crises <em>at once</em>.">Tres crisis <em>simultáneas</em>.</h1>
+  <p class="lede" style="font-size:13px;max-width:6.2in;margin-bottom:18px" data-es="El sistema educativo panameño enfrenta tres problemas que se refuerzan entre sí. Ningún programa anterior los ha atacado a los tres de manera coordinada." data-en="Panama's education system faces three mutually reinforcing problems. No prior program has attacked all three in coordination.">El sistema educativo panameño enfrenta tres problemas que se refuerzan entre sí. Ningún programa anterior los ha atacado a los tres de manera coordinada.</p>
+
+  <div class="g3">
+    <div class="tile" style="background:var(--slate);color:var(--paper);border-color:transparent">
+      <div class="t-num" style="color:var(--ochre-soft)" data-es="CRISIS 1 · PROPORCIÓN" data-en="CRISIS 1 · RATIO">CRISIS 1 · PROPORCIÓN</div>
+      <h5 style="color:var(--paper);font-size:18px"><em style="color:var(--ochre-soft);font-style:italic">60 – 100</em> <span data-es="niños por maestro" data-en="kids per teacher">niños por maestro</span></h5>
+      <p style="color:rgba(247,240,223,.78)" data-es="En el aula rural típica, una sola maestra atiende hasta 6 grados a la vez. 38% de las escuelas públicas son multigrado. 1,245 son unidocentes." data-en="In the typical rural classroom, one teacher serves up to 6 grades at once. 38% of public schools are multigrade. 1,245 are single-teacher.">En el aula rural típica, una sola maestra atiende hasta 6 grados a la vez. 38% de las escuelas públicas son multigrado. 1,245 son unidocentes.</p>
+    </div>
+    <div class="tile" style="background:var(--slate);color:var(--paper);border-color:transparent">
+      <div class="t-num" style="color:var(--ochre-soft)" data-es="CRISIS 2 · LENGUA" data-en="CRISIS 2 · LANGUAGE">CRISIS 2 · LENGUA</div>
+      <h5 style="color:var(--paper);font-size:18px"><em style="color:var(--ochre-soft);font-style:italic">80%</em> <span data-es="de niños indígenas" data-en="of indigenous kids">de niños indígenas</span></h5>
+      <p style="color:rgba(247,240,223,.78)" data-es="entran a primero hablando su lengua materna. La escuela enseña en español. Sólo ~150 maestros EIB existen para 140,000 estudiantes indígenas. La brecha es 1,350." data-en="enter first grade speaking their mother tongue. The school teaches in Spanish. Only ~150 EIB teachers exist for 140,000 indigenous students. The gap is 1,350.">entran a primero hablando su lengua materna. La escuela enseña en español. Sólo ~150 maestros EIB existen para 140,000 estudiantes indígenas. La brecha es 1,350.</p>
+    </div>
+    <div class="tile" style="background:var(--slate);color:var(--paper);border-color:transparent">
+      <div class="t-num" style="color:var(--ochre-soft)" data-es="CRISIS 3 · DESERCIÓN" data-en="CRISIS 3 · DROPOUT">CRISIS 3 · DESERCIÓN</div>
+      <h5 style="color:var(--paper);font-size:18px"><em style="color:var(--ochre-soft);font-style:italic">50%</em> <span data-es="no termina primaria" data-en="never finish primary">no termina primaria</span></h5>
+      <p style="color:rgba(247,240,223,.78)" data-es="en la Comarca Ngäbe-Buglé. Y para los que terminan, Panamá quedó en el puesto 76 de 81 países en PISA 2022 — matemática, lectura, ciencias." data-en="in the Ngäbe-Buglé Comarca. For those who do finish, Panama ranked 76 of 81 countries in PISA 2022 — math, reading, science.">en la Comarca Ngäbe-Buglé. Y para los que terminan, Panamá quedó en el puesto 76 de 81 países en PISA 2022 — matemática, lectura, ciencias.</p>
+    </div>
+  </div>
+
+  <div class="kicker" style="font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--ink-faint);font-weight:600;text-transform:uppercase;margin-top:6px;margin-bottom:6px" data-es="LA RELACIÓN ENTRE LAS TRES" data-en="HOW THE THREE COMPOUND">LA RELACIÓN ENTRE LAS TRES</div>
+  <p style="font-family:var(--serif);font-size:15.5px;color:var(--ink-2);line-height:1.55;font-weight:300;margin-bottom:14px" data-es-html="Un niño Ngäbe llega a primero hablando una lengua que el sistema no usa. Lo evalúan en español y lo marcan de “bajo rendimiento.” Comparte aula con 80 niños más de seis grados distintos. La maestra no tiene tiempo de detectar que el problema es lingüístico, no cognitivo. A los diez años, el niño se queda fuera del sistema. <em>Las tres crisis no son tres problemas — son uno solo, en tres niveles.</em>" data-en-html="A Ngäbe child arrives at first grade speaking a language the system doesn't use. They are evaluated in Spanish and flagged as “underperforming.” They share a room with 80 other children across six grades. The teacher has no time to detect that the problem is linguistic, not cognitive. By age ten, the child leaves the system. <em>The three crises aren't three problems — they are one, on three levels.</em>">Un niño Ngäbe llega a primero hablando una lengua que el sistema no usa. Lo evalúan en español y lo marcan de "bajo rendimiento." Comparte aula con 80 niños más de seis grados distintos. La maestra no tiene tiempo de detectar que el problema es lingüístico, no cognitivo. A los diez años, el niño se queda fuera del sistema. <em>Las tres crisis no son tres problemas — son uno solo, en tres niveles.</em></p>
+
+  <div class="callout">
+    <div class="clabel" data-es="LO QUE CAMBIÓ EN 2024 – 2026" data-en="WHAT CHANGED IN 2024 – 2026">LO QUE CAMBIÓ EN 2024 – 2026</div>
+    <p data-es-html="Hasta hace dos años la única solución era construir escuelas y contratar maestros — generacional. En 2026 hay modelos de IA capaces de <em>diseñar el material de cada niño, en su propia lengua, calibrado a su nivel exacto</em> — y entregarlo al maestro en formato imprimible. Panamá puede ser el primer país de LATAM en estructurarlo." data-en-html="Until two years ago the only solution was to build schools and hire teachers — generational. In 2026, AI models can <em>design each child's material, in their own language, calibrated to their exact level</em> — and deliver it to the teacher in printable form. Panama can be the first LATAM country to structure it.">Hasta hace dos años la única solución era construir escuelas y contratar maestros — generacional. En 2026 hay modelos de IA capaces de <em>diseñar el material de cada niño, en su propia lengua, calibrado a su nivel exacto</em> — y entregarlo al maestro en formato imprimible. Panamá puede ser el primer país de LATAM en estructurarlo.</p>
+  </div>
+
+  <div class="foot">
+    <div class="sec"><em data-es="PROBLEMA · 02" data-en="PROBLEM · 02">PROBLEMA · 02</em></div>
+    <div>LA COMPAÑÍA · MMXXVI</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 03 · PANAMÁ INDÍGENA + NÚMEROS                              -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<section class="page">
+  <div class="head">
+    <div class="mark"><em>C</em>EIBA</div>
+    <div class="pgnum">03 / 07</div>
+  </div>
+
+  <div class="eyebrow" data-es="03 · PANAMÁ INDÍGENA · NÚMEROS" data-en="03 · INDIGENOUS PANAMA · NUMBERS">03 · PANAMÁ INDÍGENA · NÚMEROS</div>
+  <h1 class="title" style="font-size:34px" data-es-html="Siete pueblos. <em>Siete</em> lenguas. <em>Cero</em> currículo." data-en-html="Seven peoples. <em>Seven</em> languages. <em>Zero</em> curriculum.">Siete pueblos. <em>Siete</em> lenguas. <em>Cero</em> currículo.</h1>
+  <p class="lede" style="font-size:13px;max-width:6.2in;margin-bottom:14px" data-es="Panamá tiene siete pueblos originarios — ~417,000 personas, 12.3% de la población nacional — distribuidos en cinco comarcas y dos territorios colectivos. El currículo nacional MEDUCA tiene material en español, parcialmente en inglés, y prácticamente nada en las lenguas originarias." data-en="Panama has seven originary peoples — ~417,000 people, 12.3% of the national population — across five comarcas and two collective territories. The MEDUCA national curriculum has material in Spanish, partially in English, and almost nothing in the originary languages.">Panamá tiene siete pueblos originarios — ~417,000 personas, 12.3% de la población nacional — distribuidos en cinco comarcas y dos territorios colectivos. El currículo nacional MEDUCA tiene material en español, parcialmente en inglés, y prácticamente nada en las lenguas originarias.</p>
+
+  <div class="peoples">
+    <div class="ppl"><div class="glyph">N</div><div class="nm">Ngäbe<small>Ngäbere · 260,058</small></div><div class="cnt">62.3%</div></div>
+    <div class="ppl"><div class="glyph">G</div><div class="nm">Guna<small>Dulegaya · 80,526</small></div><div class="cnt">19.3%</div></div>
+    <div class="ppl"><div class="glyph">E</div><div class="nm">Emberá<small>Emberá Bedea · 31,284</small></div><div class="cnt">7.5%</div></div>
+    <div class="ppl"><div class="glyph">B</div><div class="nm">Buglé<small>Buglere · 24,912</small></div><div class="cnt">6.0%</div></div>
+    <div class="ppl"><div class="glyph">W</div><div class="nm">Wounaan<small>Wounaan Meu · 7,279</small></div><div class="cnt">1.7%</div></div>
+    <div class="ppl"><div class="glyph">N</div><div class="nm">Naso<small>Naso Tjërdi · 4,046</small></div><div class="cnt">1.0%</div></div>
+    <div class="ppl"><div class="glyph">B</div><div class="nm">Bri-Bri<small>Bri-Bri · 1,068</small></div><div class="cnt">0.3%</div></div>
+    <div class="ppl"><div class="glyph">B</div><div class="nm">Bokota<small>Bokota · 207</small></div><div class="cnt">0.05%</div></div>
+  </div>
+
+  <div class="data-strip" style="grid-template-columns:repeat(4,1fr)">
+    <div class="cell"><div class="v"><em>900K</em></div><div class="l" data-es="ESTUDIANTES NACIONAL" data-en="NATIONAL STUDENTS">ESTUDIANTES NACIONAL</div></div>
+    <div class="cell"><div class="v"><em>140K</em></div><div class="l" data-es="ESTUDIANTES INDÍGENAS" data-en="INDIGENOUS STUDENTS">ESTUDIANTES INDÍGENAS</div></div>
+    <div class="cell"><div class="v"><em>755K</em></div><div class="l" data-es="ESCUELA PÚBLICA · 84%" data-en="PUBLIC SCHOOL · 84%">ESCUELA PÚBLICA · 84%</div></div>
+    <div class="cell"><div class="v"><em>145K</em></div><div class="l" data-es="ESCUELA PRIVADA · 16%" data-en="PRIVATE SCHOOL · 16%">ESCUELA PRIVADA · 16%</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="tile">
+      <div class="t-num" data-es="GASTO POR NIÑO" data-en="SPEND PER CHILD">GASTO POR NIÑO</div>
+      <h5 style="font-size:24px;font-family:var(--serif);font-weight:300"><em style="color:var(--ochre-deep);font-style:italic">$1,200</em> <span style="color:var(--ink-3);font-size:14px" data-es="vs $3K – $18K" data-en="vs $3K – $18K">vs $3K – $18K</span></h5>
+      <p data-es="El Estado gasta $1,200/año por niño en escuela pública. La privada cobra $3,000 – $18,000 a las familias. Ratio: hasta 15× más recurso para el 16%." data-en="The State spends $1,200/year per public school child. Private charges $3,000 – $18,000 from families. Ratio: up to 15× more resource for the 16%.">El Estado gasta $1,200/año por niño en escuela pública. La privada cobra $3,000 – $18,000 a las familias. Ratio: hasta 15× más recurso para el 16%.</p>
+    </div>
+    <div class="tile">
+      <div class="t-num" data-es="INFRAESTRUCTURA RURAL" data-en="RURAL INFRASTRUCTURE">INFRAESTRUCTURA RURAL</div>
+      <h5 style="font-size:24px;font-family:var(--serif);font-weight:300"><em style="color:var(--ochre-deep);font-style:italic">91%</em> <span style="color:var(--ink-3);font-size:14px" data-es="sin internet" data-en="without internet">sin internet</span></h5>
+      <p data-es="91% sin internet · 72% sin energía estable · 60% sin agua potable · 88% sin biblioteca ni labs. Por eso Fase 1 de CEIBA solo necesita el celular del maestro y la impresora de la dirección." data-en="91% no internet · 72% no stable power · 60% no potable water · 88% no library or labs. That's why CEIBA Phase 1 needs only the teacher's phone and the office printer.">91% sin internet · 72% sin energía estable · 60% sin agua potable · 88% sin biblioteca ni labs. Por eso Fase 1 de CEIBA solo necesita el celular del maestro y la impresora de la dirección.</p>
+    </div>
+  </div>
+
+  <div class="callout-light">
+    <div class="clabel" data-es="LO QUE ESTOS NÚMEROS HACEN POSIBLE" data-en="WHAT THESE NUMBERS MAKE POSSIBLE">LO QUE ESTOS NÚMEROS HACEN POSIBLE</div>
+    <p data-es-html="En Fase 1 CEIBA <strong>no requiere comprar hardware nuevo</strong>: corre desde un sitio web al que el maestro entra con su celular, y la hoja del niño se imprime en la dirección de la escuela. <strong>Costo marginal por niño: papel + tinta.</strong> El cambio que hace falta no es presupuestal — es estructural: un currículo entregado 1-a-1, en la lengua del niño, sin depender de la presencia perfecta de un maestro." data-en-html="In Phase 1 CEIBA <strong>requires no new hardware</strong>: it runs from a website the teacher opens on her phone, and the child's sheet prints at the school office. <strong>Marginal cost per child: paper + ink.</strong> The change required isn't budgetary — it's structural: a curriculum delivered 1-to-1, in the child's language, without depending on a teacher's perfect attendance.">En Fase 1 CEIBA <strong>no requiere comprar hardware nuevo</strong>: corre desde un sitio web al que el maestro entra con su celular, y la hoja del niño se imprime en la dirección de la escuela. <strong>Costo marginal por niño: papel + tinta.</strong> El cambio que hace falta no es presupuestal — es estructural: un currículo entregado 1-a-1, en la lengua del niño, sin depender de la presencia perfecta de un maestro.</p>
+  </div>
+
+  <div class="foot">
+    <div class="sec"><em data-es="NÚMEROS · 03" data-en="NUMBERS · 03">NÚMEROS · 03</em></div>
+    <div>LA COMPAÑÍA · MMXXVI</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 04 · EL SISTEMA CEIBA · ARQUITECTURA + UX                   -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<section class="page">
+  <div class="head">
+    <div class="mark"><em>C</em>EIBA</div>
+    <div class="pgnum">04 / 07</div>
+  </div>
+
+  <div class="eyebrow" data-es="04 · EL SISTEMA CEIBA · FASE 1" data-en="04 · THE CEIBA SYSTEM · PHASE 1">04 · EL SISTEMA CEIBA · FASE 1</div>
+  <h1 class="title" style="font-size:34px" data-es-html="Un sitio web. <em>Una</em> impresora. Cero hardware nuevo." data-en-html="One website. <em>One</em> printer. Zero new hardware.">Un sitio web. <em>Una</em> impresora. Cero hardware nuevo.</h1>
+  <p class="lede" style="font-size:13px;max-width:6.2in;margin-bottom:14px" data-es="Fase 1 no requiere tabletas, ni cajas, ni paneles. El maestro entra al sitio CEIBA desde su celular o el computador de la dirección, ve su clase, y con un click imprime una hoja calibrada para cada niño — distinta por nivel, distinta por lengua. El niño solo necesita papel, lápiz y maestro." data-en="Phase 1 requires no tablets, no boxes, no panels. The teacher opens the CEIBA site from her phone or the principal's computer, sees the class, and with one click prints a calibrated sheet for every child — different by level, different by language. The child needs only paper, pencil, and teacher.">Fase 1 no requiere tabletas, ni cajas, ni paneles. El maestro entra al sitio CEIBA desde su celular o el computador de la dirección, ve su clase, y con un click imprime una hoja calibrada para cada niño — distinta por nivel, distinta por lengua. El niño solo necesita papel, lápiz y maestro.</p>
+
+  <div class="layer">
+    <div class="ll" data-es="CAPA 01 · ESTUDIO" data-en="LAYER 01 · STUDIO">CAPA 01<em data-es="Sitio web" data-en="Website">Sitio web</em></div>
+    <div class="lc">
+      <h5 data-es="aula.escuela.pa — el maestro abre el sitio desde cualquier dispositivo con internet, sin app que instalar." data-en="aula.escuela.pa — teacher opens the site from any internet-connected device, no app to install.">aula.escuela.pa — el maestro abre el sitio desde cualquier dispositivo con internet, sin app que instalar.</h5>
+      <p data-es="Funciona en teléfono con datos móviles. Vista de la clase con lista de estudiantes, perfil por niño, alertas, plan semanal sugerido." data-en="Works on a phone with mobile data. Class view with student roster, per-child profile, alerts, suggested weekly plan.">Funciona en teléfono con datos móviles. Vista de la clase con lista de estudiantes, perfil por niño, alertas, plan semanal sugerido.</p>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="ll" data-es="CAPA 02 · HOJA" data-en="LAYER 02 · SHEET">CAPA 02<em data-es="Generador" data-en="Engine">Generador</em></div>
+    <div class="lc">
+      <h5 data-es="“Generar hoja” → PDF de 1–2 páginas, personalizado para ese niño en ese día. Imprime en la dirección y entrega en clase." data-en="“Generate sheet” → 1–2 page PDF, personalized for that child on that day. Print in the office and hand out in class.">"Generar hoja" → PDF de 1–2 páginas, personalizado para ese niño en ese día. Imprime en la dirección y entrega en clase.</h5>
+      <p data-es="Ejercicios calibrados al nivel del niño. Bilingüe lengua materna ↔ español. Plantillas que respetan el currículo mínimo MEDUCA." data-en="Exercises calibrated to the child's level. Bilingual mother tongue ↔ Spanish. Templates that respect MEDUCA minimum curriculum.">Ejercicios calibrados al nivel del niño. Bilingüe lengua materna ↔ español. Plantillas que respetan el currículo mínimo MEDUCA.</p>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="ll" data-es="CAPA 03 · BUCLE" data-en="LAYER 03 · LOOP">CAPA 03<em data-es="Progreso" data-en="Progress">Progreso</em></div>
+    <div class="lc">
+      <h5 data-es="Al final del día el maestro marca cómo le fue a cada niño — 3 toques: bien · regular · le costó. CEIBA ajusta la hoja de mañana." data-en="At day's end the teacher marks how each child did — 3 taps: good · so-so · struggled. CEIBA adjusts tomorrow's sheet.">Al final del día el maestro marca cómo le fue a cada niño — 3 toques: bien · regular · le costó. CEIBA ajusta la hoja de mañana.</h5>
+      <p data-es="Alerta si un niño se atasca 3 días. Reportes agregados para MEDUCA, sin datos personales del niño." data-en="Alerts if a child gets stuck for 3 days. Aggregated reports for MEDUCA, no per-child personal data.">Alerta si un niño se atasca 3 días. Reportes agregados para MEDUCA, sin datos personales del niño.</p>
+    </div>
+  </div>
+
+  <div class="kicker" style="font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--ink-faint);font-weight:600;text-transform:uppercase;margin-top:8px;margin-bottom:8px" data-es="EL CICLO DIARIO DEL MAESTRO" data-en="THE TEACHER'S DAILY CYCLE">EL CICLO DIARIO DEL MAESTRO</div>
+  <div class="g3">
+    <div class="tile"><div class="t-num">06:30</div><h5 style="font-size:14px" data-es="Generar (10 min)" data-en="Generate (10 min)">Generar (10 min)</h5><p data-es="Abre CEIBA en su celular en casa o en el bus. Genera las hojas del día para los 28 niños. PDF descargado." data-en="Opens CEIBA on her phone at home or on the bus. Generates today's sheets for all 28 kids. PDF downloaded.">Abre CEIBA en su celular en casa o en el bus. Genera las hojas del día para los 28 niños. PDF descargado.</p></div>
+    <div class="tile"><div class="t-num">07:15</div><h5 style="font-size:14px" data-es="Imprimir (15 min)" data-en="Print (15 min)">Imprimir (15 min)</h5><p data-es="En la dirección de la escuela conecta el celular a la impresora. Hojas frescas, una por niño. Entrega al entrar al aula." data-en="At the school office she connects her phone to the printer. Fresh sheets, one per child. Hands them out at class start.">En la dirección de la escuela conecta el celular a la impresora. Hojas frescas, una por niño. Entrega al entrar al aula.</p></div>
+    <div class="tile"><div class="t-num">14:00</div><h5 style="font-size:14px" data-es="Reportar (3 min)" data-en="Report (3 min)">Reportar (3 min)</h5><p data-es="3 toques por niño en CEIBA: bien · regular · le costó. El sistema ajusta la hoja de mañana. Lista la clase." data-en="3 taps per child in CEIBA: good · so-so · struggled. The system adjusts tomorrow's sheet. Class is set.">3 toques por niño en CEIBA: bien · regular · le costó. El sistema ajusta la hoja de mañana. Lista la clase.</p></div>
+  </div>
+
+  <div class="foot">
+    <div class="sec"><em data-es="SISTEMA · 04" data-en="SYSTEM · 04">SISTEMA · 04</em></div>
+    <div>LA COMPAÑÍA · MMXXVI</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 05 · MAESTROS ORIGINARIOS                                   -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<section class="page">
+  <div class="head">
+    <div class="mark"><em>C</em>EIBA</div>
+    <div class="pgnum">05 / 07</div>
+  </div>
+
+  <div class="eyebrow" data-es="05 · MAESTROS ORIGINARIOS" data-en="05 · ORIGINARIO TEACHERS">05 · MAESTROS ORIGINARIOS</div>
+  <h1 class="title" style="font-size:34px" data-es-html="Maestros <em>de la comunidad</em>, formados <em>desde dentro</em>." data-en-html="Teachers <em>from the community</em>, trained <em>from within</em>.">Maestros <em>de la comunidad</em>, formados <em>desde dentro</em>.</h1>
+  <p class="lede" style="font-size:13px;max-width:6.2in;margin-bottom:14px" data-es="CEIBA es una herramienta. Lo que la sostiene a largo plazo es un cuadro humano nuevo: maestros formados desde la propia comunidad indígena, que enseñan en su lengua, que se quedan, que el congreso general aprueba antes de empezar." data-en="CEIBA is a tool. What sustains it long-term is a new human cadre: teachers trained from inside the indigenous community itself, teaching in their language, staying put, endorsed by the general congress before they begin.">CEIBA es una herramienta. Lo que la sostiene a largo plazo es un cuadro humano nuevo: maestros formados desde la propia comunidad indígena, que enseñan en su lengua, que se quedan, que el congreso general aprueba antes de empezar.</p>
+
+  <table class="tbl">
+    <thead>
+      <tr><th data-es="FASE" data-en="PHASE">FASE</th><th data-es="DURACIÓN" data-en="DURATION">DURACIÓN</th><th data-es="QUÉ PASA" data-en="WHAT HAPPENS">QUÉ PASA</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong data-es="01 · Identificación" data-en="01 · Identification">01 · Identificación</strong></td><td data-es="Mes 0" data-en="Month 0">Mes 0</td><td data-es="Cacique general + congresos locales nominan candidatos de la comunidad. Bachilleres, líderes juveniles." data-en="General cacique + local congresses nominate community candidates. High school grads, youth leaders.">Cacique general + congresos locales nominan candidatos de la comunidad. Bachilleres, líderes juveniles.</td></tr>
+      <tr><td><strong data-es="02 · Pedagogía base" data-en="02 · Foundational pedagogy">02 · Pedagogía base</strong></td><td data-es="Meses 1 – 8" data-en="Months 1 – 8">Meses 1 – 8</td><td data-es="Currículo intensivo con UNACHI + Normal Juan D. Arosemena. Didáctica, multigrado, español como L2." data-en="Intensive curriculum with UNACHI + Juan D. Arosemena Normal. Didactics, multigrade, Spanish as L2.">Currículo intensivo con UNACHI + Normal Juan D. Arosemena. Didáctica, multigrado, español como L2.</td></tr>
+      <tr><td><strong data-es="03 · Práctica supervisada" data-en="03 · Supervised practice">03 · Práctica supervisada</strong></td><td data-es="Meses 9 – 18" data-en="Months 9 – 18">Meses 9 – 18</td><td data-es="Co-docencia en escuela de la propia comarca con maestro MEDUCA senior. Las hojas CEIBA ya se imprimen ahí." data-en="Co-teaching in the same comarca alongside a senior MEDUCA teacher. CEIBA sheets already printed there.">Co-docencia en escuela de la propia comarca con maestro MEDUCA senior. Las hojas CEIBA ya se imprimen ahí.</td></tr>
+      <tr><td><strong data-es="04 · Acreditación" data-en="04 · Accreditation">04 · Acreditación</strong></td><td data-es="Meses 19 – 24" data-en="Months 19 – 24">Meses 19 – 24</td><td data-es="Examen MEDUCA, certificación bilingüe, asignación a escuela de la comunidad. Acceso al sitio CEIBA para generar las hojas del día." data-en="MEDUCA exam, bilingual certification, placement in community school. Access to CEIBA site to generate daily sheets.">Examen MEDUCA, certificación bilingüe, asignación a escuela de la comunidad. Acceso al sitio CEIBA para generar las hojas del día.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="data-strip" style="grid-template-columns:repeat(3,1fr)">
+    <div class="cell"><div class="v"><em>100</em></div><div class="l" data-es="MAESTROS · COHORTE 1" data-en="TEACHERS · COHORT 1">MAESTROS · COHORTE 1</div></div>
+    <div class="cell"><div class="v"><em>5</em></div><div class="l" data-es="LENGUAS AÑO 1" data-en="LANGUAGES YR 1">LENGUAS AÑO 1</div></div>
+    <div class="cell"><div class="v"><em>1,500</em></div><div class="l" data-es="META · COBERTURA TOTAL" data-en="TARGET · FULL COVERAGE">META · COBERTURA TOTAL</div></div>
+  </div>
+
+  <div class="callout-light">
+    <div class="clabel" data-es="POR QUÉ FUNCIONARÁ DONDE OTROS NO" data-en="WHY THIS WILL WORK WHERE OTHERS DIDN'T">POR QUÉ FUNCIONARÁ DONDE OTROS NO</div>
+    <p data-es-html="Programas previos fallaron en dos ejes: trajeron maestros de afuera que no se quedaron, u operaron sin aval de los congresos. CEIBA invierte los dos: <strong>candidatos nominados por la propia comunidad</strong>, con <strong>aval previo del cacique general</strong>. La estructura de financiamiento (becas, MEDUCA, universidades, contraparte internacional) se co-define en la mesa de cierre del piloto." data-en-html="Prior programs failed two ways: outside teachers who didn't stay, or no congress approval. CEIBA inverts both: <strong>community-nominated candidates</strong>, with <strong>prior cacique endorsement</strong>. Funding structure (scholarships, MEDUCA, universities, international counterpart) is co-defined at the pilot closing table.">Programas previos fallaron en dos ejes: trajeron maestros de afuera que no se quedaron, u operaron sin aval de los congresos. CEIBA invierte los dos: <strong>candidatos nominados por la propia comunidad</strong>, con <strong>aval previo del cacique general</strong>. La estructura de financiamiento (becas, MEDUCA, universidades, contraparte internacional) se co-define en la mesa de cierre del piloto.</p>
+  </div>
+
+  <div class="foot">
+    <div class="sec"><em data-es="MAESTROS · 05" data-en="TEACHERS · 05">MAESTROS · 05</em></div>
+    <div>LA COMPAÑÍA · MMXXVI</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 06 · PILOTO 90 DÍAS                                         -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<section class="page">
+  <div class="head">
+    <div class="mark"><em>C</em>EIBA</div>
+    <div class="pgnum">06 / 07</div>
+  </div>
+
+  <div class="eyebrow" data-es="06 · PLAN PILOTO · 90 DÍAS" data-en="06 · PILOT PLAN · 90 DAYS">06 · PLAN PILOTO · 90 DÍAS</div>
+  <h1 class="title" style="font-size:36px" data-es-html="Cinco escuelas. <em>Noventa</em> días. <em>Cero</em> costo." data-en-html="Five schools. <em>Ninety</em> days. <em>Zero</em> cost.">Cinco escuelas. <em>Noventa</em> días. <em>Cero</em> costo.</h1>
+  <p class="lede" style="font-size:13px;max-width:6.2in;margin-bottom:14px" data-es="Dos contextos en paralelo — Boquete urbano y Comarca Ngäbe-Buglé. Si CEIBA funciona en ambos, funciona en cualquier escuela panameña. La Compañía financia totalmente la Fase 1; MEDUCA autoriza y co-supervisa." data-en="Two parallel contexts — urban Boquete and Ngäbe-Buglé Comarca. If CEIBA works in both, it works in any Panamanian school. La Compañía fully funds Phase 1; MEDUCA authorizes and co-supervises.">Dos contextos en paralelo — Boquete urbano y Comarca Ngäbe-Buglé. Si CEIBA funciona en ambos, funciona en cualquier escuela panameña. La Compañía financia totalmente la Fase 1; MEDUCA autoriza y co-supervisa.</p>
+
+  <table class="tbl">
+    <thead>
+      <tr><th data-es="SITIO" data-en="SITE">SITIO</th><th data-es="UBICACIÓN" data-en="LOCATION">UBICACIÓN</th><th data-es="TIPO" data-en="TYPE">TIPO</th><th data-es="EST." data-en="ST." class="num">EST.</th><th data-es="LENGUAS" data-en="LANGUAGES">LENGUAS</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Bajo Boquete</strong></td><td data-es="Boquete · urbano" data-en="Boquete · urban">Boquete · urbano</td><td data-es="Pública primaria" data-en="Public primary">Pública primaria</td><td class="num">~210</td><td>Español</td></tr>
+      <tr><td><strong>Academia Boquete</strong></td><td data-es="Boquete · privada" data-en="Boquete · private">Boquete · privada</td><td data-es="Privada bilingüe" data-en="Private bilingual">Privada bilingüe</td><td class="num">~90</td><td>ES + EN</td></tr>
+      <tr><td><strong>Llano Tugrí</strong></td><td data-es="Comarca · Müna" data-en="Comarca · Müna">Comarca · Müna</td><td data-es="Pública multigrado" data-en="Public multigrade">Pública multigrado</td><td class="num">~120</td><td>Ngäbere + ES</td></tr>
+      <tr><td><strong>Cerro Iglesias</strong></td><td data-es="Comarca · Mironó" data-en="Comarca · Mironó">Comarca · Mironó</td><td data-es="Pública multigrado" data-en="Public multigrade">Pública multigrado</td><td class="num">~85</td><td>Ngäbere + ES</td></tr>
+      <tr><td><strong>Nole Düima</strong></td><td data-es="Comarca · Nole Düima" data-en="Comarca · Nole Düima">Comarca · Nole Düima</td><td data-es="Pública multigrado" data-en="Public multigrade">Pública multigrado</td><td class="num">~75</td><td>Buglere + ES</td></tr>
+      <tr class="hi"><td><strong data-es="TOTAL" data-en="TOTAL">TOTAL</strong></td><td>—</td><td>—</td><td class="num"><strong>~580</strong></td><td><strong>3 + ES + EN</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="g3">
+    <div class="tile" style="border-top:2px solid var(--ochre)">
+      <div class="t-num" data-es="DÍAS 1 – 30" data-en="DAYS 1 – 30">DÍAS 1 – 30</div>
+      <h5 data-es="Preparación" data-en="Preparation">Preparación</h5>
+      <p data-es="Cuentas CEIBA para los 21 maestros, taller de 3 días, diagnóstico inicial impreso para los 580 niños, junta con MEDUCA Chiriquí y los 3 congresos." data-en="CEIBA accounts for the 21 teachers, 3-day workshop, printed initial diagnostic for 580 children, meeting with MEDUCA Chiriquí and the 3 congresses.">Cuentas CEIBA para los 21 maestros, taller de 3 días, diagnóstico inicial impreso para los 580 niños, junta con MEDUCA Chiriquí y los 3 congresos.</p>
+    </div>
+    <div class="tile" style="border-top:2px solid var(--ochre-deep)">
+      <div class="t-num" data-es="DÍAS 31 – 75" data-en="DAYS 31 – 75">DÍAS 31 – 75</div>
+      <h5 data-es="Hojas diarias" data-en="Daily sheets">Hojas diarias</h5>
+      <p data-es="Cada maestro imprime las hojas del día desde el sitio CEIBA. Visita pedagógica 1×/quincena. Reporte impreso al director regional y al cacique cada 14 días." data-en="Each teacher prints daily sheets from the CEIBA site. Pedagogical visit 1×/fortnight. Printed report to regional director and cacique every 14 days.">Cada maestro imprime las hojas del día desde el sitio CEIBA. Visita pedagógica 1×/quincena. Reporte impreso al director regional y al cacique cada 14 días.</p>
+    </div>
+    <div class="tile" style="border-top:2px solid var(--forest)">
+      <div class="t-num" data-es="DÍAS 76 – 90" data-en="DAYS 76 – 90">DÍAS 76 – 90</div>
+      <h5 data-es="Evaluación + decisión" data-en="Evaluation + decision">Evaluación + decisión</h5>
+      <p data-es="Diagnóstico pre/post. Reunión final tripartita. Decisión conjunta: cerrar, ajustar, o escalar a Fase 2 (50 escuelas + hardware en aula)." data-en="Pre/post diagnostic. Final tripartite meeting. Joint decision: close, adjust, or scale to Phase 2 (50 schools + in-classroom hardware).">Diagnóstico pre/post. Reunión final tripartita. Decisión conjunta: cerrar, ajustar, o escalar a Fase 2 (50 escuelas + hardware en aula).</p>
+    </div>
+  </div>
+
+  <div class="data-strip" style="grid-template-columns:repeat(4,1fr)">
+    <div class="cell"><div class="v"><em>~580</em></div><div class="l" data-es="ESTUDIANTES" data-en="STUDENTS">ESTUDIANTES</div></div>
+    <div class="cell"><div class="v"><em>21</em></div><div class="l" data-es="MAESTROS" data-en="TEACHERS">MAESTROS</div></div>
+    <div class="cell"><div class="v"><em>0</em></div><div class="l" data-es="HARDWARE NUEVO EN ESCUELA" data-en="NEW HARDWARE IN SCHOOL">HARDWARE NUEVO EN ESCUELA</div></div>
+    <div class="cell"><div class="v"><em>$0</em></div><div class="l" data-es="COSTO PARA MEDUCA" data-en="COST TO MEDUCA">COSTO PARA MEDUCA</div></div>
+  </div>
+
+  <div class="callout-light">
+    <div class="clabel" data-es="MÉTRICAS DE ÉXITO · EVALUADAS EN CONJUNTO" data-en="SUCCESS METRICS · JOINTLY EVALUATED">MÉTRICAS DE ÉXITO · EVALUADAS EN CONJUNTO</div>
+    <p data-es-html="<strong>+25%</strong> ganancia mínima en lectura y matemática pre/post · <strong>≥ 92%</strong> asistencia promedio durante los 90 días · <strong>≥ 80%</strong> de maestros quieren continuar al cierre, según encuesta confidencial." data-en-html="<strong>+25%</strong> minimum pre/post gain in reading and math · <strong>≥ 92%</strong> average attendance over 90 days · <strong>≥ 80%</strong> of teachers want to continue at close, per confidential survey."><strong>+25%</strong> ganancia mínima en lectura y matemática pre/post · <strong>≥ 92%</strong> asistencia promedio durante los 90 días · <strong>≥ 80%</strong> de maestros quieren continuar al cierre, según encuesta confidencial.</p>
+  </div>
+
+  <div class="foot">
+    <div class="sec"><em data-es="PILOTO · 06" data-en="PILOT · 06">PILOTO · 06</em></div>
+    <div>LA COMPAÑÍA · MMXXVI</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 07 · LA PETICIÓN + CIERRE                                  -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<section class="page">
+  <div class="head">
+    <div class="mark"><em>C</em>EIBA</div>
+    <div class="pgnum">07 / 07</div>
+  </div>
+
+  <div class="eyebrow" data-es="07 · LA PETICIÓN" data-en="07 · THE ASK">07 · LA PETICIÓN</div>
+  <h1 class="title" style="font-size:42px" data-es-html="Permiso para <em>probar</em>." data-en-html="Permission to <em>try</em>.">Permiso para <em>probar</em>.</h1>
+  <p class="lede" style="font-size:13px;max-width:6.2in;margin-bottom:22px" data-es="Lo que solicitamos formalmente — y lo que aportamos a cambio." data-en="What we formally request — and what we bring in return.">Lo que solicitamos formalmente — y lo que aportamos a cambio.</p>
+
+  <div class="compare">
+    <div class="col a">
+      <div class="ttl" data-es="LO QUE PEDIMOS AL SISTEMA" data-en="WHAT WE ASK OF THE SYSTEM">LO QUE PEDIMOS AL SISTEMA</div>
+      <h4 data-es="Permiso + colaboración + reconocimiento" data-en="Permission + collaboration + recognition">Permiso + colaboración + reconocimiento</h4>
+      <ul>
+        <li data-es="Permiso de los 5 directores escolares para el piloto" data-en="Permission from the 5 school directors for the pilot">Permiso de los 5 directores escolares para el piloto</li>
+        <li data-es="Aval de los 3 congresos generales — primer paso" data-en="Endorsement from the 3 general congresses — first step">Aval de los 3 congresos generales — primer paso</li>
+        <li data-es="Acceso al currículo mínimo MEDUCA (público)" data-en="Access to MEDUCA minimum curriculum (public)">Acceso al currículo mínimo MEDUCA (público)</li>
+        <li data-es="Reconocimiento del programa de Maestros Originarios" data-en="Recognition of the Originario Teachers program">Reconocimiento del programa de Maestros Originarios</li>
+        <li data-es="Acuerdo de datos: CEIBA reporta agregados; las partes auditan" data-en="Data agreement: CEIBA reports aggregates; the parties audit">Acuerdo de datos: CEIBA reporta agregados; las partes auditan</li>
+      </ul>
+    </div>
+    <div class="col b">
+      <div class="ttl" data-es="LO QUE APORTAMOS" data-en="WHAT WE BRING">LO QUE APORTAMOS</div>
+      <h4 data-es="Plataforma + formación + soporte — sin hardware nuevo." data-en="Platform + training + support — no new hardware.">Plataforma + formación + soporte — sin hardware nuevo.</h4>
+      <ul>
+        <li data-es="Acceso al sitio CEIBA para los 21 maestros del piloto" data-en="CEIBA site access for the 21 pilot teachers">Acceso al sitio CEIBA para los 21 maestros del piloto</li>
+        <li data-es="Generador de hojas diarias por niño · bilingüe ES + lengua originaria" data-en="Daily per-child sheet generator · bilingual ES + originary language">Generador de hojas diarias por niño · bilingüe ES + lengua originaria</li>
+        <li data-es="Diagnósticos iniciales impresos para los 580 niños" data-en="Printed initial diagnostics for the 580 children">Diagnósticos iniciales impresos para los 580 niños</li>
+        <li data-es="Resmas de papel + tinta para las 5 escuelas durante 90 días" data-en="Paper + ink for the 5 schools through 90 days">Resmas de papel + tinta para las 5 escuelas durante 90 días</li>
+        <li data-es="Taller intensivo 3 días a 21 maestros + soporte pedagógico en sitio" data-en="3-day intensive workshop for 21 teachers + on-site pedagogical support">Taller intensivo 3 días a 21 maestros + soporte pedagógico en sitio</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="clabel" data-es="EL CIERRE" data-en="CLOSING">EL CIERRE</div>
+    <p data-es-html="Panamá puede ser el primer país de Latinoamérica que pone la inteligencia artificial al servicio de su educación pública — empezando por el caso más difícil: la Comarca, la lengua originaria, el aula multigrado. <em>Si funciona ahí, funciona en cualquier lugar.</em> Pedimos noventa días, cinco escuelas, una decisión conjunta al final. Estamos en Boquete. Listos cuando MEDUCA esté lista. <strong style='color:var(--ochre);font-weight:500'>El caso difícil es el caso correcto.</strong>" data-en-html="Panama can be the first country in Latin America to place AI at the service of its public education — starting from the hardest case: the Comarca, the originary language, the multigrade classroom. <em>If it works there, it works anywhere.</em> We ask for ninety days, five schools, a joint decision at the close. We are in Boquete. Ready when MEDUCA is ready. <strong style='color:var(--ochre);font-weight:500'>The hard case is the right case.</strong>">Panamá puede ser el primer país de Latinoamérica que pone la inteligencia artificial al servicio de su educación pública — empezando por el caso más difícil: la Comarca, la lengua originaria, el aula multigrado. <em>Si funciona ahí, funciona en cualquier lugar.</em> Pedimos noventa días, cinco escuelas, una decisión conjunta al final. Estamos en Boquete. Listos cuando MEDUCA esté lista. <strong style="color:var(--ochre);font-weight:500">El caso difícil es el caso correcto.</strong></p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;padding-top:18px;border-top:0.5px solid var(--line-2);margin-top:18px">
+    <div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin-bottom:4px" data-es="CONTACTO PRIMARIO" data-en="PRIMARY CONTACT">CONTACTO PRIMARIO</div>
+      <div style="font-family:var(--serif);font-size:15px;color:var(--ink);font-weight:500">Abraham Eid</div>
+      <div style="font-family:var(--sans);font-size:11px;color:var(--ink-3);margin-top:2px" data-es="Fundador · La Compañía" data-en="Founder · La Compañía">Fundador · La Compañía</div>
+    </div>
+    <div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin-bottom:4px" data-es="OFICINA" data-en="OFFICE">OFICINA</div>
+      <div style="font-family:var(--serif);font-size:15px;color:var(--ink);font-weight:500">Boquete · Chiriquí</div>
+      <div style="font-family:var(--sans);font-size:11px;color:var(--ink-3);margin-top:2px" data-es="República de Panamá" data-en="Republic of Panama">República de Panamá</div>
+    </div>
+    <div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin-bottom:4px" data-es="VERSIÓN COMPLETA" data-en="FULL VERSION">VERSIÓN COMPLETA</div>
+      <div style="font-family:var(--serif);font-size:15px;color:var(--ink);font-weight:500">15 <span data-es="páginas" data-en="pages">páginas</span></div>
+      <div style="font-family:var(--sans);font-size:11px;color:var(--ink-3);margin-top:2px" data-es="Disponible bajo solicitud" data-en="Available on request">Disponible bajo solicitud</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="sec"><em data-es="CIERRE · 07" data-en="CLOSE · 07">CIERRE · 07</em></div>
+    <div>LA COMPAÑÍA · MMXXVI</div>
+  </div>
+</section>
+
+</div>
+
+<script>
+  const getLang = () => localStorage.getItem('aula.lang') || 'es';
+  function applyLang(lang){
+    document.querySelectorAll('[data-es]').forEach(el=>{
+      const v = el.getAttribute('data-' + lang);
+      if (v != null) { if (/<[a-z]/i.test(v)) el.innerHTML = v; else el.textContent = v; }
+    });
+    document.querySelectorAll('[data-es-html]').forEach(el=>{
+      const v = el.getAttribute('data-' + lang + '-html');
+      if(v != null) el.innerHTML = v;
+    });
+    document.documentElement.lang = lang;
+    localStorage.setItem('aula.lang', lang);
+    document.querySelectorAll('.lang-bar button').forEach(b=>b.classList.toggle('act', b.dataset.lang === lang));
+  }
+  document.querySelectorAll('.lang-bar button').forEach(b=>b.addEventListener('click', ()=>applyLang(b.dataset.lang)));
+  applyLang(getLang());
+</script>
+</body>
+</html>
