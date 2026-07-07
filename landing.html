@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CEIBA · Cada niño aprende a su ritmo</title>
+<meta name="description" content="CEIBA — aprendizaje adaptativo para aulas multigrado de Panamá. El niño practica a su ritmo; la maestra ve todo su salón de un vistazo. Funciona sin internet.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232a3a4c'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='600' fill='%23e8c878'%3EC%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#2a3a4c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f5efe0; --paper-2:#ede5d0; --paper-3:#ddd2b0;
+  --ink:#1a1f28; --ink-2:#2a3441; --ink-3:#4a5564; --ink-faint:#7a8595;
+  --line:rgba(26,31,40,.10); --line-2:rgba(26,31,40,.20);
+  --slate:#2a3a4c; --slate-deep:#14202e; --slate-light:#5a6c80;
+  --ochre:#c89030; --ochre-deep:#8a6018; --ochre-light:#e8c878;
+  --leaf:#4a7848; --leaf-deep:#2a5028; --leaf-light:#8fb88a;
+  --brick:#b25030;
+  --serif:'Fraunces',Georgia,serif; --sans:'Inter',-apple-system,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.08  0 0 0 0 0.06  0 0 0 0.025 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--slate);color:var(--paper)}
+
+/* language toggle */
+html[lang="es"] .en{display:none!important}
+html[lang="en"] .es{display:none!important}
+
+/* ============ TOPBAR ============ */
+.top{position:sticky;top:0;z-index:60;background:rgba(245,239,224,.94);backdrop-filter:blur(14px);border-bottom:.5px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand svg{flex-shrink:0}
+.brand .word{font-family:var(--serif);font-weight:600;font-size:21px;letter-spacing:.18em;color:var(--slate)}
+.top nav{display:flex;gap:4px;margin-left:auto}
+.top nav a{font-size:.78rem;font-weight:600;color:var(--ink-3);padding:.4rem .7rem;border-radius:6px;white-space:nowrap}
+.top nav a:hover{background:var(--paper-2);color:var(--ink)}
+.lang-pill{display:flex;border:1px solid var(--line-2);border-radius:20px;overflow:hidden;font-size:.72rem;font-weight:700}
+.lang-pill button{border:none;background:none;padding:.35rem .7rem;cursor:pointer;font:inherit;color:var(--ink-faint)}
+.lang-pill button.on{background:var(--slate);color:var(--paper)}
+.btn{display:inline-flex;align-items:center;gap:.5rem;border-radius:8px;padding:.6rem 1.15rem;font-weight:600;font-size:.85rem;cursor:pointer;border:none;font-family:var(--sans);transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-slate{background:var(--slate);color:var(--paper)}
+.btn-slate:hover{background:var(--slate-deep)}
+.btn-ochre{background:var(--ochre);color:#fff}
+.btn-ochre:hover{background:var(--ochre-deep)}
+.btn-ghost{background:none;border:1px solid var(--line-2);color:var(--ink-2)}
+.btn-ghost:hover{border-color:var(--slate);color:var(--slate)}
+.btn-leaf{background:var(--leaf);color:#fff}
+.btn-leaf:hover{background:var(--leaf-deep)}
+
+/* ============ HERO ============ */
+.hero{max-width:1180px;margin:0 auto;padding:64px 28px 48px;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+@media(max-width:860px){.hero{grid-template-columns:1fr}}
+.kicker{font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre-deep);margin-bottom:1rem}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(2.1rem,4.6vw,3.3rem);line-height:1.08;letter-spacing:-.015em;color:var(--ink);margin-bottom:1.1rem}
+.hero h1 em{font-style:italic;color:var(--leaf-deep)}
+.hero .lead{font-size:1.06rem;color:var(--ink-3);max-width:540px;margin-bottom:1.6rem}
+.hero-ctas{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.hero-note{font-size:.78rem;color:var(--ink-faint);font-family:var(--mono)}
+.hero-art{position:relative;display:flex;justify-content:center}
+.hero-art svg{max-width:100%;height:auto}
+
+/* ============ SECTIONS ============ */
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+section{padding:56px 0}
+.sec-kicker{font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre-deep);margin-bottom:.6rem}
+.sec-title{font-family:var(--serif);font-weight:500;font-size:clamp(1.6rem,3.4vw,2.3rem);line-height:1.15;letter-spacing:-.01em;margin-bottom:.7rem}
+.sec-sub{color:var(--ink-3);max-width:640px;margin-bottom:2rem}
+
+.strip{background:var(--slate);color:var(--paper)}
+.strip .wrap{padding-top:44px;padding-bottom:44px}
+.strip h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.25rem,2.6vw,1.7rem);line-height:1.45;max-width:880px}
+.strip em{font-style:italic;color:var(--ochre-light)}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.1rem}
+.fcard{background:#fffdf6;border:1px solid var(--line);border-radius:12px;padding:1.4rem 1.5rem;position:relative}
+.fcard .ic{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.9rem}
+.ic-leaf{background:rgba(74,120,72,.12)}
+.ic-ochre{background:rgba(200,144,48,.14)}
+.ic-slate{background:rgba(42,58,76,.10)}
+.fcard h3{font-family:var(--serif);font-size:1.12rem;font-weight:600;margin-bottom:.45rem}
+.fcard p{font-size:.88rem;color:var(--ink-3)}
+.fcard .how{margin-top:.7rem;font-size:.74rem;font-family:var(--mono);color:var(--leaf-deep)}
+.soon{position:absolute;top:1rem;right:1rem;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--ochre-light);color:var(--ochre-deep);padding:.18rem .5rem;border-radius:4px}
+
+/* engine */
+.engine{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-top:1.6rem}
+.eng{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:1.2rem 1.3rem}
+.eng .n{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ochre-deep);margin-bottom:.4rem}
+.eng h4{font-family:var(--serif);font-size:1.02rem;font-weight:600;margin-bottom:.3rem}
+.eng p{font-size:.82rem;color:var(--ink-3)}
+
+/* login */
+.login-sec{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.login-grid{display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center}
+@media(max-width:860px){.login-grid{grid-template-columns:1fr}}
+.login-card{background:#fffdf6;border:1px solid var(--line-2);border-radius:16px;padding:2rem;box-shadow:0 20px 50px -24px rgba(26,31,40,.25)}
+.login-card h3{font-family:var(--serif);font-size:1.35rem;font-weight:600;margin-bottom:.3rem}
+.login-card .sub{font-size:.82rem;color:var(--ink-faint);margin-bottom:1.3rem}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem}
+.field input{width:100%;border:1px solid var(--line-2);border-radius:8px;padding:.7rem .9rem;font:inherit;font-size:.95rem;background:var(--paper);color:var(--ink)}
+.field input:focus{outline:2px solid var(--ochre);border-color:transparent}
+.login-alt{margin-top:1rem;text-align:center;font-size:.78rem;color:var(--ink-faint)}
+.login-alt a{color:var(--leaf-deep);font-weight:600;cursor:pointer}
+.demo-tag{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(74,120,72,.14);color:var(--leaf-deep);padding:.2rem .55rem;border-radius:4px;margin-bottom:.8rem}
+
+/* pilots */
+.pilots{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:1.4rem}
+@media(max-width:700px){.pilots{grid-template-columns:1fr}}
+.pilot{border:1px solid var(--line);border-radius:12px;padding:1.3rem 1.4rem;background:#fffdf6}
+.pilot .where{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--brick);margin-bottom:.4rem}
+.pilot h4{font-family:var(--serif);font-size:1.1rem;font-weight:600;margin-bottom:.35rem}
+.pilot p{font-size:.85rem;color:var(--ink-3)}
+
+footer{padding:44px 28px;text-align:center;color:var(--ink-faint);font-size:.8rem}
+footer .links{display:flex;gap:1.4rem;justify-content:center;margin-bottom:1rem;flex-wrap:wrap}
+footer a{color:var(--ink-3);font-weight:600}
+footer a:hover{color:var(--slate)}
+
+/* ============ PORTAL OVERLAY ============ */
+.overlay{position:fixed;inset:0;z-index:100;background:var(--paper);display:none;flex-direction:column}
+.overlay.open{display:flex}
+.portal-top{background:var(--slate-deep);color:var(--paper);display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+.portal-top .brand .word{color:var(--ochre-light);font-size:17px}
+.class-chip{font-family:var(--mono);font-size:.74rem;background:rgba(232,200,120,.15);color:var(--ochre-light);border:1px solid rgba(232,200,120,.3);padding:.3rem .7rem;border-radius:6px;letter-spacing:.08em}
+.portal-top .spacer{flex:1}
+.portal-top .tname{font-size:.8rem;color:var(--slate-light)}
+.portal-body{flex:1;display:flex;overflow:hidden}
+.side{width:200px;background:var(--slate);padding:14px 10px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;overflow-y:auto}
+.side button{display:flex;align-items:center;gap:.6rem;background:none;border:none;color:#b8c4d2;font:inherit;font-size:.84rem;font-weight:600;padding:.6rem .8rem;border-radius:8px;cursor:pointer;text-align:left;width:100%}
+.side button:hover{background:rgba(255,255,255,.06);color:#fff}
+.side button.on{background:var(--ochre);color:#fff}
+.side .side-note{margin-top:auto;font-size:.64rem;color:var(--slate-light);padding:.8rem;line-height:1.5}
+.main{flex:1;overflow-y:auto;padding:26px 30px}
+.main h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;margin-bottom:.3rem}
+.main .msub{color:var(--ink-faint);font-size:.84rem;margin-bottom:1.4rem}
+.tab{display:none}
+.tab.on{display:block}
+.pgrid{display:grid;gap:1rem}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.g2,.g3{grid-template-columns:1fr}}
+.pcard{background:#fffdf6;border:1px solid var(--line);border-radius:12px;padding:1.2rem 1.3rem}
+.pcard h4{font-family:var(--serif);font-size:1.02rem;font-weight:600;margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
+.pcard h4 .soon2{font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--ochre-light);color:var(--ochre-deep);padding:.15rem .45rem;border-radius:4px}
+.pcard p{font-size:.85rem;color:var(--ink-3)}
+.bignum{font-family:var(--serif);font-size:2.1rem;font-weight:600;color:var(--slate)}
+.bignum small{font-size:.9rem;color:var(--ink-faint);font-family:var(--sans);font-weight:400}
+.focus-card{background:linear-gradient(135deg,#2a3a4c,#14202e);color:var(--paper);border-radius:14px;padding:1.5rem 1.6rem}
+.focus-card .fk{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre-light);margin-bottom:.5rem}
+.focus-card h3{font-family:var(--serif);font-size:1.4rem;font-weight:500;margin-bottom:.4rem}
+.focus-card p{font-size:.86rem;color:#b8c4d2}
+.alert-row{display:flex;align-items:center;gap:.7rem;padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.86rem}
+.alert-row:last-child{border-bottom:none}
+.alert-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.a-red{background:var(--brick)}
+.a-yellow{background:var(--ochre)}
+.a-green{background:var(--leaf)}
+.alert-row .who{font-weight:600}
+.alert-row .what{color:var(--ink-3)}
+.alert-row .act{margin-left:auto;font-size:.72rem;font-weight:700;color:var(--leaf-deep);cursor:pointer;white-space:nowrap}
+
+/* heat map */
+.hm{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:#fffdf6}
+.hm table{border-collapse:collapse;font-size:.72rem;min-width:640px;width:100%}
+.hm th{padding:.5rem .5rem;font-family:var(--mono);font-size:.6rem;letter-spacing:.04em;color:var(--ink-faint);text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+.hm th:first-child{text-align:left;padding-left:.9rem}
+.hm td{padding:.4rem .5rem;text-align:center;border-bottom:1px solid var(--line)}
+.hm td:first-child{text-align:left;font-weight:600;padding-left:.9rem;white-space:nowrap}
+.hm tr:last-child td{border-bottom:none}
+.cell{display:inline-block;width:22px;height:22px;border-radius:5px;line-height:22px}
+.c0{background:#eee6d2}
+.c1{background:#e8c878}
+.c2{background:#c89030}
+.c3{background:#4a7848}
+.c3x{background:#2a5028}
+.spark{display:inline-flex;gap:2px;align-items:flex-end;height:20px}
+.spark i{width:4px;background:var(--leaf-light);border-radius:1px;display:block}
+
+/* mission builder */
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.7rem 0 1rem}
+.chip{font-size:.76rem;font-weight:600;border:1px solid var(--line-2);border-radius:20px;padding:.35rem .8rem;cursor:pointer;background:#fffdf6;color:var(--ink-3)}
+.chip.sel{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.mission-row{display:flex;align-items:center;gap:.8rem;padding:.6rem 0;border-bottom:1px solid var(--line);font-size:.86rem}
+.mission-row:last-child{border-bottom:none}
+.mring{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:700;font-family:var(--mono)}
+
+/* copilot */
+.chat{border:1px solid var(--line);border-radius:12px;background:#fffdf6;overflow:hidden}
+.chat .log{padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.9rem;max-height:380px;overflow-y:auto}
+.msg{max-width:85%;padding:.75rem 1rem;border-radius:12px;font-size:.86rem;line-height:1.55}
+.m-user{align-self:flex-end;background:var(--slate);color:var(--paper);border-bottom-right-radius:4px}
+.m-ai{align-self:flex-start;background:var(--paper-2);border:1px solid var(--line);border-bottom-left-radius:4px}
+.m-ai b{color:var(--leaf-deep)}
+.chat .prompts{display:flex;gap:.5rem;flex-wrap:wrap;padding:.9rem 1.2rem;border-top:1px solid var(--line);background:var(--paper)}
+.chat .prompts button{font-size:.72rem;font-weight:600;border:1px solid var(--line-2);background:#fffdf6;border-radius:16px;padding:.35rem .8rem;cursor:pointer;color:var(--ink-3)}
+.chat .prompts button:hover{border-color:var(--leaf);color:var(--leaf-deep)}
+
+/* family */
+.fam-card{display:flex;align-items:center;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--line)}
+.fam-card:last-child{border-bottom:none}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--paper-3);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--slate);flex-shrink:0;font-size:.86rem}
+.fam-card .info{flex:1;min-width:0}
+.fam-card .info b{font-size:.9rem}
+.fam-card .info p{font-size:.76rem;color:var(--ink-faint)}
+.wa-btn{background:#25d366;color:#fff;border:none;border-radius:8px;font-size:.72rem;font-weight:700;padding:.45rem .8rem;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+
+/* connection diagram */
+.diagram{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:.6rem;align-items:stretch;margin-top:1rem}
+@media(max-width:820px){.diagram{grid-template-columns:1fr}}
+.dg{background:#fffdf6;border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.2rem;text-align:center}
+.dg .em{font-size:1.6rem;margin-bottom:.4rem}
+.dg h5{font-family:var(--serif);font-size:.98rem;font-weight:600;margin-bottom:.3rem}
+.dg p{font-size:.76rem;color:var(--ink-3)}
+.darrow{display:flex;align-items:center;justify-content:center;color:var(--ochre-deep);font-size:1.3rem;font-weight:700}
+@media(max-width:820px){.darrow{transform:rotate(90deg)}}
+
+/* ============ STUDENT PREVIEW ============ */
+.student-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.6rem;align-items:start}
+.phone{background:var(--slate-deep);border-radius:26px;padding:10px;max-width:290px;margin:0 auto;box-shadow:0 24px 60px -20px rgba(20,32,46,.5)}
+.phone .screen{background:var(--paper);border-radius:18px;overflow:hidden;font-size:.78rem}
+.ph-top{background:var(--leaf-deep);color:#fff;padding:.7rem .9rem;display:flex;align-items:center;gap:.5rem;font-weight:600;font-size:.8rem}
+.ph-top .flame{margin-left:auto;font-family:var(--mono);font-size:.72rem}
+.ph-body{padding:.9rem}
+.ph-label{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:.7rem 0 .35rem}
+.mission-card{background:linear-gradient(135deg,#4a7848,#2a5028);color:#fff;border-radius:12px;padding:.9rem;display:flex;gap:.8rem;align-items:center}
+.ring{width:52px;height:52px;border-radius:50%;background:conic-gradient(var(--ochre-light) 0 66%,rgba(255,255,255,.2) 66% 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ring .inner{width:38px;height:38px;border-radius:50%;background:#2a5028;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.62rem;font-weight:700}
+.mission-card b{font-size:.82rem;display:block}
+.mission-card p{font-size:.66rem;opacity:.85}
+.assign-card{background:rgba(200,144,48,.12);border:1px solid rgba(200,144,48,.4);border-radius:10px;padding:.65rem .8rem;font-size:.7rem;margin-top:.6rem}
+.assign-card b{color:var(--ochre-deep)}
+.tree-box{text-align:center;padding:.5rem 0 .2rem}
+.subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.5rem}
+.subj{border:1px solid var(--line);border-radius:10px;padding:.55rem;text-align:center;background:#fffdf6}
+.subj .se{font-size:1.1rem}
+.subj b{font-size:.64rem;display:block;margin-top:.15rem}
+.subj .bar{height:4px;background:var(--paper-3);border-radius:2px;margin-top:.35rem;overflow:hidden}
+.subj .bar i{display:block;height:100%;background:var(--leaf)}
+.pin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;margin-top:.5rem}
+.pin-cell{aspect-ratio:1;border:1.5px solid var(--line-2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;background:#fffdf6;cursor:pointer}
+.pin-cell.sel{border-color:var(--leaf);background:rgba(74,120,72,.1)}
+.name-grid{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-top:.5rem}
+.name-cell{border:1.5px solid var(--line-2);border-radius:10px;padding:.5rem;text-align:center;font-weight:600;font-size:.72rem;background:#fffdf6;cursor:pointer}
+.name-cell.sel{border-color:var(--leaf);background:rgba(74,120,72,.1)}
+.step-label{text-align:center;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre-deep);margin-bottom:.6rem}
+.code-input{display:flex;gap:.3rem;justify-content:center;margin:.6rem 0}
+.code-input span{width:32px;height:40px;border:1.5px solid var(--line-2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:1rem;background:#fffdf6}
+.code-input span.fill{border-color:var(--leaf);color:var(--leaf-deep)}
+</style>
+</head>
+<body>
+
+<!-- ================= TOPBAR ================= -->
+<div class="top">
+  <div class="top-in">
+    <a class="brand" href="#top">
+      <svg width="30" height="30" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#2a3a4c"/><path d="M16 25V14M16 14C16 14 12 13 10 9.5C14 9.5 16 11.5 16 14ZM16 14C16 14 20 13 22 9.5C18 9.5 16 11.5 16 14ZM16 17C16 17 11.5 16.5 9 13C13.5 13.2 16 15 16 17ZM16 17C16 17 20.5 16.5 23 13C18.5 13.2 16 15 16 17Z" stroke="#e8c878" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M11 25h10" stroke="#e8c878" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span class="word">CEIBA</span>
+    </a>
+    <nav>
+      <a href="#ninos"><span class="es">Para niños</span><span class="en">For kids</span></a>
+      <a href="#maestros"><span class="es">Para maestros</span><span class="en">For teachers</span></a>
+      <a href="#motor"><span class="es">Cómo funciona</span><span class="en">How it works</span></a>
+      <a href="#pilotos"><span class="es">Pilotos</span><span class="en">Pilots</span></a>
+      <a href="#docs"><span class="es">Documentos</span><span class="en">Documents</span></a>
+    </nav>
+    <div class="lang-pill" id="langPill">
+      <button data-lang="es" class="on">ES</button>
+      <button data-lang="en">EN</button>
+    </div>
+    <button class="btn btn-slate" onclick="document.getElementById('login').scrollIntoView({behavior:'smooth'})">
+      <span class="es">Entrar</span><span class="en">Log in</span>
+    </button>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<div class="hero" id="top">
+  <div>
+    <div class="kicker"><span class="es">Aprendizaje adaptativo · Panamá</span><span class="en">Adaptive learning · Panama</span></div>
+    <h1>
+      <span class="es">Cada niño aprende <em>a su propio ritmo.</em><br>Cada maestra lo ve todo.</span>
+      <span class="en">Every child learns <em>at their own pace.</em><br>Every teacher sees it all.</span>
+    </h1>
+    <p class="lead">
+      <span class="es">CEIBA es la app de práctica que se adapta a cada estudiante de 5° y 6° grado — y el panel que le muestra a la maestra todo su salón multigrado de un solo vistazo. Funciona sin internet, en cualquier dispositivo.</span>
+      <span class="en">CEIBA is the practice app that adapts to every 5th and 6th grader — and the dashboard that shows the teacher her entire multigrade classroom at a glance. Works offline, on any device.</span>
+    </p>
+    <div class="hero-ctas">
+      <button class="btn btn-ochre" onclick="document.getElementById('login').scrollIntoView({behavior:'smooth'})">
+        <span class="es">Soy maestro/a → Entrar</span><span class="en">I'm a teacher → Log in</span>
+      </button>
+      <a class="btn btn-ghost" href="app.html">
+        <span class="es">Probar la app de estudiante</span><span class="en">Try the student app</span>
+      </a>
+    </div>
+    <div class="hero-note">
+      <span class="es">v1.1.2 · 17 destrezas · 4 materias · offline-first · español (Panamá)</span>
+      <span class="en">v1.1.2 · 17 skills · 4 subjects · offline-first · Spanish (Panama)</span>
+    </div>
+  </div>
+  <div class="hero-art">
+    <svg width="360" height="330" viewBox="0 0 360 330" fill="none">
+      <ellipse cx="180" cy="298" rx="130" ry="16" fill="#ddd2b0" opacity=".6"/>
+      <path d="M180 298V150" stroke="#8a6018" stroke-width="10" stroke-linecap="round"/>
+      <path d="M180 240C180 240 150 235 135 250M180 210C180 210 210 205 228 218" stroke="#8a6018" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="180" cy="112" r="62" fill="#4a7848"/>
+      <circle cx="130" cy="140" r="40" fill="#5a8858"/>
+      <circle cx="232" cy="138" r="42" fill="#3a6838"/>
+      <circle cx="156" cy="86" r="34" fill="#5a8858"/>
+      <circle cx="210" cy="84" r="30" fill="#4a7848"/>
+      <circle cx="126" cy="128" r="5" fill="#e8c878"/>
+      <circle cx="196" cy="70" r="5" fill="#e8c878"/>
+      <circle cx="238" cy="126" r="5" fill="#e8c878"/>
+      <circle cx="168" cy="132" r="5" fill="#e8c878"/>
+      <circle cx="214" cy="150" r="5" fill="#e8c878"/>
+      <text x="180" y="120" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#f5efe0" font-style="italic">17 destrezas</text>
+      <text x="105" y="292" font-family="ui-monospace,monospace" font-size="9" fill="#7a8595">raíces: BKT + SM-2</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ================= PROBLEM STRIP ================= -->
+<div class="strip">
+  <div class="wrap">
+    <h2>
+      <span class="es">En Panamá, un maestro rural promedio atiende <em>60–100 estudiantes en distintos grados</em>, al mismo tiempo, en el mismo salón. Nadie puede personalizar eso a mano. <em>Un software adaptativo, sí.</em></span>
+      <span class="en">In Panama, the average rural teacher handles <em>60–100 students across different grades</em>, at the same time, in the same room. No one can personalize that by hand. <em>Adaptive software can.</em></span>
+    </h2>
+  </div>
+</div>
+
+<!-- ================= FOR KIDS ================= -->
+<section id="ninos">
+  <div class="wrap">
+    <div class="sec-kicker"><span class="es">Para los niños</span><span class="en">For kids</span></div>
+    <h2 class="sec-title">
+      <span class="es">Cómo CEIBA ayuda a los niños a aprender</span>
+      <span class="en">How CEIBA helps children learn</span>
+    </h2>
+    <p class="sec-sub">
+      <span class="es">La ciencia es clara: práctica corta diaria, retroalimentación inmediata, y repaso en el momento justo antes de olvidar. CEIBA convierte eso en un juego que el niño quiere jugar.</span>
+      <span class="en">The science is clear: short daily practice, immediate feedback, and review right before forgetting. CEIBA turns that into a game a child wants to play.</span>
+    </p>
+    <div class="cards">
+      <div class="fcard">
+        <div class="ic ic-leaf">🌱</div>
+        <h3><span class="es">Un camino propio</span><span class="en">A path of their own</span></h3>
+        <p><span class="es">El motor BKT estima qué domina cada niño, destreza por destreza. Nadie se aburre con lo fácil ni se frustra con lo imposible: cada quien practica exactamente lo que le toca.</span><span class="en">The BKT engine estimates what each child has mastered, skill by skill. No one gets bored by easy work or crushed by impossible work: each child practices exactly what they need.</span></p>
+        <div class="how">BKT · P(dominio) por destreza</div>
+      </div>
+      <div class="fcard">
+        <div class="ic ic-ochre">⏰</div>
+        <h3><span class="es">Repaso justo a tiempo</span><span class="en">Review just in time</span></h3>
+        <p><span class="es">El algoritmo SM-2 programa el repaso de cada destreza justo antes de que se olvide — la misma ciencia detrás de Anki y Quizlet. Menos repetición, más retención.</span><span class="en">The SM-2 algorithm schedules each skill's review right before it's forgotten — the same science behind Anki and Quizlet. Less drilling, more retention.</span></p>
+        <div class="how">SM-2 · repetición espaciada</div>
+      </div>
+      <div class="fcard">
+        <div class="ic ic-slate">🎯</div>
+        <h3><span class="es">Misión del día</span><span class="en">Daily mission</span></h3>
+        <p><span class="es">Un botón: "Practicar ahora". 10 preguntas, ~15 minutos, mezclando repaso y destrezas nuevas. Quince minutos diarios ganan a una hora semanal — la app lo hace fácil de cumplir.</span><span class="en">One button: "Practice now." 10 questions, ~15 minutes, mixing review and new skills. Fifteen daily minutes beat one weekly hour — the app makes it easy to keep.</span></p>
+        <div class="how">meta diaria · racha · anillo de progreso</div>
+      </div>
+      <div class="fcard">
+        <div class="ic ic-ochre">🎉</div>
+        <h3><span class="es">Celebración que motiva</span><span class="en">Celebration that motivates</span></h3>
+        <p><span class="es">XP que vuela, confeti al dominar una destreza, insignias, niveles de Aprendiz a Maestro, y una racha que cuidar. Pequeñas dosis de dopamina en el momento exacto del acierto.</span><span class="en">Flying XP, confetti on mastery, badges, levels from Apprentice to Master, and a streak to protect. Small doses of dopamine at the exact moment of success.</span></p>
+        <div class="how">insignias · niveles · rachas · confeti</div>
+      </div>
+      <div class="fcard">
+        <div class="ic ic-leaf">🔊</div>
+        <h3><span class="es">Voz en español de Panamá</span><span class="en">Voice in Panamanian Spanish</span></h3>
+        <p><span class="es">Cada pregunta se puede escuchar en voz alta (es-PA). Los lectores en desarrollo no se quedan atrás. Próximamente: lectura oral con IA que escucha al niño leer y mide fluidez.</span><span class="en">Every question can be read aloud (es-PA). Developing readers aren't left behind. Coming soon: AI oral reading that listens to the child read and measures fluency.</span></p>
+        <div class="how">TTS es-PA · fluidez lectora</div>
+        <span class="soon"><span class="es">voz IA pronto</span><span class="en">AI voice soon</span></span>
+      </div>
+      <div class="fcard">
+        <div class="ic ic-slate">📴</div>
+        <h3><span class="es">Funciona sin internet</span><span class="en">Works without internet</span></h3>
+        <p><span class="es">Todo corre en el dispositivo: sin señal, sin cuentas de correo, sin fricción. Una tablet compartida en el aula alcanza — cada niño elige su nombre y sigue donde quedó.</span><span class="en">Everything runs on-device: no signal, no email accounts, no friction. One shared classroom tablet is enough — each child picks their name and continues where they left off.</span></p>
+        <div class="how">offline-first · multi-estudiante</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOR TEACHERS ================= -->
+<section id="maestros" style="background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-kicker"><span class="es">Para los maestros</span><span class="en">For teachers</span></div>
+    <h2 class="sec-title">
+      <span class="es">Cómo CEIBA ayuda a los maestros a enseñar</span>
+      <span class="en">How CEIBA helps teachers teach</span>
+    </h2>
+    <p class="sec-sub">
+      <span class="es">CEIBA no reemplaza a la maestra — le devuelve el tiempo y le da visión de rayos X. El aula multigrado deja de ser un caos invisible y se vuelve un mapa claro.</span>
+      <span class="en">CEIBA doesn't replace the teacher — it gives her time back and X-ray vision. The multigrade classroom stops being invisible chaos and becomes a clear map.</span>
+    </p>
+    <div class="cards">
+      <div class="fcard">
+        <div class="ic ic-slate">🗺️</div>
+        <h3><span class="es">Todo el salón, un vistazo</span><span class="en">The whole class at a glance</span></h3>
+        <p><span class="es">El mapa de calor muestra 17 destrezas × todos los estudiantes en una pantalla: verde dominado, ámbar en progreso, claro sin empezar. Diez segundos y sabes dónde está tu clase.</span><span class="en">The heat map shows 17 skills × every student on one screen: green mastered, amber in progress, light untouched. Ten seconds and you know where your class stands.</span></p>
+        <div class="how">mapa de calor · v1.1</div>
+      </div>
+      <div class="fcard">
+        <div class="ic ic-ochre">🎓</div>
+        <h3><span class="es">Foco de hoy</span><span class="en">Today's focus</span></h3>
+        <p><span class="es">Cada mañana, una tarjeta: la destreza donde más estudiantes están atascados — eso es lo que conviene enseñar hoy en pizarra. La clase entera, dirigida por datos.</span><span class="en">Every morning, one card: the skill where the most students are stuck — that's what's worth teaching on the board today. Whole-class instruction, guided by data.</span></p>
+        <div class="how">tarjeta "Foco de Hoy" · v1.1.1</div>
+      </div>
+      <div class="fcard">
+        <div class="ic ic-leaf">📌</div>
+        <h3><span class="es">Asignar con un clic</span><span class="en">Assign in one click</span></h3>
+        <p><span class="es">¿Osvaldo necesita fracciones? Un clic y su app le muestra "Tu maestra te asignó: Fracciones equivalentes" como su próxima misión. Instrucción diferenciada sin fotocopias.</span><span class="en">Osvaldo needs fractions? One click and his app shows "Your teacher assigned: Equivalent fractions" as his next mission. Differentiated instruction without photocopies.</span></p>
+        <div class="how">asignaciones · v1.1</div>
+      </div>
+      <div class="fcard">
+        <div class="ic ic-slate">⚠️</div>
+        <h3><span class="es">Alertas de estudiantes atascados</span><span class="en">Stuck-student alerts</span></h3>
+        <p><span class="es">Si un niño intenta y falla la misma destreza una y otra vez, la maestra lo ve al instante — antes era invisible hasta el examen. Intervenir a tiempo cambia trayectorias.</span><span class="en">If a child tries and fails the same skill over and over, the teacher sees it instantly — it used to be invisible until the exam. Timely intervention changes trajectories.</span></p>
+        <div class="how">alertas de prioridad</div>
+      </div>
+      <div class="fcard">
+        <div class="ic ic-ochre">🤖</div>
+        <h3><span class="es">Copiloto de planificación</span><span class="en">Planning copilot</span></h3>
+        <p><span class="es">IA que redacta el plan de clase multigrado a partir de los datos reales del salón: qué enseñar a 5°, qué a 6°, qué repasar con quién. La maestra edita y aprueba — ella manda.</span><span class="en">AI that drafts the multigrade lesson plan from the classroom's real data: what to teach 5th, what to teach 6th, what to review with whom. The teacher edits and approves — she's in charge.</span></p>
+        <div class="how">copiloto IA</div>
+        <span class="soon">beta</span>
+      </div>
+      <div class="fcard">
+        <div class="ic ic-leaf">📄</div>
+        <h3><span class="es">Reportes listos para compartir</span><span class="en">Reports ready to share</span></h3>
+        <p><span class="es">Resumen semanal por estudiante o por salón: tiempo practicado, destrezas dominadas, misiones cumplidas. Copiar y pegar al director o a las familias por WhatsApp.</span><span class="en">Weekly summary per student or per class: practice time, skills mastered, missions completed. Copy-paste to the principal or to families over WhatsApp.</span></p>
+        <div class="how">exportar reporte · v1.1</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ENGINE ================= -->
+<section id="motor">
+  <div class="wrap">
+    <div class="sec-kicker"><span class="es">El motor</span><span class="en">The engine</span></div>
+    <h2 class="sec-title">
+      <span class="es">Ciencia del aprendizaje, no magia</span>
+      <span class="en">Learning science, not magic</span>
+    </h2>
+    <p class="sec-sub">
+      <span class="es">Las mismas mecánicas que hicieron gigantes a Duolingo y Khan Academy — aplicadas al currículo panameño de 5° y 6°, y diseñadas para funcionar sin conexión.</span>
+      <span class="en">The same mechanics that made Duolingo and Khan Academy giants — applied to Panama's 5th and 6th grade curriculum, and built to run offline.</span>
+    </p>
+    <div class="engine">
+      <div class="eng">
+        <div class="n">01 · <span class="es">saber</span><span class="en">know</span></div>
+        <h4>Bayesian Knowledge Tracing</h4>
+        <p><span class="es">Un modelo probabilístico estima P(dominio) de cada destreza tras cada respuesta. Es el "¿ya lo sabe?" del sistema.</span><span class="en">A probabilistic model estimates P(mastery) for each skill after every answer. It's the system's "do they know it yet?"</span></p>
+      </div>
+      <div class="eng">
+        <div class="n">02 · <span class="es">recordar</span><span class="en">remember</span></div>
+        <h4>SM-2 <span class="es">(repaso espaciado)</span><span class="en">(spaced review)</span></h4>
+        <p><span class="es">Programa cuándo repasar: justo antes del olvido. 20–30% menos repeticiones para la misma retención.</span><span class="en">Schedules when to review: right before forgetting. 20–30% fewer reps for the same retention.</span></p>
+      </div>
+      <div class="eng">
+        <div class="n">03 · <span class="es">querer</span><span class="en">want</span></div>
+        <h4><span class="es">Teoría de la autodeterminación</span><span class="en">Self-Determination Theory</span></h4>
+        <p><span class="es">Autonomía (elige su camino), competencia (ve su progreso), pertenencia (rachas y celebración). Las tres, servidas.</span><span class="en">Autonomy (choose your path), competence (see your progress), relatedness (streaks and celebration). All three, served.</span></p>
+      </div>
+      <div class="eng">
+        <div class="n">04 · <span class="es">entender</span><span class="en">understand</span></div>
+        <h4><span class="es">Retro inmediata explicada</span><span class="en">Instant explained feedback</span></h4>
+        <p><span class="es">Cada respuesta explica el porqué — correcto o incorrecto. Hasta 40% más retención que solo calificar.</span><span class="en">Every answer explains why — right or wrong. Up to 40% better retention than just grading.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PILOTS ================= -->
+<section id="pilotos" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-kicker"><span class="es">Dónde</span><span class="en">Where</span></div>
+    <h2 class="sec-title"><span class="es">Pilotos en Chiriquí y la Comarca</span><span class="en">Pilots in Chiriquí and the Comarca</span></h2>
+    <div class="pilots">
+      <div class="pilot">
+        <div class="where">Boquete · Chiriquí</div>
+        <h4><span class="es">Aula multigrado piloto</span><span class="en">Multigrade pilot classroom</span></h4>
+        <p><span class="es">Escuelas rurales de tierras altas: un maestro, varios grados, conectividad intermitente. El caso de uso exacto para el que CEIBA fue diseñada.</span><span class="en">Highland rural schools: one teacher, several grades, intermittent connectivity. The exact use case CEIBA was designed for.</span></p>
+      </div>
+      <div class="pilot">
+        <div class="where">Comarca Ngäbe-Buglé</div>
+        <h4><span class="es">Donde más importa</span><span class="en">Where it matters most</span></h4>
+        <p><span class="es">La región con los mayores retos educativos del país — y la mayor oportunidad de impacto. Offline-first no es un lujo aquí: es la única forma de llegar.</span><span class="en">The region with the country's greatest educational challenges — and the greatest opportunity for impact. Offline-first isn't a luxury here: it's the only way in.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOGIN ================= -->
+<section class="login-sec" id="login">
+  <div class="wrap">
+    <div class="login-grid">
+      <div>
+        <div class="sec-kicker"><span class="es">Portal del maestro</span><span class="en">Teacher portal</span></div>
+        <h2 class="sec-title">
+          <span class="es">Tu salón te espera</span>
+          <span class="en">Your classroom is waiting</span>
+        </h2>
+        <p class="sec-sub" style="margin-bottom:1rem">
+          <span class="es">Entra al portal para ver el mapa de tu clase, asignar misiones y planificar con datos reales. ¿Primera vez? Crea tu clase en dos minutos y CEIBA genera el código para tus estudiantes.</span>
+          <span class="en">Log in to see your class map, assign missions, and plan with real data. First time? Create your class in two minutes and CEIBA generates the code for your students.</span>
+        </p>
+        <p style="font-size:.85rem;color:var(--ink-3)">
+          <span class="es">Los estudiantes <b>no necesitan cuenta ni correo</b>: entran con el código de clase, eligen su nombre y su PIN de dibujos. Sus datos aparecen solos en tu panel.</span>
+          <span class="en">Students <b>need no account and no email</b>: they enter the class code, pick their name and picture PIN. Their data shows up in your dashboard automatically.</span>
+        </p>
+      </div>
+      <div class="login-card">
+        <span class="demo-tag">demo</span>
+        <h3><span class="es">Entrar como maestro/a</span><span class="en">Teacher log in</span></h3>
+        <div class="sub"><span class="es">Cualquier dato funciona en el demo.</span><span class="en">Any credentials work in the demo.</span></div>
+        <div class="field">
+          <label><span class="es">Correo o teléfono</span><span class="en">Email or phone</span></label>
+          <input id="loginUser" type="text" placeholder="maestra@escuela.edu.pa" autocomplete="username">
+        </div>
+        <div class="field">
+          <label>PIN</label>
+          <input id="loginPin" type="password" placeholder="••••" autocomplete="current-password">
+        </div>
+        <button class="btn btn-ochre" style="width:100%;justify-content:center" onclick="openPortal()">
+          <span class="es">Entrar al portal →</span><span class="en">Enter portal →</span>
+        </button>
+        <div class="login-alt">
+          <span class="es">¿Primera vez? <a onclick="openPortal()">Crear mi clase</a></span>
+          <span class="en">First time? <a onclick="openPortal()">Create my class</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DOCUMENTS ================= -->
+<section id="docs" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-kicker"><span class="es">Biblioteca</span><span class="en">Library</span></div>
+    <h2 class="sec-title"><span class="es">Todos los documentos CEIBA</span><span class="en">All CEIBA documents</span></h2>
+    <p class="sec-sub"><span class="es">Todo lo que hemos preparado: investigación de campo, pilotos, producto y las apps en vivo.</span><span class="en">Everything we've prepared: field research, pilots, product, and the live apps.</span></p>
+    <div class="cards">
+      <a class="fcard" href="app.html">
+        <div class="ic ic-leaf">📱</div>
+        <h3><span class="es">App del estudiante</span><span class="en">Student app</span></h3>
+        <p><span class="es">La app adaptativa en vivo — v1.1.2. BKT + SM-2, 17 destrezas, 5 tipos de pregunta, insignias y niveles.</span><span class="en">The live adaptive app — v1.1.2. BKT + SM-2, 17 skills, 5 question types, badges and levels.</span></p>
+        <div class="how">app.html · v1.1.2</div>
+      </a>
+      <a class="fcard" href="teacher.html">
+        <div class="ic ic-slate">🧑‍🏫</div>
+        <h3><span class="es">Panel del maestro</span><span class="en">Teacher dashboard</span></h3>
+        <p><span class="es">El panel actual en vivo: mapa de calor de 17 destrezas, alertas, asignaciones y reporte exportable.</span><span class="en">The current live dashboard: 17-skill heat map, alerts, assignments, and exportable report.</span></p>
+        <div class="how">teacher.html · v1.1</div>
+      </a>
+      <a class="fcard" href="index.html">
+        <div class="ic ic-ochre">🌳</div>
+        <h3><span class="es">Visión del proyecto</span><span class="en">Project vision</span></h3>
+        <p><span class="es">La página madre de CEIBA: el problema del aula multigrado en Panamá, la tesis, el modelo y la hoja de ruta completa.</span><span class="en">The CEIBA mother page: Panama's multigrade classroom problem, the thesis, the model, and the full roadmap.</span></p>
+        <div class="how">index.html</div>
+      </a>
+      <a class="fcard" href="ceiba-comarca.html">
+        <div class="ic ic-leaf">🏔️</div>
+        <h3><span class="es">Comarca Ngäbe-Buglé — estudio</span><span class="en">Comarca Ngäbe-Buglé — study</span></h3>
+        <p><span class="es">Investigación completa de la región: contexto educativo, datos, actores y cómo entrar bien.</span><span class="en">Full regional research: education context, data, stakeholders, and how to enter right.</span></p>
+        <div class="how">ceiba-comarca.html</div>
+      </a>
+      <a class="fcard" href="ceiba-comarca-resumen.html">
+        <div class="ic ic-leaf">📋</div>
+        <h3><span class="es">Comarca — resumen ejecutivo</span><span class="en">Comarca — executive summary</span></h3>
+        <p><span class="es">La versión corta del estudio de la Comarca, lista para compartir con aliados y autoridades.</span><span class="en">The short version of the Comarca study, ready to share with allies and authorities.</span></p>
+        <div class="how">ceiba-comarca-resumen.html</div>
+      </a>
+      <a class="fcard" href="ceiba-boquete.html">
+        <div class="ic ic-ochre">⛰️</div>
+        <h3><span class="es">Boquete — plan piloto</span><span class="en">Boquete — pilot plan</span></h3>
+        <p><span class="es">El plan del piloto en tierras altas de Chiriquí: escuelas objetivo, logística y métricas de éxito.</span><span class="en">The Chiriquí highlands pilot plan: target schools, logistics, and success metrics.</span></p>
+        <div class="how">ceiba-boquete.html</div>
+      </a>
+      <a class="fcard" href="ceiba-app.html">
+        <div class="ic ic-slate">🧪</div>
+        <h3><span class="es">Prototipo original</span><span class="en">Original prototype</span></h3>
+        <p><span class="es">La primera app CEIBA (v0) — se conserva como referencia del punto de partida del producto.</span><span class="en">The first CEIBA app (v0) — kept as a reference for where the product started.</span></p>
+        <div class="how">ceiba-app.html · v0</div>
+      </a>
+      <a class="fcard" href="https://github.com/Abraham4242/ceiba/blob/main/CEIBA-PLAN.md" target="_blank">
+        <div class="ic ic-ochre">🗺️</div>
+        <h3><span class="es">Plan de producto</span><span class="en">Product plan</span></h3>
+        <p><span class="es">Investigación de mecánicas (Duolingo, Khan, IXL), estado actual y las 5 fases de mejora.</span><span class="en">Mechanics research (Duolingo, Khan, IXL), current state, and the 5 improvement phases.</span></p>
+        <div class="how">CEIBA-PLAN.md · GitHub</div>
+      </a>
+      <a class="fcard" href="https://github.com/Abraham4242/ceiba/blob/main/CHANGELOG.md" target="_blank">
+        <div class="ic ic-slate">📜</div>
+        <h3><span class="es">Historial de versiones</span><span class="en">Version history</span></h3>
+        <p><span class="es">CHANGELOG y VERSION: cada release documentado, de v1.0.0 a v1.1.2.</span><span class="en">CHANGELOG and VERSION: every release documented, from v1.0.0 to v1.1.2.</span></p>
+        <div class="how">CHANGELOG.md · GitHub</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="links">
+    <a href="app.html"><span class="es">App estudiante (v1.1.2)</span><span class="en">Student app (v1.1.2)</span></a>
+    <a href="teacher.html"><span class="es">Panel actual</span><span class="en">Current dashboard</span></a>
+    <a href="index.html"><span class="es">Sobre el proyecto</span><span class="en">About the project</span></a>
+  </div>
+  <p>CEIBA · La Compañía · Panamá · 2026</p>
+</footer>
+
+<!-- ================= PORTAL OVERLAY (imagined v2) ================= -->
+<div class="overlay" id="portal">
+  <div class="portal-top">
+    <span class="brand"><span class="word">CEIBA</span></span>
+    <span class="class-chip">📎 <span class="es">CÓDIGO DE CLASE:</span><span class="en">CLASS CODE:</span> CEIBA-742</span>
+    <span class="spacer"></span>
+    <span class="tname"><span class="es">Maestra Dilsa · Esc. Alto Jaramillo</span><span class="en">Ms. Dilsa · Alto Jaramillo School</span></span>
+    <button class="btn btn-leaf" style="padding:.4rem .9rem;font-size:.76rem" onclick="openStudent()">
+      <span class="es">👀 Vista estudiante</span><span class="en">👀 Student view</span>
+    </button>
+    <button class="btn btn-ghost" style="padding:.4rem .9rem;font-size:.76rem;border-color:rgba(255,255,255,.3);color:#b8c4d2" onclick="closePortal()">
+      <span class="es">Salir</span><span class="en">Exit</span>
+    </button>
+  </div>
+  <div class="portal-body">
+    <div class="side">
+      <button class="on" data-tab="hoy">☀️ <span class="es">Hoy</span><span class="en">Today</span></button>
+      <button data-tab="clase">🧑‍🏫 <span class="es">Mi clase</span><span class="en">My class</span></button>
+      <button data-tab="misiones">🎯 <span class="es">Misiones</span><span class="en">Missions</span></button>
+      <button data-tab="reportes">📊 <span class="es">Reportes</span><span class="en">Reports</span></button>
+      <button data-tab="copiloto">🤖 <span class="es">Copiloto</span><span class="en">Copilot</span></button>
+      <button data-tab="familias">💬 <span class="es">Familias</span><span class="en">Families</span></button>
+      <button data-tab="conexion">🔗 <span class="es">Conexión</span><span class="en">How it connects</span></button>
+      <div class="side-note">
+        <span class="es">PROTOTIPO — así se verá el portal v2. Datos de ejemplo.</span>
+        <span class="en">PROTOTYPE — this is portal v2. Sample data.</span>
+      </div>
+    </div>
+    <div class="main">
+
+      <!-- TAB: HOY -->
+      <div class="tab on" id="tab-hoy">
+        <h2><span class="es">Buenos días, Maestra Dilsa</span><span class="en">Good morning, Ms. Dilsa</span></h2>
+        <div class="msub"><span class="es">Lunes 6 de julio · 8 estudiantes en tu clase</span><span class="en">Monday, July 6 · 8 students in your class</span></div>
+        <div class="pgrid g2">
+          <div class="focus-card">
+            <div class="fk"><span class="es">🎓 Foco de hoy — enseñar en pizarra</span><span class="en">🎓 Today's focus — teach on the board</span></div>
+            <h3><span class="es">Fracciones equivalentes</span><span class="en">Equivalent fractions</span></h3>
+            <p><span class="es">5 de 8 estudiantes están atascados aquí (promedio 34% de dominio). Es la destreza que más desbloquea el camino de matemáticas. Sugerencia: círculos de fracciones con material concreto, luego 10 min de práctica en CEIBA.</span><span class="en">5 of 8 students are stuck here (34% avg mastery). It's the skill that unlocks the most of the math path. Suggestion: fraction circles with hands-on material, then 10 min of CEIBA practice.</span></p>
+          </div>
+          <div class="pcard">
+            <h4><span class="es">⚠️ Alertas</span><span class="en">⚠️ Alerts</span></h4>
+            <div class="alert-row"><span class="alert-dot a-red"></span><span class="who">Melquiades</span><span class="what"><span class="es">3 intentos fallidos · División con decimales</span><span class="en">3 failed attempts · Decimal division</span></span><span class="act"><span class="es">Asignar repaso</span><span class="en">Assign review</span></span></div>
+            <div class="alert-row"><span class="alert-dot a-red"></span><span class="who">Kenia</span><span class="what"><span class="es">Sin práctica hace 4 días</span><span class="en">No practice in 4 days</span></span><span class="act"><span class="es">Ver perfil</span><span class="en">View profile</span></span></div>
+            <div class="alert-row"><span class="alert-dot a-yellow"></span><span class="who">Osvaldo</span><span class="what"><span class="es">Solo 3 min ayer (meta: 15)</span><span class="en">Only 3 min yesterday (goal: 15)</span></span><span class="act"><span class="es">Recordar</span><span class="en">Remind</span></span></div>
+            <div class="alert-row"><span class="alert-dot a-green"></span><span class="who">Yaritza</span><span class="what"><span class="es">🎉 Dominó "Múltiplos y divisores"</span><span class="en">🎉 Mastered "Multiples & divisors"</span></span><span class="act"><span class="es">Celebrar</span><span class="en">Celebrate</span></span></div>
+          </div>
+        </div>
+        <div class="pgrid g3" style="margin-top:1rem">
+          <div class="pcard"><h4><span class="es">Practicaron hoy</span><span class="en">Practiced today</span></h4><div class="bignum">6<small>/8</small></div><p><span class="es">Kenia y Bolívar pendientes</span><span class="en">Kenia and Bolívar pending</span></p></div>
+          <div class="pcard"><h4><span class="es">Tiempo promedio</span><span class="en">Avg time</span></h4><div class="bignum">14<small> min</small></div><p><span class="es">↑ 3 min vs. semana pasada</span><span class="en">↑ 3 min vs. last week</span></p></div>
+          <div class="pcard"><h4><span class="es">Racha del salón</span><span class="en">Class streak</span></h4><div class="bignum">🔥 12<small> <span class="es">días</span><span class="en">days</span></small></div><p><span class="es">Mejor racha: 15 días</span><span class="en">Best streak: 15 days</span></p></div>
+        </div>
+      </div>
+
+      <!-- TAB: CLASE -->
+      <div class="tab" id="tab-clase">
+        <h2><span class="es">Mi clase</span><span class="en">My class</span></h2>
+        <div class="msub"><span class="es">Mapa de dominio · 17 destrezas × 8 estudiantes · verde = dominado</span><span class="en">Mastery map · 17 skills × 8 students · green = mastered</span></div>
+        <div class="hm">
+          <table>
+            <tr><th><span class="es">Estudiante</span><span class="en">Student</span></th><th>frac-eq</th><th>frac-op</th><th>dec-div</th><th>mult-div</th><th>geo-per</th><th>esp-verb</th><th>esp-comp</th><th>nat-eco</th><th>nat-cuer</th><th>soc-pan</th><th>7d</th></tr>
+            <tr><td>Yaritza</td><td><span class="cell c3x"></span></td><td><span class="cell c3"></span></td><td><span class="cell c2"></span></td><td><span class="cell c3x"></span></td><td><span class="cell c2"></span></td><td><span class="cell c3"></span></td><td><span class="cell c3"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c2"></span></td><td><span class="spark"><i style="height:8px"></i><i style="height:12px"></i><i style="height:6px"></i><i style="height:16px"></i><i style="height:18px"></i><i style="height:10px"></i><i style="height:20px"></i></span></td></tr>
+            <tr><td>Melquiades</td><td><span class="cell c1"></span></td><td><span class="cell c0"></span></td><td><span class="cell c1"></span></td><td><span class="cell c2"></span></td><td><span class="cell c0"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c1"></span></td><td><span class="spark"><i style="height:4px"></i><i style="height:8px"></i><i style="height:2px"></i><i style="height:6px"></i><i style="height:12px"></i><i style="height:4px"></i><i style="height:8px"></i></span></td></tr>
+            <tr><td>Dilia</td><td><span class="cell c2"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c3"></span></td><td><span class="cell c2"></span></td><td><span class="cell c3x"></span></td><td><span class="cell c3"></span></td><td><span class="cell c3"></span></td><td><span class="cell c2"></span></td><td><span class="cell c2"></span></td><td><span class="spark"><i style="height:10px"></i><i style="height:14px"></i><i style="height:12px"></i><i style="height:8px"></i><i style="height:16px"></i><i style="height:14px"></i><i style="height:18px"></i></span></td></tr>
+            <tr><td>Osvaldo</td><td><span class="cell c1"></span></td><td><span class="cell c1"></span></td><td><span class="cell c0"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c1"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c0"></span></td><td><span class="cell c1"></span></td><td><span class="spark"><i style="height:6px"></i><i style="height:2px"></i><i style="height:8px"></i><i style="height:4px"></i><i style="height:2px"></i><i style="height:6px"></i><i style="height:3px"></i></span></td></tr>
+            <tr><td>Kenia</td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c1"></span></td><td><span class="cell c2"></span></td><td><span class="cell c2"></span></td><td><span class="cell c2"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c1"></span></td><td><span class="cell c0"></span></td><td><span class="spark"><i style="height:12px"></i><i style="height:8px"></i><i style="height:0px"></i><i style="height:0px"></i><i style="height:0px"></i><i style="height:0px"></i><i style="height:0px"></i></span></td></tr>
+            <tr><td>Bolívar</td><td><span class="cell c1"></span></td><td><span class="cell c1"></span></td><td><span class="cell c1"></span></td><td><span class="cell c1"></span></td><td><span class="cell c0"></span></td><td><span class="cell c2"></span></td><td><span class="cell c2"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c1"></span></td><td><span class="spark"><i style="height:4px"></i><i style="height:6px"></i><i style="height:8px"></i><i style="height:2px"></i><i style="height:4px"></i><i style="height:0px"></i><i style="height:0px"></i></span></td></tr>
+            <tr><td>Maribel</td><td><span class="cell c3"></span></td><td><span class="cell c2"></span></td><td><span class="cell c2"></span></td><td><span class="cell c3"></span></td><td><span class="cell c2"></span></td><td><span class="cell c3"></span></td><td><span class="cell c2"></span></td><td><span class="cell c3"></span></td><td><span class="cell c2"></span></td><td><span class="cell c2"></span></td><td><span class="spark"><i style="height:14px"></i><i style="height:10px"></i><i style="height:16px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:14px"></i><i style="height:16px"></i></span></td></tr>
+            <tr><td>Edilberto</td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c1"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="cell c2"></span></td><td><span class="cell c2"></span></td><td><span class="cell c1"></span></td><td><span class="spark"><i style="height:8px"></i><i style="height:10px"></i><i style="height:6px"></i><i style="height:12px"></i><i style="height:8px"></i><i style="height:10px"></i><i style="height:12px"></i></span></td></tr>
+          </table>
+        </div>
+        <div class="pgrid g2" style="margin-top:1rem">
+          <div class="pcard">
+            <h4><span class="es">➕ Agregar estudiante</span><span class="en">➕ Add student</span></h4>
+            <p><span class="es">Escribe el nombre y grado — el niño aparecerá en el selector de la app con el código de clase CEIBA-742.</span><span class="en">Type the name and grade — the child appears in the app picker under class code CEIBA-742.</span></p>
+          </div>
+          <div class="pcard">
+            <h4><span class="es">🪪 Imprimir credenciales QR</span><span class="en">🪪 Print QR badges</span> <span class="soon2">v2</span></h4>
+            <p><span class="es">Tarjetas imprimibles con QR por estudiante: el niño escanea y entra directo — sin escribir nada. Ideal para los más pequeños.</span><span class="en">Printable per-student QR cards: the child scans and is in — no typing. Ideal for the youngest.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: MISIONES -->
+      <div class="tab" id="tab-misiones">
+        <h2><span class="es">Misiones</span><span class="en">Missions</span></h2>
+        <div class="msub"><span class="es">La misión es lo primero que ve el estudiante al abrir su app. Si no asignas nada, CEIBA elige automáticamente (repaso vencido → en progreso → nueva).</span><span class="en">The mission is the first thing a student sees on opening the app. If you assign nothing, CEIBA picks automatically (overdue review → in progress → new).</span></div>
+        <div class="pgrid g2">
+          <div class="pcard">
+            <h4><span class="es">🎯 Crear misión de la semana</span><span class="en">🎯 Build this week's mission</span></h4>
+            <p style="font-size:.8rem"><span class="es">Elige destrezas → elige estudiantes → asignar.</span><span class="en">Pick skills → pick students → assign.</span></p>
+            <div class="chips">
+              <span class="chip sel">Fracciones equivalentes</span>
+              <span class="chip sel">División con decimales</span>
+              <span class="chip">Perímetro y área</span>
+              <span class="chip">Comprensión lectora</span>
+              <span class="chip">Ecosistemas</span>
+              <span class="chip">Canal de Panamá</span>
+            </div>
+            <div class="chips">
+              <span class="chip sel"><span class="es">Todos (8)</span><span class="en">Everyone (8)</span></span>
+              <span class="chip"><span class="es">Solo atascados (5)</span><span class="en">Stuck only (5)</span></span>
+              <span class="chip"><span class="es">Elegir…</span><span class="en">Choose…</span></span>
+            </div>
+            <button class="btn btn-leaf" style="width:100%;justify-content:center"><span class="es">Asignar misión →</span><span class="en">Assign mission →</span></button>
+          </div>
+          <div class="pcard">
+            <h4><span class="es">📋 Misión activa — "Semana de fracciones"</span><span class="en">📋 Active mission — "Fractions week"</span></h4>
+            <div class="mission-row"><span class="mring" style="background:conic-gradient(#4a7848 0 100%,#eee 0);color:#fff">100%</span><b>Yaritza</b><span style="color:var(--ink-faint);font-size:.76rem"><span class="es">completada · 22 min</span><span class="en">complete · 22 min</span></span></div>
+            <div class="mission-row"><span class="mring" style="background:conic-gradient(#c89030 0 70%,#eee 0);color:#fff">70%</span><b>Dilia</b><span style="color:var(--ink-faint);font-size:.76rem"><span class="es">7 de 10 ejercicios</span><span class="en">7 of 10 exercises</span></span></div>
+            <div class="mission-row"><span class="mring" style="background:conic-gradient(#c89030 0 40%,#eee 0);color:#fff">40%</span><b>Melquiades</b><span style="color:var(--ink-faint);font-size:.76rem"><span class="es">atascado en pregunta 4</span><span class="en">stuck on question 4</span></span></div>
+            <div class="mission-row"><span class="mring" style="background:conic-gradient(#b25030 0 10%,#eee 0);color:#fff">10%</span><b>Kenia</b><span style="color:var(--ink-faint);font-size:.76rem"><span class="es">sin empezar</span><span class="en">not started</span></span></div>
+          </div>
+        </div>
+        <div class="pcard" style="margin-top:1rem">
+          <h4><span class="es">🧪 Diagnóstico de ubicación</span><span class="en">🧪 Placement diagnostic</span> <span class="soon2">v2</span></h4>
+          <p><span class="es">8 preguntas al entrar por primera vez calibran el punto de partida de cada niño en las 4 materias — nadie empieza ni muy atrás ni muy adelante.</span><span class="en">8 questions on first entry calibrate each child's starting point across all 4 subjects — no one starts too far behind or ahead.</span></p>
+        </div>
+      </div>
+
+      <!-- TAB: REPORTES -->
+      <div class="tab" id="tab-reportes">
+        <h2><span class="es">Reportes</span><span class="en">Reports</span></h2>
+        <div class="msub"><span class="es">Semana del 29 jun – 5 jul</span><span class="en">Week of Jun 29 – Jul 5</span></div>
+        <div class="pgrid g3">
+          <div class="pcard"><h4><span class="es">Tiempo total practicado</span><span class="en">Total practice time</span></h4><div class="bignum">9.4<small> h</small></div><p><span class="es">70 min promedio por estudiante</span><span class="en">70 min average per student</span></p></div>
+          <div class="pcard"><h4><span class="es">Destrezas dominadas</span><span class="en">Skills mastered</span></h4><div class="bignum">11<small> <span class="es">esta semana</span><span class="en">this week</span></small></div><p><span class="es">↑ 4 vs. semana anterior</span><span class="en">↑ 4 vs. previous week</span></p></div>
+          <div class="pcard"><h4><span class="es">Misión cumplida</span><span class="en">Mission completion</span></h4><div class="bignum">74<small>%</small></div><p><span class="es">6 de 8 al 100%</span><span class="en">6 of 8 at 100%</span></p></div>
+        </div>
+        <div class="pgrid g2" style="margin-top:1rem">
+          <div class="pcard">
+            <h4><span class="es">📈 Crecimiento por materia</span><span class="en">📈 Growth by subject</span></h4>
+            <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:.4rem">
+              <div><div style="display:flex;justify-content:space-between;font-size:.76rem"><b><span class="es">Matemáticas</span><span class="en">Math</span></b><span>52% → 61%</span></div><div style="height:8px;background:var(--paper-3);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:61%;background:var(--leaf)"></i></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:.76rem"><b><span class="es">Español</span><span class="en">Spanish</span></b><span>58% → 64%</span></div><div style="height:8px;background:var(--paper-3);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:64%;background:var(--leaf)"></i></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:.76rem"><b><span class="es">Ciencias Naturales</span><span class="en">Science</span></b><span>44% → 51%</span></div><div style="height:8px;background:var(--paper-3);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:51%;background:var(--ochre)"></i></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:.76rem"><b><span class="es">Ciencias Sociales</span><span class="en">Social studies</span></b><span>39% → 43%</span></div><div style="height:8px;background:var(--paper-3);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:43%;background:var(--ochre)"></i></div></div>
+            </div>
+          </div>
+          <div class="pcard">
+            <h4><span class="es">📤 Compartir</span><span class="en">📤 Share</span></h4>
+            <p style="margin-bottom:.8rem"><span class="es">Reporte formateado listo para el director o supervisión regional de MEDUCA.</span><span class="en">Formatted report ready for the principal or MEDUCA regional supervision.</span></p>
+            <div style="display:flex;flex-direction:column;gap:.5rem">
+              <button class="btn btn-ghost" style="justify-content:center"><span class="es">📋 Copiar reporte semanal</span><span class="en">📋 Copy weekly report</span></button>
+              <button class="btn btn-ghost" style="justify-content:center"><span class="es">🖨️ Imprimir boletín por estudiante</span><span class="en">🖨️ Print per-student report card</span> </button>
+              <button class="btn btn-ghost" style="justify-content:center"><span class="es">📊 Exportar CSV</span><span class="en">📊 Export CSV</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: COPILOTO -->
+      <div class="tab" id="tab-copiloto">
+        <h2><span class="es">Copiloto</span><span class="en">Copilot</span> <span class="soon2" style="font-size:.6rem;vertical-align:middle">beta</span></h2>
+        <div class="msub"><span class="es">IA que conoce los datos de TU salón. Redacta; tú decides. Guía al estudiante sin darle la respuesta — el estilo Khanmigo, no el estilo ChatGPT.</span><span class="en">AI that knows YOUR classroom's data. It drafts; you decide. It guides students without giving answers — Khanmigo style, not ChatGPT style.</span></div>
+        <div class="chat">
+          <div class="log">
+            <div class="msg m-user"><span class="es">Plan de clase de mañana para matemáticas, 45 minutos</span><span class="en">Tomorrow's math lesson plan, 45 minutes</span></div>
+            <div class="msg m-ai">
+              <span class="es"><b>Plan sugerido — Fracciones equivalentes (45 min)</b><br>Basado en tu mapa: 5 estudiantes atascados, 3 avanzados.<br><br><b>1. Apertura (10 min):</b> círculos de fracciones con papel — ½ = 2/4 en concreto.<br><b>2. Grupos (20 min):</b> Grupo A (Melquiades, Osvaldo, Kenia, Bolívar, Edilberto): contigo en mesa, material concreto. Grupo B (Yaritza, Dilia, Maribel): misión CEIBA "fracciones avanzadas" en la tablet.<br><b>3. Cierre (15 min):</b> práctica CEIBA todos + revisar el anillo de misión en vivo.<br><br>¿Lo ajusto o lo imprimo?</span>
+              <span class="en"><b>Suggested plan — Equivalent fractions (45 min)</b><br>Based on your map: 5 students stuck, 3 advanced.<br><br><b>1. Opening (10 min):</b> paper fraction circles — ½ = 2/4 hands-on.<br><b>2. Groups (20 min):</b> Group A (Melquiades, Osvaldo, Kenia, Bolívar, Edilberto): with you at the table, concrete material. Group B (Yaritza, Dilia, Maribel): CEIBA "advanced fractions" mission on the tablet.<br><b>3. Close (15 min):</b> whole-class CEIBA practice + watch the mission ring live.<br><br>Adjust it or print it?</span>
+            </div>
+          </div>
+          <div class="prompts">
+            <button><span class="es">✏️ Diferenciar para Melquiades</span><span class="en">✏️ Differentiate for Melquiades</span></button>
+            <button><span class="es">❓ Genera 5 preguntas de fracciones</span><span class="en">❓ Generate 5 fraction questions</span></button>
+            <button><span class="es">💬 Borrador de mensaje a familias</span><span class="en">💬 Draft a family message</span></button>
+            <button><span class="es">📚 Explica cómo enseñar decimales</span><span class="en">📚 Explain how to teach decimals</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: FAMILIAS -->
+      <div class="tab" id="tab-familias">
+        <h2><span class="es">Familias</span><span class="en">Families</span> <span class="soon2" style="font-size:.6rem;vertical-align:middle">v2</span></h2>
+        <div class="msub"><span class="es">En Panamá la familia vive en WhatsApp. CEIBA genera el resumen; tú lo envías con un toque.</span><span class="en">In Panama, families live on WhatsApp. CEIBA writes the summary; you send it with one tap.</span></div>
+        <div class="pcard">
+          <div class="fam-card">
+            <span class="avatar">Y</span>
+            <div class="info"><b>Yaritza</b><p><span class="es">🎉 Dominó 2 destrezas esta semana · racha de 9 días · 84 min practicados</span><span class="en">🎉 Mastered 2 skills this week · 9-day streak · 84 min practiced</span></p></div>
+            <button class="wa-btn"><span class="es">Enviar por WhatsApp</span><span class="en">Send via WhatsApp</span></button>
+          </div>
+          <div class="fam-card">
+            <span class="avatar">M</span>
+            <div class="info"><b>Melquiades</b><p><span class="es">Practicó 5 días · necesita apoyo en división · sugerencia de 10 min en casa</span><span class="en">Practiced 5 days · needs support in division · 10-min home suggestion</span></p></div>
+            <button class="wa-btn"><span class="es">Enviar por WhatsApp</span><span class="en">Send via WhatsApp</span></button>
+          </div>
+          <div class="fam-card">
+            <span class="avatar">K</span>
+            <div class="info"><b>Kenia</b><p><span class="es">Sin práctica 4 días — mensaje de ánimo listo para enviar</span><span class="en">No practice in 4 days — encouragement message ready to send</span></p></div>
+            <button class="wa-btn"><span class="es">Enviar por WhatsApp</span><span class="en">Send via WhatsApp</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: CONEXION -->
+      <div class="tab" id="tab-conexion">
+        <h2><span class="es">Cómo se conectan maestro y estudiantes</span><span class="en">How teacher and students connect</span></h2>
+        <div class="msub"><span class="es">Sin correos para niños. Sin contraseñas que olvidar. Diseñado para aulas rurales con un solo dispositivo o varios.</span><span class="en">No emails for kids. No passwords to forget. Designed for rural classrooms with one device or many.</span></div>
+        <div class="diagram">
+          <div class="dg"><div class="em">🧑‍🏫</div><h5><span class="es">1 · La maestra crea su clase</span><span class="en">1 · Teacher creates her class</span></h5><p><span class="es">Cuenta con correo/teléfono + PIN. CEIBA genera el código de clase: <b style="font-family:var(--mono)">CEIBA-742</b></span><span class="en">Account with email/phone + PIN. CEIBA generates the class code: <b style="font-family:var(--mono)">CEIBA-742</b></span></p></div>
+          <div class="darrow">→</div>
+          <div class="dg"><div class="em">📱</div><h5><span class="es">2 · Los niños entran con el código</span><span class="en">2 · Kids join with the code</span></h5><p><span class="es">En cualquier dispositivo: código → "¿Quién eres?" → eligen su nombre → PIN de 2 dibujos (🐢🌟). O escanean su tarjeta QR.</span><span class="en">On any device: code → "Who are you?" → pick their name → 2-picture PIN (🐢🌟). Or scan their QR badge.</span></p></div>
+          <div class="darrow">→</div>
+          <div class="dg"><div class="em">🗺️</div><h5><span class="es">3 · Los datos vuelven al panel</span><span class="en">3 · Data flows back to the dashboard</span></h5><p><span class="es">Cada respuesta actualiza el mapa de calor, las alertas y los reportes. Offline: se guarda local y sincroniza cuando hay señal.</span><span class="en">Every answer updates the heat map, alerts, and reports. Offline: stored locally, syncs when there's signal.</span></p></div>
+        </div>
+        <div class="pgrid g2" style="margin-top:1.2rem">
+          <div class="pcard">
+            <h4><span class="es">🔒 Principios</span><span class="en">🔒 Principles</span></h4>
+            <p><span class="es">· Los niños nunca necesitan correo ni datos personales<br>· La maestra es dueña de su clase y sus datos<br>· Todo funciona offline primero; la nube es un extra<br>· Un dispositivo compartido o BYOD — ambos sirven</span><span class="en">· Kids never need email or personal data<br>· The teacher owns her class and its data<br>· Everything works offline first; cloud is a bonus<br>· One shared device or BYOD — both work</span></p>
+          </div>
+          <div class="pcard">
+            <h4><span class="es">🗺️ Hoja de ruta de acceso</span><span class="en">🗺️ Access roadmap</span></h4>
+            <p><span class="es">· <b>Hoy (v1):</b> selector de nombre en dispositivo compartido<br>· <b>v2:</b> código de clase + PIN de dibujos + tarjetas QR<br>· <b>v3:</b> sincronización en la nube multi-dispositivo<br>· <b>v3:</b> vista de familia por enlace WhatsApp</span><span class="en">· <b>Today (v1):</b> name picker on a shared device<br>· <b>v2:</b> class code + picture PIN + QR badges<br>· <b>v3:</b> multi-device cloud sync<br>· <b>v3:</b> family view via WhatsApp link</span></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ================= STUDENT OVERLAY ================= -->
+<div class="overlay" id="studentView" style="z-index:110">
+  <div class="portal-top">
+    <span class="brand"><span class="word">CEIBA</span></span>
+    <span class="tname"><span class="es">Vista estudiante — así lo ve el niño</span><span class="en">Student view — what the child sees</span></span>
+    <span class="spacer"></span>
+    <button class="btn btn-ghost" style="padding:.4rem .9rem;font-size:.76rem;border-color:rgba(255,255,255,.3);color:#b8c4d2" onclick="closeStudent()">
+      <span class="es">← Volver al portal</span><span class="en">← Back to portal</span>
+    </button>
+  </div>
+  <div class="main" style="overflow-y:auto">
+    <div class="wrap" style="padding-top:26px;padding-bottom:40px">
+      <h2 style="font-family:var(--serif);font-weight:600;font-size:1.5rem;margin-bottom:.3rem"><span class="es">El viaje del estudiante</span><span class="en">The student journey</span></h2>
+      <div class="msub" style="color:var(--ink-faint);font-size:.84rem;margin-bottom:1.6rem"><span class="es">Tres pantallas: entrar (una sola vez), su casa, y su misión.</span><span class="en">Three screens: log in (once), their home, and their mission.</span></div>
+      <div class="student-wrap">
+
+        <!-- Phone 1: login -->
+        <div>
+          <div class="step-label"><span class="es">Paso 1 · Entrar (una vez por dispositivo)</span><span class="en">Step 1 · Log in (once per device)</span></div>
+          <div class="phone"><div class="screen">
+            <div class="ph-top">🌳 CEIBA</div>
+            <div class="ph-body">
+              <div class="ph-label"><span class="es">Código de tu clase</span><span class="en">Your class code</span></div>
+              <div class="code-input"><span class="fill">7</span><span class="fill">4</span><span class="fill">2</span></div>
+              <div class="ph-label"><span class="es">¿Quién eres tú?</span><span class="en">Who are you?</span></div>
+              <div class="name-grid">
+                <div class="name-cell">Yaritza</div>
+                <div class="name-cell sel">Melquiades</div>
+                <div class="name-cell">Dilia</div>
+                <div class="name-cell">Osvaldo</div>
+              </div>
+              <div class="ph-label"><span class="es">Tu PIN secreto (elige tus 2 dibujos)</span><span class="en">Your secret PIN (pick your 2 pictures)</span></div>
+              <div class="pin-grid">
+                <div class="pin-cell sel">🐢</div>
+                <div class="pin-cell">🦜</div>
+                <div class="pin-cell sel">🌟</div>
+                <div class="pin-cell">🍍</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <!-- Phone 2: home -->
+        <div>
+          <div class="step-label"><span class="es">Paso 2 · Su casa</span><span class="en">Step 2 · Their home</span></div>
+          <div class="phone"><div class="screen">
+            <div class="ph-top">👋 <span class="es">¡Hola, Melquiades!</span><span class="en">Hi, Melquiades!</span><span class="flame">🔥 5 · ⭐ Nv 3</span></div>
+            <div class="ph-body">
+              <div class="mission-card">
+                <div class="ring"><div class="inner">2/3</div></div>
+                <div><b><span class="es">Misión de hoy</span><span class="en">Today's mission</span></b><p><span class="es">1 ejercicio más y completas tu meta 🎯</span><span class="en">1 more exercise to hit your goal 🎯</span></p></div>
+              </div>
+              <div class="assign-card"><span class="es">📌 <b>Tu maestra te asignó:</b> Fracciones equivalentes</span><span class="en">📌 <b>Your teacher assigned:</b> Equivalent fractions</span></div>
+              <div class="ph-label"><span class="es">Tu árbol de saber</span><span class="en">Your knowledge tree</span></div>
+              <div class="tree-box">
+                <svg width="120" height="100" viewBox="0 0 120 100"><path d="M60 96V52" stroke="#8a6018" stroke-width="5" stroke-linecap="round"/><circle cx="60" cy="38" r="24" fill="#4a7848"/><circle cx="40" cy="50" r="15" fill="#5a8858"/><circle cx="80" cy="48" r="16" fill="#3a6838"/><circle cx="52" cy="30" r="4" fill="#e8c878"/><circle cx="70" cy="42" r="4" fill="#e8c878"/><circle cx="44" cy="48" r="4" fill="#e8c878"/><circle cx="64" cy="52" r="4" fill="#ddd2b0" opacity=".6"/><circle cx="82" cy="38" r="4" fill="#ddd2b0" opacity=".6"/></svg>
+                <p style="font-size:.62rem;color:var(--ink-faint)"><span class="es">3 de 17 hojas doradas — cada destreza dominada enciende una</span><span class="en">3 of 17 golden leaves — each mastered skill lights one</span></p>
+              </div>
+              <div class="ph-label"><span class="es">Materias</span><span class="en">Subjects</span></div>
+              <div class="subj-grid">
+                <div class="subj"><span class="se">🧮</span><b><span class="es">Matemáticas</span><span class="en">Math</span></b><div class="bar"><i style="width:45%"></i></div></div>
+                <div class="subj"><span class="se">📖</span><b><span class="es">Español</span><span class="en">Spanish</span></b><div class="bar"><i style="width:60%"></i></div></div>
+                <div class="subj"><span class="se">🌿</span><b><span class="es">Naturales</span><span class="en">Science</span></b><div class="bar"><i style="width:35%"></i></div></div>
+                <div class="subj"><span class="se">🗺️</span><b><span class="es">Sociales</span><span class="en">Social</span></b><div class="bar"><i style="width:25%"></i></div></div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <!-- Phone 3: exercise -->
+        <div>
+          <div class="step-label"><span class="es">Paso 3 · Practicar (~15 min)</span><span class="en">Step 3 · Practice (~15 min)</span></div>
+          <div class="phone"><div class="screen">
+            <div class="ph-top" style="background:var(--slate)">🧮 Fracciones <span class="flame">❤️❤️🤍 · 6/10</span></div>
+            <div class="ph-body">
+              <div style="height:5px;background:var(--paper-3);border-radius:3px;overflow:hidden;margin-bottom:.8rem"><i style="display:block;height:100%;width:60%;background:var(--ochre)"></i></div>
+              <p style="font-size:.8rem;font-weight:600;margin-bottom:.6rem">🔊 <span class="es">¿Cuál fracción es equivalente a ½?</span><span class="en">Which fraction is equivalent to ½?</span></p>
+              <svg width="100%" height="52" viewBox="0 0 200 52"><circle cx="45" cy="26" r="22" fill="none" stroke="#4a5564" stroke-width="2"/><path d="M45 4A22 22 0 0 1 45 48Z" fill="#c89030"/><circle cx="140" cy="26" r="22" fill="none" stroke="#4a5564" stroke-width="2"/><path d="M140 4A22 22 0 0 1 162 26L140 26Z" fill="#e8c878"/><path d="M140 26L162 26A22 22 0 0 1 140 48Z" fill="#c89030"/><path d="M140 4A22 22 0 0 0 140 48" stroke="#4a5564" stroke-width="2" fill="none"/></svg>
+              <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.7rem">
+                <div style="border:1.5px solid var(--line-2);border-radius:9px;padding:.5rem .7rem;font-size:.78rem;background:#fffdf6">1/4</div>
+                <div style="border:1.5px solid var(--leaf);border-radius:9px;padding:.5rem .7rem;font-size:.78rem;background:rgba(74,120,72,.1);font-weight:700">2/4 ✓ <span style="float:right;color:var(--leaf-deep);font-family:var(--mono);font-size:.66rem">+10 XP</span></div>
+                <div style="border:1.5px solid var(--line-2);border-radius:9px;padding:.5rem .7rem;font-size:.78rem;background:#fffdf6">2/3</div>
+              </div>
+              <div style="background:rgba(74,120,72,.1);border-radius:9px;padding:.55rem .7rem;font-size:.68rem;margin-top:.6rem;color:var(--leaf-deep)"><b>💡 <span class="es">¿Por qué?</span><span class="en">Why?</span></b> <span class="es">Si multiplicas arriba y abajo por 2: ½ × 2/2 = 2/4. ¡Son la misma parte del círculo!</span><span class="en">Multiply top and bottom by 2: ½ × 2/2 = 2/4. Same slice of the circle!</span></div>
+            </div>
+          </div></div>
+        </div>
+
+      </div>
+      <div style="text-align:center;margin-top:2rem">
+        <a class="btn btn-ochre" href="app.html"><span class="es">Abrir la app real (v1.1.2) →</span><span class="en">Open the real app (v1.1.2) →</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- language ----------
+var pill=document.getElementById('langPill');
+function setLang(l){
+  document.documentElement.lang=l;
+  pill.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.lang===l)});
+  try{localStorage.setItem('ceiba.lang',l)}catch(e){}
+}
+pill.addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(b) setLang(b.dataset.lang);
+});
+try{ setLang(localStorage.getItem('ceiba.lang')||'es'); }catch(e){ setLang('es'); }
+
+// ---------- portal ----------
+function openPortal(){ document.getElementById('portal').classList.add('open'); document.body.style.overflow='hidden'; }
+function closePortal(){ document.getElementById('portal').classList.remove('open'); document.body.style.overflow=''; }
+function openStudent(){ document.getElementById('studentView').classList.add('open'); }
+function closeStudent(){ document.getElementById('studentView').classList.remove('open'); }
+
+// tabs
+document.querySelectorAll('.side button[data-tab]').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.side button[data-tab]').forEach(function(b){b.classList.remove('on')});
+    btn.classList.add('on');
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('on');
+  });
+});
+
+// demo chips toggle
+document.querySelectorAll('.chip').forEach(function(c){
+  c.addEventListener('click',function(){c.classList.toggle('sel')});
+});
+
+// Enter key on login
+document.getElementById('loginPin').addEventListener('keydown',function(e){ if(e.key==='Enter') openPortal(); });
+</script>
+</body>
+</html>

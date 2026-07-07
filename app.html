@@ -252,6 +252,50 @@ input{font-family:inherit;font-size:inherit;color:inherit}
 #btn-sound{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:6px 11px;font-size:14px;color:rgba(247,240,223,.6);flex-shrink:0;transition:.15s}
 #btn-sound:hover{background:rgba(255,255,255,.18);color:var(--paper)}
 #btn-sound.active{color:var(--ochre-soft)}
+
+/* ── TRUE/FALSE question type */
+.tf-buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.tf-btn{border-radius:14px;padding:22px 12px;font-size:17px;font-weight:700;border:2px solid rgba(20,17,12,.1);transition:.15s;background:var(--paper-2);color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:8px;line-height:1.2}
+.tf-btn .tf-icon{font-size:28px}
+.tf-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.tf-btn.selected{border-color:var(--ochre);background:rgba(200,144,48,.09)}
+.tf-btn.tf-correct{border-color:var(--correct)!important;background:rgba(74,120,72,.1)!important;color:var(--correct)!important}
+.tf-btn.tf-wrong{border-color:var(--wrong)!important;background:rgba(181,74,42,.08)!important;color:var(--wrong)!important}
+.tf-btn:disabled{cursor:default;opacity:.8}
+
+/* ── SVG question display */
+.svg-display{display:flex;justify-content:center;align-items:center;margin:8px 0 18px;gap:20px;flex-wrap:wrap}
+.svg-display svg{max-width:100%;height:auto}
+.svg-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);text-align:center;margin-top:4px}
+
+/* ── MULTISELECT question type */
+.multiselect-hint{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre);font-weight:700;margin-bottom:10px}
+.opt.multi-selected{border-color:var(--ochre);background:rgba(200,144,48,.09)}
+.opt .multi-check{font-size:18px;margin-right:8px;flex-shrink:0;vertical-align:middle}
+.opt.multi-correct{border-color:var(--correct)!important;background:rgba(74,120,72,.1)!important;color:var(--correct)!important}
+.opt.multi-missed{border-color:var(--correct)!important;background:rgba(74,120,72,.05)!important;color:var(--correct)!important;opacity:.6}
+
+/* ── ORDER / TAP-TO-SEQUENCE question type */
+.order-hint{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre);font-weight:700;margin-bottom:12px}
+.order-items{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.order-item-btn{background:var(--paper-2);border:2px solid rgba(20,17,12,.1);border-radius:12px;padding:14px 18px;font-size:16px;font-family:var(--sans);color:var(--ink);text-align:left;transition:.15s;display:flex;align-items:center;gap:14px;position:relative}
+.order-item-btn:hover:not(:disabled):not(.order-tapped){border-color:var(--ochre);background:rgba(200,144,48,.06)}
+.order-item-btn.order-tapped{border-color:var(--ochre);background:rgba(200,144,48,.09);color:var(--ink);opacity:.8}
+.order-item-btn.order-correct{border-color:var(--correct)!important;background:rgba(74,120,72,.1)!important}
+.order-item-btn.order-wrong{border-color:var(--wrong)!important;background:rgba(181,74,42,.08)!important}
+.order-seq-num{width:26px;height:26px;border-radius:50%;background:var(--forest);color:var(--ochre-soft);font-family:var(--mono);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s}
+.order-seq-num.empty{background:rgba(20,17,12,.1);color:transparent}
+
+/* ── PAIR/MATCH question type */
+.pair-container{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.pair-col-label{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:8px;text-align:center}
+.pair-item{border-radius:10px;padding:12px 14px;font-size:14px;font-family:var(--sans);color:var(--ink);border:2px solid rgba(20,17,12,.1);background:var(--paper-2);cursor:pointer;transition:.15s;text-align:center;min-height:48px;display:flex;align-items:center;justify-content:center;line-height:1.3}
+.pair-item:hover:not(.paired):not(.pair-disabled){border-color:var(--ochre);background:rgba(200,144,48,.06)}
+.pair-item.pair-selected{border-color:var(--ochre);background:rgba(200,144,48,.12);transform:scale(1.02)}
+.pair-item.paired{opacity:.55;pointer-events:none}
+.pair-item.pair-correct{border-color:var(--correct)!important;background:rgba(74,120,72,.1)!important}
+.pair-item.pair-wrong{border-color:var(--wrong)!important;background:rgba(181,74,42,.08)!important}
+.pair-connections{position:relative;height:0}
 </style>
 </head>
 <canvas id="confetti-canvas"></canvas>
@@ -387,6 +431,80 @@ input{font-family:inherit;font-size:inherit;color:inherit}
 
 <script>
 // ═══════════════════════════════════════════════════════
+//  SVG GENERATORS — inline visuals for interactive questions
+// ═══════════════════════════════════════════════════════
+function svgFractionCircle(n, d, color='#4a7ac8') {
+  const s=130, cx=65, cy=65, r=56;
+  if (n<=0) return `<svg viewBox="0 0 ${s} ${s}" width="${s}" height="${s}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#e8e0d0" stroke="#aaa" stroke-width="2"/></svg>`;
+  if (n>=d) return `<svg viewBox="0 0 ${s} ${s}" width="${s}" height="${s}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" stroke="white" stroke-width="2"/></svg>`;
+  const a = 2*Math.PI/d;
+  let p = '';
+  for (let i=0;i<d;i++) {
+    const s1=i*a-Math.PI/2, s2=s1+a;
+    const x1=(cx+r*Math.cos(s1)).toFixed(2), y1=(cy+r*Math.sin(s1)).toFixed(2);
+    const x2=(cx+r*Math.cos(s2)).toFixed(2), y2=(cy+r*Math.sin(s2)).toFixed(2);
+    p += `<path d="M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${a>Math.PI?1:0} 1 ${x2},${y2} Z" fill="${i<n?color:'#e8e0d0'}" stroke="white" stroke-width="2"/>`;
+  }
+  return `<svg viewBox="0 0 ${s} ${s}" width="${s}" height="${s}">${p}</svg>`;
+}
+
+function svgFractionBar(n, d, color='#4a7ac8') {
+  const W=220, H=44, cw=W/d;
+  let r='';
+  for (let i=0;i<d;i++) r+=`<rect x="${(i*cw).toFixed(1)}" y="0" width="${(cw-.5).toFixed(1)}" height="${H}" fill="${i<n?color:'#e8e0d0'}" rx="3"/>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="max-width:100%">${r}</svg>`;
+}
+
+function svgNumberLine(min, max, marked, tickLabels) {
+  const W=270, H=72, pad=28, lY=44;
+  const toX = v => pad + (v-min)/(max-min)*(W-2*pad);
+  const mx = toX(marked);
+  let ticks='';
+  if (tickLabels) tickLabels.forEach(([v,lbl])=>{
+    const x=toX(v);
+    ticks+=`<line x1="${x}" y1="${lY-6}" x2="${x}" y2="${lY+6}" stroke="#555" stroke-width="1.5"/><text x="${x}" y="${lY+20}" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">${lbl}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="max-width:100%">
+    <line x1="${pad}" y1="${lY}" x2="${W-pad}" y2="${lY}" stroke="#444" stroke-width="2.5"/>
+    <polygon points="${W-pad},${lY} ${W-pad-9},${lY-4} ${W-pad-9},${lY+4}" fill="#444"/>
+    ${ticks}
+    <circle cx="${mx}" cy="${lY}" r="7.5" fill="#c88030" stroke="white" stroke-width="2.5"/>
+    <polygon points="${mx},${lY-17} ${mx-6},${lY-28} ${mx+6},${lY-28}" fill="#c88030"/>
+  </svg>`;
+}
+
+function svgRectangle(w, h, unit='cm') {
+  const maxW=190, maxH=110, sc=Math.min(maxW/w, maxH/h, 32);
+  const rw=w*sc, rh=h*sc, svgW=rw+72, svgH=rh+58, rx=36, ry=22;
+  return `<svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" style="max-width:100%">
+    <rect x="${rx}" y="${ry}" width="${rw}" height="${rh}" fill="#d4e8d4" stroke="#4a7848" stroke-width="2.5" rx="3"/>
+    <text x="${rx+rw/2}" y="${ry-8}" text-anchor="middle" font-size="13" font-weight="700" fill="#4a7848" font-family="sans-serif">${w} ${unit}</text>
+    <text x="${rx-10}" y="${ry+rh/2}" text-anchor="middle" font-size="13" font-weight="700" fill="#4a7848" font-family="sans-serif" transform="rotate(-90,${rx-10},${ry+rh/2})">${h} ${unit}</text>
+  </svg>`;
+}
+
+function svgSquare(side, unit='cm') {
+  return svgRectangle(side, side, unit);
+}
+
+function svgPercentBar(pct, color='#c88030') {
+  const W=230, H=34, filled=(pct/100)*W;
+  return `<svg viewBox="0 0 ${W} ${H+18}" width="${W}" height="${H+18}" style="max-width:100%">
+    <rect x="0" y="0" width="${W}" height="${H}" fill="#e8e0d0" rx="8"/>
+    <rect x="0" y="0" width="${filled.toFixed(1)}" height="${H}" fill="${color}" rx="8"/>
+    <text x="${W/2}" y="${H+15}" text-anchor="middle" font-size="13" fill="#666" font-family="sans-serif">${pct}%</text>
+  </svg>`;
+}
+
+function svgTwoCircles(n1,d1,n2,d2,c1='#4a7ac8',c2='#c88030') {
+  const s=`<div class="svg-display" style="gap:28px"><div style="text-align:center">${svgFractionCircle(n1,d1,c1)}<div class="svg-label">${n1}/${d1}</div></div><div style="text-align:center">${svgFractionCircle(n2,d2,c2)}<div class="svg-label">${n2}/${d2}</div></div></div>`;
+  return s;
+}
+
+// Wrap any SVG string in a display div
+function svgQ(svgStr) { return `<div class="svg-display">${svgStr}</div>`; }
+
+// ═══════════════════════════════════════════════════════
 //  CURRICULUM — Panama MEDUCA 5th & 6th grade skills
 // ═══════════════════════════════════════════════════════
 const CURRICULUM = {
@@ -411,6 +529,34 @@ const CURRICULUM = {
           {type:'mcq', text:'¿Qué número falta? 3/_ = 6/8',
            opts:['3','4','5','2'], answer:1,
            explain:'6/8 = 3/4. Si multiplicamos numerador y denominador por 2: 3/4 → 6/8. El denominador es 4.'},
+          {type:'svg-mcq', svg: svgQ(svgFractionCircle(3,4)),
+           text:'¿Qué fracción representa la figura sombreada?',
+           opts:['1/4','3/4','2/3','4/3'], answer:1,
+           explain:'3 partes de 4 están sombreadas. La fracción es 3/4.'},
+          {type:'svg-mcq', svg: svgQ(svgFractionBar(2,5)),
+           text:'La barra muestra una fracción. ¿Cuál es?',
+           opts:['2/3','3/5','2/5','5/2'], answer:2,
+           explain:'2 de las 5 partes iguales están coloreadas: 2/5.'},
+          {type:'svg-mcq', svg: svgQ(svgNumberLine(0,1,0.5,[[0,'0'],[0.5,'?'],[1,'1']])),
+           text:'La flecha señala un punto en la recta numérica. ¿Qué fracción es?',
+           opts:['1/4','2/3','1/2','3/4'], answer:2,
+           explain:'El punto está exactamente a la mitad entre 0 y 1: es 1/2.'},
+          {type:'tf', text:'La fracción 1/2 y la fracción 2/4 representan la misma cantidad.',
+           answer:true,
+           explain:'1/2 = 2/4 porque si multiplicas numerador y denominador de 1/2 por 2, obtienes 2/4.'},
+          {type:'order', text:'Ordena estas fracciones de menor a mayor:',
+           items:['3/4','1/4','2/4','1/2'], correctOrder:[1,2,3,0],
+           explain:'1/4 < 2/4 = 1/2 < 3/4. Las fracciones con el mismo denominador se ordenan por el numerador.'},
+          {type:'mcq', text:'¿Cuál fracción es equivalente a 1/2?',
+           opts:['2/3','3/6','4/5','2/5'], answer:1,
+           explain:'3/6 = 1/2 porque 1×3=3 y 2×3=6. Las fracciones equivalentes tienen el mismo valor.'},
+          {type:'tf', text:'En una fracción propia, el numerador siempre es menor que el denominador.',
+           answer:true,
+           explain:'Correcto. Fracción propia: numerador < denominador (ej. 2/5, 3/8). Si numerador ≥ denominador, es impropia.'},
+          {type:'svg-mcq', svg: svgQ(svgFractionCircle(1,3)),
+           text:'¿Qué fracción está sombreada en el círculo?',
+           opts:['2/3','1/3','3/1','1/4'], answer:1,
+           explain:'1 de las 3 partes iguales está sombreada: 1/3.'},
         ]
       },
       {
@@ -419,19 +565,35 @@ const CURRICULUM = {
         questions:[
           {type:'mcq', text:'¿Cuánto es 3.5 + 2.8?',
            opts:['5.3','6.3','6.13','5.13'], answer:1,
-           explain:'3.5 + 2.8: suma primero los décimos (5+8=13, escribes 3 y llevas 1), luego los enteros (3+2+1=6). Resultado: 6.3'},
+           explain:'3.5 + 2.8: suma décimos (5+8=13, escribes 3 llevas 1), enteros (3+2+1=6). Resultado: 6.3'},
           {type:'fill', text:'Calcula: 7.20 − 3.45 =', answer:'3.75',
            alts:['3,75'],
-           explain:'7.20 − 3.45: 7.20 − 3.45 = 3.75. Recuerda alinear los puntos decimales.'},
+           explain:'7.20 − 3.45 = 3.75. Recuerda alinear los puntos decimales.'},
           {type:'mcq', text:'Un libro cuesta $4.75 y una libreta $2.30. ¿Cuánto es en total?',
-           opts:['$6.95','$7.05','$7.00','$6.05'], answer:1, /* actually 7.05 */
-           explain:'4.75 + 2.30 = 7.05. Suma centavos: 75+30=105 → escribes 05 y llevas 1. Dólares: 4+2+1=7.'},
+           opts:['$6.95','$7.05','$7.00','$6.05'], answer:1,
+           explain:'4.75 + 2.30 = 7.05. Suma centavos: 75+30=105 → escribes 05 llevas 1. Dólares: 4+2+1=7.'},
           {type:'mcq', text:'¿Cuál número decimal está entre 2.3 y 2.4?',
            opts:['2.5','2.35','2.2','3.0'], answer:1,
            explain:'2.35 está después de 2.30 y antes de 2.40.'},
           {type:'fill', text:'Ordena de menor a mayor: 0.8, 0.08, 0.80 → el mayor es:', answer:'0.8',
            alts:['0.80'],
-           explain:'0.08 < 0.8 = 0.80. Los dos últimos son iguales (0.8 = 0.80). El mayor es 0.8.'},
+           explain:'0.08 < 0.8 = 0.80. Los dos últimos son iguales. El mayor es 0.8.'},
+          {type:'svg-mcq', svg: svgQ(svgNumberLine(0, 1, 0.7, [[0,'0'],[0.5,'0.5'],[1,'1']])),
+           text:'¿Qué número decimal indica la flecha en la recta?',
+           opts:['0.3','0.5','0.7','0.9'], answer:2,
+           explain:'La flecha está en 0.7, que está entre 0.5 y 1.0, más cerca del 1.'},
+          {type:'tf', text:'El número 0.5 es exactamente igual a 1/2.',
+           answer:true,
+           explain:'0.5 = 5/10 = 1/2. Puedes convertir: divide 1 entre 2 en una calculadora y obtienes 0.5.'},
+          {type:'order', text:'Ordena estos decimales de menor a mayor:',
+           items:['1.2','0.8','1.05','0.95'], correctOrder:[1,3,2,0],
+           explain:'0.8 < 0.95 < 1.05 < 1.2. Compara primero los enteros, luego los décimos.'},
+          {type:'mcq', text:'¿Cuánto es 12.4 − 7.9?',
+           opts:['4.5','5.5','4.3','5.3'], answer:0,
+           explain:'12.4 − 7.9 = 4.5. Puedes pensar: 7.9 + ? = 12.4. La respuesta es 4.5.'},
+          {type:'fill', text:'¿Cuánto es 0.3 + 0.4 + 0.2?', answer:'0.9',
+           alts:['0,9','.9'],
+           explain:'0.3 + 0.4 = 0.7, luego 0.7 + 0.2 = 0.9.'},
         ]
       },
       {
@@ -450,9 +612,30 @@ const CURRICULUM = {
           {type:'mcq', text:'Un jardín cuadrado tiene perímetro de 36 m. ¿Cuánto mide cada lado?',
            opts:['6 m','9 m','12 m','8 m'], answer:1,
            explain:'Perímetro cuadrado = 4 × lado. Entonces lado = 36 ÷ 4 = 9 m.'},
-          {type:'fill', text:'¿Cuántas baldosas cuadradas de 1m × 1m necesito para cubrir un cuarto de 5m × 3m?', answer:'15',
+          {type:'fill', text:'¿Cuántas baldosas de 1m × 1m necesito para cubrir un cuarto de 5m × 3m?', answer:'15',
            alts:['15 baldosas'],
            explain:'Área = 5 × 3 = 15 m². Necesitas 15 baldosas.'},
+          {type:'svg-mcq', svg: svgQ(svgRectangle(8,3,'cm')),
+           text:'¿Cuál es el área del rectángulo?',
+           opts:['11 cm²','22 cm²','24 cm²','32 cm²'], answer:2,
+           explain:'Área = largo × ancho = 8 × 3 = 24 cm².'},
+          {type:'svg-mcq', svg: svgQ(svgSquare(6,'m')),
+           text:'¿Cuál es el perímetro del cuadrado?',
+           opts:['12 m','24 m','36 m','6 m'], answer:1,
+           explain:'Perímetro del cuadrado = 4 × lado = 4 × 6 = 24 m.'},
+          {type:'tf', text:'El área de un rectángulo siempre es mayor que su perímetro.',
+           answer:false,
+           explain:'No siempre. Un rectángulo de 1×1 cm tiene área 1 cm² y perímetro 4 cm. Depende de las medidas.'},
+          {type:'svg-mcq', svg: svgQ(svgRectangle(5,4,'m')),
+           text:'¿Cuál es el perímetro de esta figura?',
+           opts:['9 m','18 m','20 m','22 m'], answer:1,
+           explain:'Perímetro = 2 × (largo + ancho) = 2 × (5 + 4) = 2 × 9 = 18 m.'},
+          {type:'fill', text:'Un triángulo tiene base de 8 cm y altura de 5 cm. ¿Cuál es su área?', answer:'20',
+           alts:['20 cm2','20 cm²'],
+           explain:'Área del triángulo = (base × altura) ÷ 2 = (8 × 5) ÷ 2 = 40 ÷ 2 = 20 cm².'},
+          {type:'multiselect', text:'¿Cuáles de estas figuras tienen cuatro lados iguales?',
+           opts:['Rectángulo','Cuadrado','Triángulo equilátero','Rombo'], answers:[1,3],
+           explain:'El cuadrado y el rombo tienen sus cuatro lados iguales. El rectángulo tiene lados iguales en pares, no todos iguales.'},
         ]
       },
       {
@@ -460,19 +643,33 @@ const CURRICULUM = {
         questions:[
           {type:'mcq', text:'¿Cuánto es 7 × 8?',
            opts:['54','56','64','48'], answer:1,
-           explain:'7 × 8 = 56. Truco: 7 × 8 = (7 × 4) + (7 × 4) = 28 + 28 = 56.'},
+           explain:'7 × 8 = 56. Truco: 7 × 8 = (7×4) + (7×4) = 28 + 28 = 56.'},
           {type:'fill', text:'56 ÷ 7 =', answer:'8',
            alts:['8.0'],
-           explain:'Si 7 × 8 = 56, entonces 56 ÷ 7 = 8. La división es la operación inversa de la multiplicación.'},
+           explain:'Si 7 × 8 = 56, entonces 56 ÷ 7 = 8. La división es la operación inversa.'},
           {type:'mcq', text:'Una caja tiene 9 filas con 12 manzanas cada una. ¿Cuántas manzanas hay en total?',
            opts:['98','106','108','112'], answer:2,
-           explain:'9 × 12 = 108. Descompon: 9 × 10 = 90, más 9 × 2 = 18. Total: 90 + 18 = 108.'},
+           explain:'9 × 12 = 108. Descompón: 9×10=90, más 9×2=18. Total: 108.'},
           {type:'mcq', text:'¿Cuánto es 144 ÷ 12?',
            opts:['10','11','12','13'], answer:2,
            explain:'144 ÷ 12 = 12. Porque 12 × 12 = 144.'},
-          {type:'mcq', text:'Si repartes 37 caramelos entre 5 niños por igual, ¿cuántos le sobran?',
+          {type:'mcq', text:'Si repartes 37 caramelos entre 5 niños por igual, ¿cuántos sobran?',
            opts:['1','2','3','4'], answer:1,
            explain:'37 ÷ 5 = 7 con residuo 2. Porque 5 × 7 = 35, y 37 − 35 = 2.'},
+          {type:'tf', text:'La división siempre da un resultado exacto, sin residuo.',
+           answer:false,
+           explain:'No siempre. 37 ÷ 5 = 7 con residuo 2. Solo hay resultado exacto cuando el dividendo es múltiplo del divisor.'},
+          {type:'fill', text:'¿Cuánto es 9 × 9?', answer:'81',
+           explain:'9 × 9 = 81. Es importante memorizar las tablas de multiplicar hasta el 12.'},
+          {type:'order', text:'Ordena estos productos de menor a mayor:',
+           items:['6 × 7','3 × 9','8 × 4','5 × 6'], correctOrder:[1,3,2,0],
+           explain:'3×9=27 < 5×6=30 < 8×4=32 < 6×7=42. Calcula cada producto primero.'},
+          {type:'mcq', text:'¿Cuántos grupos de 6 se pueden hacer con 48?',
+           opts:['6','7','8','9'], answer:2,
+           explain:'48 ÷ 6 = 8. Porque 6 × 8 = 48.'},
+          {type:'fill', text:'Un paquete de lápices trae 12. ¿Cuántos lápices hay en 7 paquetes?', answer:'84',
+           alts:['84 lápices'],
+           explain:'12 × 7 = 84. Descompón: 12×7 = 10×7 + 2×7 = 70 + 14 = 84.'},
         ]
       },
       {
@@ -481,19 +678,36 @@ const CURRICULUM = {
         questions:[
           {type:'mcq', text:'¿Cuánto es 1/4 + 2/4?',
            opts:['3/8','3/4','2/4','1/2'], answer:1,
-           explain:'Con el mismo denominador, suma los numeradores: 1 + 2 = 3. Resultado: 3/4.'},
+           explain:'Mismo denominador: suma los numeradores: 1 + 2 = 3. Resultado: 3/4.'},
           {type:'fill', text:'3/5 − 1/5 =', answer:'2/5',
            alts:['2 / 5'],
            explain:'Mismo denominador: 3 − 1 = 2. Resultado: 2/5.'},
-          {type:'mcq', text:'¿Cuánto es 1/3 + 1/6? (Pista: busca el denominador común)',
+          {type:'mcq', text:'¿Cuánto es 1/3 + 1/6? (busca el denominador común)',
            opts:['2/9','1/2','2/6','3/6'], answer:1,
-           explain:'1/3 = 2/6. Entonces 2/6 + 1/6 = 3/6 = 1/2. Busca siempre el mínimo común múltiplo.'},
-          {type:'mcq', text:'Comiste 2/8 de una sandía en la mañana y 3/8 en la tarde. ¿Qué fracción comiste en total?',
+           explain:'1/3 = 2/6. Entonces 2/6 + 1/6 = 3/6 = 1/2.'},
+          {type:'mcq', text:'Comiste 2/8 de una sandía en la mañana y 3/8 en la tarde. ¿Qué fracción en total?',
            opts:['5/16','5/8','6/8','1/2'], answer:1,
            explain:'2/8 + 3/8 = 5/8. Mismo denominador, suma los numeradores.'},
           {type:'fill', text:'¿Cuánto es 7/10 − 3/10?', answer:'4/10',
            alts:['2/5','4 / 10'],
-           explain:'7/10 − 3/10 = 4/10 = 2/5. Ambas respuestas son correctas.'},
+           explain:'7/10 − 3/10 = 4/10 = 2/5.'},
+          {type:'svg-mcq', svg: svgTwoCircles(1,3,1,3),
+           text:'Tienes 1/3 de un pastel y te dan otro 1/3. ¿Cuánto tienes en total?',
+           opts:['1/6','2/6','2/3','1/3'], answer:2,
+           explain:'1/3 + 1/3 = 2/3. Las dos figuras juntas representan 2/3 del pastel.'},
+          {type:'tf', text:'Para sumar fracciones con distinto denominador hay que encontrar el denominador común primero.',
+           answer:true,
+           explain:'Correcto. Ej: 1/4 + 1/6. El denominador común es 12: 3/12 + 2/12 = 5/12.'},
+          {type:'fill', text:'1/2 + 1/4 =', answer:'3/4',
+           alts:['3 / 4'],
+           explain:'1/2 = 2/4. Entonces 2/4 + 1/4 = 3/4.'},
+          {type:'mcq', text:'¿Cuánto es 5/6 − 1/3?',
+           opts:['4/3','1/2','4/6','1/3'], answer:1,
+           explain:'1/3 = 2/6. Entonces 5/6 − 2/6 = 3/6 = 1/2.'},
+          {type:'svg-mcq', svg: svgQ(svgFractionBar(5,8)),
+           text:'Si la barra representa 5/8 y quitas 2/8, ¿qué fracción queda?',
+           opts:['3/8','2/8','3/16','7/8'], answer:0,
+           explain:'5/8 − 2/8 = 3/8. Mismo denominador, resta numeradores.'},
         ]
       },
       {
@@ -508,13 +722,29 @@ const CURRICULUM = {
            explain:'25% = una cuarta parte. 200 ÷ 4 = 50.'},
           {type:'mcq', text:'3 es el ___% de 12.',
            opts:['15%','20%','25%','30%'], answer:2,
-           explain:'3/12 = 1/4 = 25%. Divide 3 entre 12: 0.25 × 100 = 25%.'},
-          {type:'mcq', text:'Un par de zapatos cuesta $40. Hay un descuento del 10%. ¿Cuánto pagas?',
+           explain:'3/12 = 1/4 = 25%. Divide 3 entre 12 = 0.25 → × 100 = 25%.'},
+          {type:'mcq', text:'Unos zapatos cuestan $40 con descuento del 10%. ¿Cuánto pagas?',
            opts:['$30','$32','$36','$34'], answer:2,
            explain:'10% de $40 = $4. Precio final: $40 − $4 = $36.'},
           {type:'fill', text:'¿Cuánto es el 10% de 150?', answer:'15',
            alts:['15.0'],
            explain:'Para calcular el 10%, divide entre 10. 150 ÷ 10 = 15.'},
+          {type:'svg-mcq', svg: svgQ(svgPercentBar(75)),
+           text:'La barra muestra un porcentaje. ¿Cuál es?',
+           opts:['25%','50%','70%','75%'], answer:3,
+           explain:'La barra muestra 3/4 del total lleno: 75%.'},
+          {type:'tf', text:'El 100% de cualquier cantidad es igual a la cantidad completa.',
+           answer:true,
+           explain:'Correcto. 100% = todo el valor. El 100% de $50 = $50.'},
+          {type:'fill', text:'¿Cuánto es el 30% de 60?', answer:'18',
+           alts:['18.0'],
+           explain:'30% de 60 = 60 × 0.30 = 18. También: 10% de 60 = 6, luego 6 × 3 = 18.'},
+          {type:'order', text:'Ordena de menor a mayor:',
+           items:['75%','1/4','0.6','50%'], correctOrder:[1,3,2,0],
+           explain:'1/4=25% < 50% < 0.6=60% < 75%. Convierte todo a porcentaje para comparar.'},
+          {type:'mcq', text:'En una clase de 20 estudiantes, el 40% son niñas. ¿Cuántas niñas hay?',
+           opts:['4','6','8','10'], answer:2,
+           explain:'40% de 20 = 20 × 0.40 = 8 niñas.'},
         ]
       }
     ]
@@ -532,18 +762,39 @@ const CURRICULUM = {
            explain:'El texto dice claramente: "el autobús se descompuso".'},
           {type:'mcq',
            context:'Andrés llegó tarde a la escuela porque el autobús se descompuso. Al entrar al aula, la maestra lo miró con sorpresa y le preguntó la razón. Andrés explicó lo que ocurrió. La maestra asintió y le indicó que tomara su lugar.',
-           text:'¿Cómo reaccionó la maestra al ver que Andrés explicó lo ocurrido?',
+           text:'¿Cómo reaccionó la maestra cuando Andrés explicó lo ocurrido?',
            opts:['Se enojó mucho','Lo regañó','Aceptó la razón','Le puso una nota a sus padres'], answer:2,
-           explain:'"La maestra asintió" significa que aceptó o estuvo de acuerdo con la explicación.'},
+           explain:'"La maestra asintió" significa que aceptó o estuvo de acuerdo.'},
           {type:'mcq', text:'¿Cuál es el sinónimo de "veloz"?',
            opts:['Lento','Rápido','Grande','Suave'], answer:1,
-           explain:'Veloz significa rápido. Ambas palabras describen algo que se mueve con rapidez.'},
-          {type:'fill', text:'Escribe el plural de la palabra: "el árbol"', answer:'los árboles',
+           explain:'Veloz significa rápido. Ambas describen algo que se mueve con rapidez.'},
+          {type:'fill', text:'Escribe el plural de: "el árbol"', answer:'los árboles',
            alts:['árboles','Los árboles'],
-           explain:'El plural de "el árbol" es "los árboles". Se agrega -es a palabras terminadas en consonante.'},
-          {type:'mcq', text:'¿Cuál de estas oraciones tiene un error de ortografía?',
-           opts:['La niña corrió muy rápido.','El perro se llama Toby.','Mi mamá fue al mercado.','Mañana voy a mi casa de mi abuela.'], answer:3,
-           explain:'"Voy a mi casa de mi abuela" tiene redundancia. Lo correcto sería "Voy a casa de mi abuela".'},
+           explain:'El plural de "árbol" es "árboles". A palabras terminadas en consonante se agrega -es.'},
+          {type:'tf', text:'"Asentir" significa estar de acuerdo con algo.',
+           answer:true,
+           explain:'Correcto. "La maestra asintió" = la maestra indicó que estaba de acuerdo.'},
+          {type:'mcq',
+           context:'El Canal de Panamá tiene 80 kilómetros de longitud. Fue inaugurado en 1914 y conecta el Océano Pacífico con el Atlántico. Cada año transitan por él más de 14,000 barcos de distintas partes del mundo.',
+           text:'¿Cuántos kilómetros de longitud tiene el Canal de Panamá?',
+           opts:['40 km','60 km','80 km','100 km'], answer:2,
+           explain:'"El Canal de Panamá tiene 80 kilómetros de longitud." Es información explícita del texto.'},
+          {type:'mcq',
+           context:'El Canal de Panamá tiene 80 kilómetros de longitud. Fue inaugurado en 1914 y conecta el Océano Pacífico con el Atlántico. Cada año transitan por él más de 14,000 barcos de distintas partes del mundo.',
+           text:'¿Qué idea principal expresa este párrafo?',
+           opts:['La historia de Panamá antes del canal','Los datos importantes del Canal de Panamá','Cómo se construyó el canal','Los países que usan el canal'], answer:1,
+           explain:'El párrafo da datos del canal (longitud, fecha, función, uso). La idea principal es informar sobre el canal.'},
+          {type:'fill', text:'¿Cuál es el antónimo (contrario) de "alegre"?', answer:'triste',
+           alts:['Triste'],
+           explain:'El antónimo de alegre es triste. Son palabras de significado opuesto.'},
+          {type:'multiselect', text:'Selecciona todas las palabras que son sinónimos de "bonito":',
+           opts:['feo','hermoso','lindo','bello'], answers:[1,2,3],
+           explain:'Hermoso, lindo y bello son sinónimos de bonito. Feo es su antónimo.'},
+          {type:'mcq',
+           context:'Las aves migratorias viajan miles de kilómetros cada año buscando climas cálidos o fuentes de alimento. Algunas atraviesan océanos enteros durante su viaje. Panamá es un corredor vital para muchas de estas aves.',
+           text:'¿Por qué migran las aves según el texto?',
+           opts:['Para escapar de los depredadores','Para buscar climas cálidos o alimento','Para construir sus nidos','Para encontrar pareja'], answer:1,
+           explain:'El texto dice: "buscando climas cálidos o fuentes de alimento".'},
         ]
       },
       {
@@ -551,40 +802,71 @@ const CURRICULUM = {
         questions:[
           {type:'mcq', text:'¿Cuál de estas palabras está escrita correctamente?',
            opts:['habia','había','abia','havía'], answer:1,
-           explain:'"Había" lleva tilde en la "i" porque es una palabra esdrújula (el acento cae en la antepenúltima sílaba).'},
+           explain:'"Había" lleva tilde en la í. Las palabras que llevan el acento en la antepenúltima sílaba siempre se tildan.'},
           {type:'mcq', text:'¿Qué signo va al inicio de una pregunta en español?',
            opts:['¿','¡','«','"'], answer:0,
-           explain:'En español, las preguntas llevan ¿ al inicio y ? al final. Es único del español.'},
+           explain:'En español, las preguntas llevan ¿ al inicio y ? al final. Es una regla única del español.'},
           {type:'fill', text:'Escribe la palabra con su acento correcto: "el arbol"', answer:'el árbol',
            alts:['árbol','Árbol'],
-           explain:'"Árbol" es una palabra esdrújula: el acento cae en "Ár". Las esdrújulas siempre llevan tilde.'},
-          {type:'mcq', text:'¿Dónde va la coma en esta oración? "Compré pan leche y huevos"',
+           explain:'"Árbol" lleva tilde porque el acento recae en la sílaba Ár. Las esdrújulas siempre llevan tilde.'},
+          {type:'mcq', text:'¿Dónde va la coma? "Compré pan leche y huevos"',
            opts:['Compré pan, leche y huevos.','Compré, pan leche y huevos.','Compré pan leche, y huevos.','No necesita coma.'], answer:0,
            explain:'La coma separa elementos de una lista. Va después de cada elemento excepto antes del último "y".'},
           {type:'mcq', text:'¿Cuál oración usa correctamente el punto?',
            opts:['Hoy llueve. ¿Tienes paraguas?','Hoy llueve ¿tienes paraguas?','Hoy llueve? Tienes paraguas.','Hoy. llueve tienes paraguas.'], answer:0,
-           explain:'El punto cierra una oración completa. Después del punto, la siguiente oración empieza con mayúscula.'},
+           explain:'El punto cierra una oración completa. La siguiente empieza con mayúscula.'},
+          {type:'tf', text:'La coma se puede usar para separar elementos en una lista.',
+           answer:true,
+           explain:'Correcto. "Compré manzanas, naranjas y peras." La coma separa los elementos.'},
+          {type:'mcq', text:'¿Cuál de estas palabras lleva tilde?',
+           opts:['papa','cafe','examen','facil'], answer:3,
+           explain:'"Fácil" es una palabra grave (el acento cae en la penúltima sílaba) que termina en consonante que no es n ni s, por lo que lleva tilde.'},
+          {type:'tf', text:'La letra "b" y la letra "v" tienen el mismo sonido en el español de Panamá.',
+           answer:true,
+           explain:'Correcto. En el español americano, "b" y "v" suenan igual. Por eso es importante conocer la ortografía de las palabras.'},
+          {type:'fill', text:'Coloca la tilde correctamente: "el telefono"', answer:'el teléfono',
+           alts:['teléfono','Teléfono'],
+           explain:'"Teléfono" es esdrújula: el acento cae en "lé". Las esdrújulas siempre llevan tilde.'},
+          {type:'order', text:'Ordena las reglas de tilde: ¿En cuál tipo de palabra SÍ se escribe tilde siempre?',
+           items:['Aguda terminada en vocal, n o s','Grave terminada en consonante (no n ni s)','Esdrújula','Aguda terminada en consonante (no n ni s)'],
+           correctOrder:[0,2,1,3],
+           explain:'Siempre llevan tilde: esdrújulas (todas), agudas que terminan en vocal/n/s, graves que terminan en consonante. Las agudas en consonante NO la llevan.'},
         ]
       },
       {
         id:'esp-gram-1', name:'Gramática: sujeto y predicado', grade:[5,6],
         prereqs:['esp-comp-1'],
         questions:[
-          {type:'mcq', text:'En la oración "Los estudiantes estudian mucho", ¿cuál es el sujeto?',
+          {type:'mcq', text:'En "Los estudiantes estudian mucho", ¿cuál es el sujeto?',
            opts:['estudian mucho','Los estudiantes','mucho','Los estudiantes estudian'], answer:1,
            explain:'El sujeto es quien realiza la acción: "Los estudiantes".'},
           {type:'mcq', text:'¿Cuál es el predicado de: "Mi perro ladra de noche"?',
            opts:['Mi perro','ladra de noche','de noche','Mi perro ladra'], answer:1,
            explain:'El predicado expresa lo que hace el sujeto: "ladra de noche".'},
-          {type:'fill', text:'Completa: En "El sol sale cada mañana", el verbo es:', answer:'sale',
+          {type:'fill', text:'En "El sol sale cada mañana", el verbo es:', answer:'sale',
            alts:['Sale'],
            explain:'"Sale" es el verbo: la acción que realiza el sujeto (el sol).'},
-          {type:'mcq', text:'¿Cuál oración tiene sujeto implícito (no escrito)?',
+          {type:'mcq', text:'¿Cuál oración tiene sujeto implícito (tácito)?',
            opts:['María canta muy bien.','Canta muy bien.','La niña canta.','Todos cantan.'], answer:1,
-           explain:'"Canta muy bien" no tiene sujeto escrito, pero se sobreentiende que es "ella". Sujeto implícito.'},
+           explain:'"Canta muy bien" no tiene sujeto escrito, pero se sobreentiende "ella". Sujeto implícito.'},
           {type:'mcq', text:'¿Cuál es el sujeto de: "Juegan fútbol en el parque"?',
            opts:['en el parque','fútbol','Ellos (implícito)','Juegan fútbol'], answer:2,
            explain:'No hay sujeto escrito. El sujeto es implícito: "ellos" o "ellas".'},
+          {type:'tf', text:'Toda oración debe tener un sujeto escrito visible para ser correcta.',
+           answer:false,
+           explain:'Las oraciones con sujeto implícito (tácito) son correctas. "Comemos arroz" es perfectamente válida.'},
+          {type:'multiselect', text:'Selecciona todas las oraciones que tienen el sujeto escrito:',
+           opts:['Los perros ladran.','Llueve mucho hoy.','Carla y Pedro juegan.','¡Corre más rápido!'], answers:[0,2],
+           explain:'"Los perros" y "Carla y Pedro" son sujetos explícitos. "Llueve" no tiene sujeto (fenómeno natural) y "¡Corre!" tiene sujeto implícito (tú).'},
+          {type:'mcq', text:'En "La mariposa vuela sobre las flores", ¿cuál es el núcleo del sujeto?',
+           opts:['La mariposa','vuela','sobre las flores','flores'], answer:0,
+           explain:'El núcleo del sujeto es el sustantivo principal: "mariposa" (con el artículo "La" como acompañante).'},
+          {type:'fill', text:'Escribe el predicado de esta oración: "Los niños corren en el recreo."', answer:'corren en el recreo',
+           alts:['corren en el recreo.'],
+           explain:'El sujeto es "Los niños". El predicado (lo que hace el sujeto) es "corren en el recreo".'},
+          {type:'tf', text:'El predicado siempre contiene un verbo.',
+           answer:true,
+           explain:'Correcto. El predicado es lo que se dice del sujeto, y siempre incluye un verbo (acción o estado).'},
         ]
       },
       {
@@ -596,16 +878,32 @@ const CURRICULUM = {
            explain:'"Estudia" está en presente: describe lo que ocurre ahora o habitualmente.'},
           {type:'fill', text:'Completa en pasado: "Ayer yo __ (ir) al mercado."', answer:'fui',
            alts:['Fui'],
-           explain:'"Fui" es el pasado (pretérito) del verbo ir en primera persona: yo fui.'},
+           explain:'"Fui" es el pretérito del verbo ir, primera persona: yo fui.'},
           {type:'mcq', text:'¿Cuál oración está en tiempo futuro?',
            opts:['Corrí 5 km ayer.','Corro todos los días.','Mañana correré en el parque.','Estoy corriendo ahora.'], answer:2,
-           explain:'"Correré" es futuro. Terminaciones del futuro: -é, -ás, -á, -emos, -éis, -án.'},
-          {type:'mcq', text:'¿Cómo se conjuga "hablar" en pasado, tercera persona? (él/ella)',
+           explain:'"Correré" es futuro. Terminaciones: -é, -ás, -á, -emos, -éis, -án.'},
+          {type:'mcq', text:'¿Cómo se conjuga "hablar" en pasado, tercera persona (él)?',
            opts:['habló','hablaba','ha hablado','hablará'], answer:0,
-           explain:'"Habló" es el pretérito perfecto simple de "hablar" para él/ella. Se usa para acciones completas en el pasado.'},
-          {type:'mcq', text:'Identifica el tiempo: "Cuando sea grande, seré doctor."',
-           opts:['Pasado','Presente','Futuro','Presente y futuro'], answer:3,
-           explain:'"Sea" es presente subjuntivo, "seré" es futuro. La oración combina ambos tiempos.'},
+           explain:'"Habló" es el pretérito perfecto simple de "hablar" (él/ella). Acción completa en el pasado.'},
+          {type:'mcq', text:'¿En qué tiempo está: "Cuando sea grande, seré doctor."?',
+           opts:['Solo pasado','Solo presente','Solo futuro','Presente subjuntivo y futuro'], answer:3,
+           explain:'"Sea" es presente subjuntivo, "seré" es futuro. La oración mezcla ambos tiempos.'},
+          {type:'tf', text:'El verbo "jugó" está en tiempo pasado.',
+           answer:true,
+           explain:'Correcto. "Jugó" es la tercera persona del pretérito perfecto simple: él/ella jugó (ayer, antes).'},
+          {type:'order', text:'Ordena estas oraciones del pasado al futuro:',
+           items:['Mañana estudiaré matemáticas.','Ayer estudié matemáticas.','Ahora estudio matemáticas.','La semana pasada estudié con Carlos.'],
+           correctOrder:[1,3,2,0],
+           explain:'Pasado: "Ayer estudié" y "La semana pasada" → Presente: "Ahora estudio" → Futuro: "Mañana estudiaré".'},
+          {type:'multiselect', text:'Selecciona todos los verbos que están en tiempo pasado:',
+           opts:['corrió','corre','bailará','cantó'], answers:[0,3],
+           explain:'"Corrió" y "cantó" están en pasado (pretérito perfecto simple). "Corre" es presente y "bailará" es futuro.'},
+          {type:'fill', text:'Completa en futuro: "Mañana nosotros __ (comer) en casa de la abuela."', answer:'comeremos',
+           alts:['Comeremos'],
+           explain:'"Comeremos" es el futuro del verbo comer, primera persona del plural: nosotros comeremos.'},
+          {type:'mcq', text:'"Estoy leyendo un libro." ¿Qué tiempo verbal es?',
+           opts:['Pasado','Presente continuo','Futuro','Pasado continuo'], answer:1,
+           explain:'"Estoy leyendo" es presente continuo (o progresivo). Indica una acción en desarrollo en este momento.'},
         ]
       }
     ]
@@ -620,17 +918,32 @@ const CURRICULUM = {
            opts:['El desierto','El bosque tropical húmedo','La sabana','El páramo'], answer:1,
            explain:'El bosque tropical húmedo tiene la mayor biodiversidad. Panamá está en el corredor biológico mesoamericano.'},
           {type:'mcq', text:'¿Qué es una cadena alimenticia?',
-           opts:['Una serie de animales que viven juntos','La relación de quien come a quién en un ecosistema','Un tipo de planta tropical','Una red de ríos'], answer:1,
+           opts:['Una serie de animales que viven juntos','La relación de quién come a quién en un ecosistema','Un tipo de planta tropical','Una red de ríos'], answer:1,
            explain:'La cadena alimenticia muestra quién come a quién: plantas → herbívoros → carnívoros → descomponedores.'},
           {type:'fill', text:'Los organismos que producen su propio alimento con luz solar se llaman:', answer:'productores',
-           alts:['Productores','plantas productoras','autótrofos','Autótrofos'],
+           alts:['Productores','autótrofos','Autótrofos'],
            explain:'Las plantas son "productores" o "autótrofos": producen alimento mediante fotosíntesis.'},
           {type:'mcq', text:'¿Cuál animal es endémico de Panamá (solo existe aquí)?',
            opts:['El jaguar','La rana dorada de Panamá','El cocodrilo americano','El tucán'], answer:1,
-           explain:'La rana dorada de Panamá (Atelopus zeteki) es endémica. Hoy está críticamente amenazada.'},
-          {type:'mcq', text:'¿Qué hace un organismo descomponedor en un ecosistema?',
-           opts:['Caza a otros animales','Come plantas','Desintegra materia muerta y devuelve nutrientes al suelo','Produce su propio alimento'], answer:2,
+           explain:'La rana dorada de Panamá (Atelopus zeteki) es endémica y está críticamente amenazada.'},
+          {type:'mcq', text:'¿Qué hace un organismo descomponedor?',
+           opts:['Caza animales','Come plantas','Desintegra materia muerta y devuelve nutrientes al suelo','Produce su propio alimento'], answer:2,
            explain:'Los hongos y bacterias son descomponedores: reciclan nutrientes devolviendo materia orgánica al suelo.'},
+          {type:'tf', text:'El jaguar es un productor en la cadena alimenticia de la selva panameña.',
+           answer:false,
+           explain:'El jaguar es un CONSUMIDOR (carnívoro). Los productores son las plantas, que fabrican su propio alimento con sol.'},
+          {type:'order', text:'Ordena la cadena alimenticia de Panamá de productor a consumidor final:',
+           items:['Jaguar','Hierba','Venado','Sol'], correctOrder:[3,1,2,0],
+           explain:'Sol → Hierba (productor) → Venado (herbívoro) → Jaguar (carnívoro). El sol provee la energía inicial.'},
+          {type:'multiselect', text:'Selecciona todos los organismos que son consumidores:',
+           opts:['Árbol de mango','Venado','Rana dorada','Hierba de la sabana'], answers:[1,2],
+           explain:'El venado y la rana son consumidores (animales que comen otros organismos). El árbol y la hierba son productores.'},
+          {type:'mcq', text:'¿Por qué es importante el corredor biológico de Panamá?',
+           opts:['Porque genera energía eléctrica','Porque permite el movimiento de especies entre América del Norte y del Sur','Porque protege el Canal de Panamá','Porque controla las lluvias'], answer:1,
+           explain:'Panamá es un puente entre dos continentes. El corredor biológico permite que miles de especies migren entre Norte y Sur América.'},
+          {type:'tf', text:'Los arrecifes de coral son ecosistemas marinos que existen en las costas de Panamá.',
+           answer:true,
+           explain:'Correcto. Panamá tiene arrecifes de coral en el Caribe (como en Bocas del Toro) y en el Pacífico.'},
         ]
       },
       {
@@ -642,7 +955,7 @@ const CURRICULUM = {
            explain:'El corazón bombea sangre que lleva oxígeno y nutrientes a todas las células del cuerpo.'},
           {type:'fill', text:'El órgano que filtra la sangre y produce orina se llama:', answer:'riñón',
            alts:['riñones','el riñón','los riñones'],
-           explain:'Los riñones filtran la sangre y producen orina para eliminar desechos del cuerpo.'},
+           explain:'Los riñones filtran la sangre y producen orina para eliminar desechos.'},
           {type:'mcq', text:'¿Cuántos huesos tiene aproximadamente el cuerpo humano adulto?',
            opts:['106','206','306','406'], answer:1,
            explain:'Un adulto tiene 206 huesos. Los bebés nacen con ~270, algunos se fusionan al crecer.'},
@@ -652,6 +965,21 @@ const CURRICULUM = {
           {type:'mcq', text:'¿Qué nutriente es más importante para el crecimiento de músculos y tejidos?',
            opts:['Carbohidratos','Proteínas','Grasas','Vitaminas'], answer:1,
            explain:'Las proteínas son los bloques de construcción de músculos, órganos y tejidos.'},
+          {type:'tf', text:'El corazón es parte del sistema nervioso.',
+           answer:false,
+           explain:'El corazón es parte del sistema CIRCULATORIO. El sistema nervioso incluye el cerebro, la médula espinal y los nervios.'},
+          {type:'tf', text:'Los pulmones son los órganos principales del sistema respiratorio.',
+           answer:true,
+           explain:'Correcto. Los pulmones intercambian oxígeno y dióxido de carbono con el aire que respiramos.'},
+          {type:'multiselect', text:'Selecciona los órganos que pertenecen al sistema digestivo:',
+           opts:['Estómago','Corazón','Intestino delgado','Cerebro'], answers:[0,2],
+           explain:'El estómago y el intestino delgado son parte del sistema digestivo. El corazón (circulatorio) y el cerebro (nervioso) pertenecen a otros sistemas.'},
+          {type:'order', text:'Ordena el recorrido del alimento en el sistema digestivo:',
+           items:['Intestino grueso','Boca','Intestino delgado','Estómago'], correctOrder:[1,3,2,0],
+           explain:'Boca → Estómago → Intestino delgado (absorción) → Intestino grueso (desechos). Este es el recorrido del alimento.'},
+          {type:'fill', text:'¿Cuántas cámaras (cavidades) tiene el corazón humano?', answer:'4',
+           alts:['cuatro'],
+           explain:'El corazón tiene 4 cámaras: 2 aurículas y 2 ventrículos. Las aurículas reciben sangre; los ventrículos la bombean.'},
         ]
       },
       {
@@ -659,19 +987,35 @@ const CURRICULUM = {
         questions:[
           {type:'mcq', text:'¿Cómo se llama el proceso por el cual el agua del mar se convierte en vapor?',
            opts:['Condensación','Precipitación','Evaporación','Infiltración'], answer:2,
-           explain:'Evaporación: el calor del sol convierte el agua líquida en vapor de agua que sube a la atmósfera.'},
+           explain:'Evaporación: el calor del sol convierte el agua líquida en vapor que sube a la atmósfera.'},
           {type:'mcq', text:'¿Qué ocurre cuando el vapor de agua sube y se enfría?',
            opts:['Se evapora','Se condensa y forma nubes','Se precipita','Se infiltra'], answer:1,
-           explain:'Condensación: el vapor se enfría, las partículas se juntan y forman gotas que crean nubes.'},
+           explain:'Condensación: el vapor se enfría y forma gotitas que crean nubes.'},
           {type:'fill', text:'El agua que cae de las nubes en forma de lluvia o nieve se llama:', answer:'precipitación',
            alts:['precipitacion','lluvia','Precipitación'],
-           explain:'Precipitación es cuando el agua de las nubes cae a la Tierra como lluvia, nieve o granizo.'},
+           explain:'Precipitación: el agua de las nubes cae a la Tierra como lluvia, nieve o granizo.'},
           {type:'mcq', text:'¿Cuál es la fuente de energía que impulsa el ciclo del agua?',
            opts:['El viento','El Sol','La Luna','El calor interno de la Tierra'], answer:1,
            explain:'El Sol provee la energía para evaporar el agua y mover el vapor en la atmósfera.'},
           {type:'mcq', text:'¿Qué porcentaje del agua del planeta es agua dulce disponible para beber?',
            opts:['50%','25%','10%','menos del 3%'], answer:3,
-           explain:'Solo ~2.5% del agua terrestre es dulce, y la mayoría está en glaciares. Menos del 1% es accesible.'},
+           explain:'Solo ~2.5% del agua terrestre es dulce, casi toda en glaciares. Menos del 1% es accesible.'},
+          {type:'tf', text:'La condensación ocurre cuando el vapor de agua se calienta.',
+           answer:false,
+           explain:'Al contrario: la condensación ocurre cuando el vapor se ENFRÍA. El calentamiento produce evaporación.'},
+          {type:'order', text:'Ordena las etapas del ciclo del agua:',
+           items:['Precipitación (lluvia)','Evaporación del agua','Condensación (nubes)','Escurrimiento hacia el mar'],
+           correctOrder:[1,2,0,3],
+           explain:'Evaporación → Condensación (se forman nubes) → Precipitación (lluvia) → Escurrimiento al mar.'},
+          {type:'multiselect', text:'Selecciona todas las formas en que puede caer el agua como precipitación:',
+           opts:['Lluvia','Niebla','Nieve','Granizo'], answers:[0,2,3],
+           explain:'Lluvia, nieve y granizo son formas de precipitación. La niebla es condensación a nivel del suelo, no precipitación.'},
+          {type:'tf', text:'La mayor parte del agua del planeta Tierra es agua dulce.',
+           answer:false,
+           explain:'El 97% del agua de la Tierra es salada (océanos). Solo el 3% es dulce, y la mayoría está en glaciares.'},
+          {type:'fill', text:'¿Qué proceso convierte el agua líquida de ríos y lagos en vapor de agua?', answer:'evaporación',
+           alts:['Evaporación','evaporacion'],
+           explain:'La evaporación: el sol calienta el agua y la convierte en vapor. Es la primera etapa del ciclo.'},
         ]
       },
       {
@@ -680,19 +1024,34 @@ const CURRICULUM = {
         questions:[
           {type:'mcq', text:'¿Cuáles son los tres estados principales de la materia?',
            opts:['Duro, blando, líquido','Sólido, líquido, gaseoso','Frío, caliente, tibio','Pesado, ligero, mediano'], answer:1,
-           explain:'Los tres estados son sólido (forma fija), líquido (forma variable, volumen fijo), y gaseoso (sin forma ni volumen fijos).'},
+           explain:'Sólido (forma fija), líquido (forma variable, volumen fijo), gaseoso (sin forma ni volumen fijos).'},
           {type:'mcq', text:'El paso de sólido a líquido se llama:',
            opts:['Evaporación','Solidificación','Fusión','Condensación'], answer:2,
            explain:'Fusión (o derretimiento): el sólido absorbe calor y sus moléculas se mueven más rápido hasta volverse líquido.'},
-          {type:'fill', text:'El paso de líquido a gas (como cuando hierve el agua) se llama:', answer:'evaporación',
+          {type:'fill', text:'El paso de líquido a gas (cuando hierve el agua) se llama:', answer:'evaporación',
            alts:['evaporacion','ebullición','ebullicion','Evaporación'],
-           explain:'Evaporación o ebullición: el líquido gana calor hasta que sus moléculas escapan como gas.'},
+           explain:'Evaporación o ebullición: el líquido gana calor y sus moléculas escapan como gas.'},
           {type:'mcq', text:'¿Cuál es un ejemplo de materia en estado gaseoso?',
            opts:['Hielo','Mercurio','Vapor de agua','Madera'], answer:2,
            explain:'El vapor de agua es agua en estado gaseoso. El hielo es sólido, el mercurio es líquido, la madera es sólida.'},
-          {type:'mcq', text:'Cuando se enfría el vapor de agua y vuelve a ser líquido, ¿qué ocurre con sus moléculas?',
+          {type:'mcq', text:'Cuando se enfría el vapor y vuelve a ser líquido, ¿qué ocurre con sus moléculas?',
            opts:['Se mueven más rápido','Se destruyen','Se mueven más lento y se juntan más','Desaparecen'], answer:2,
-           explain:'Al enfriarse, las moléculas pierden energía, se mueven más lento y se acercan: el gas pasa a líquido.'},
+           explain:'Al enfriarse, las moléculas pierden energía, se mueven más lento y se acercan.'},
+          {type:'tf', text:'Los gases tienen forma y volumen fijos.',
+           answer:false,
+           explain:'Los gases NO tienen ni forma ni volumen fijos: se expanden para llenar cualquier recipiente. Solo los sólidos tienen ambos fijos.'},
+          {type:'multiselect', text:'Selecciona todos los ejemplos que son materia en estado líquido:',
+           opts:['Agua del mar','Hierro derretido','Vapor de agua','Jugo de naranja'], answers:[0,1,3],
+           explain:'El agua del mar, el hierro derretido y el jugo de naranja son líquidos. El vapor de agua es gaseoso.'},
+          {type:'order', text:'Ordena los estados de la materia según la velocidad de movimiento de sus moléculas (de más lento a más rápido):',
+           items:['Gaseoso','Líquido','Sólido'], correctOrder:[2,1,0],
+           explain:'Sólido (moléculas vibran en su lugar) → Líquido (se mueven más) → Gaseoso (se mueven muy rápido y libremente).'},
+          {type:'mcq', text:'¿Cómo se llama el paso de gas a líquido (como el vapor en un espejo)?',
+           opts:['Fusión','Ebullición','Condensación','Solidificación'], answer:2,
+           explain:'Condensación: el gas pierde calor y sus moléculas se juntan hasta formar un líquido. Ocurre en el espejo cuando te duchas.'},
+          {type:'fill', text:'¿Cómo se llama el paso del estado sólido directamente al gaseoso, sin pasar por líquido?', answer:'sublimación',
+           alts:['Sublimación'],
+           explain:'Sublimación: sólido → gas sin pasar por líquido. Ejemplo: el hielo seco (CO₂ sólido) se convierte en gas directamente.'},
         ]
       }
     ]
@@ -709,15 +1068,34 @@ const CURRICULUM = {
           {type:'mcq', text:'¿Cuál es la capital de Panamá?',
            opts:['Colón','David','Ciudad de Panamá','Chitré'], answer:2,
            explain:'La Ciudad de Panamá es la capital y ciudad más poblada del país.'},
-          {type:'fill', text:'El istmo de Panamá une dos continentes: América del __ y América del __. Escribe el primero:', answer:'Norte',
+          {type:'fill', text:'El istmo de Panamá une América del __ con América del Sur. (Escribe la primera.)', answer:'Norte',
            alts:['norte','NORTE'],
-           explain:'El istmo une América del Norte y América del Sur, haciendo de Panamá un puente biogeográfico único.'},
+           explain:'El istmo une América del Norte y del Sur. Panamá es un puente biogeográfico único.'},
           {type:'mcq', text:'¿En qué año se separó Panamá de Colombia?',
            opts:['1821','1856','1903','1945'], answer:2,
            explain:'El 3 de noviembre de 1903, Panamá se separó de Colombia y se proclamó república independiente.'},
           {type:'mcq', text:'¿Cuál es el río más largo de Panamá?',
            opts:['Río Chagres','Río Tuira','Río Santa María','Río Bayano'], answer:1,
-           explain:'El Río Tuira, en la provincia de Darién, es el más largo de Panamá (~230 km).'},
+           explain:'El Río Tuira, en Darién, es el más largo de Panamá (~230 km).'},
+          {type:'tf', text:'Panamá limita con Costa Rica al oeste y con Colombia al este.',
+           answer:true,
+           explain:'Correcto. Al oeste: Costa Rica. Al este: Colombia. Al norte: Caribe. Al sur: Pacífico.'},
+          {type:'tf', text:'El Canal de Panamá volvió a ser administrado por Panamá en el año 2000.',
+           answer:true,
+           explain:'El traspaso del Canal se completó el 31 de diciembre de 1999 a las 12:00 p.m. A partir del año 2000, Panamá lo administra.'},
+          {type:'multiselect', text:'Selecciona todas las provincias de Panamá:',
+           opts:['Chiriquí','San José','Colón','Coclé'], answers:[0,2,3],
+           explain:'Chiriquí, Colón y Coclé son provincias de Panamá. San José es la capital de Costa Rica, no de Panamá.'},
+          {type:'order', text:'Ordena estos eventos de la historia de Panamá del más antiguo al más reciente:',
+           items:['Inauguración del Canal','Independencia de Colombia','Traspaso del Canal a Panamá','Primera ciudad de Panamá (Panamá Viejo)'],
+           correctOrder:[3,1,0,2],
+           explain:'Panamá Viejo (1519) → Independencia de Colombia (1903) → Inauguración del Canal (1914) → Traspaso del Canal (1999/2000).'},
+          {type:'mcq', text:'¿Cuántas provincias tiene la República de Panamá?',
+           opts:['7','8','10','12'], answer:2,
+           explain:'Panamá tiene 10 provincias: Bocas del Toro, Coclé, Colón, Chiriquí, Darién, Herrera, Los Santos, Panamá, Panamá Oeste y Veraguas.'},
+          {type:'fill', text:'¿Cuál es el nombre del mar que baña la costa norte de Panamá?', answer:'Caribe',
+           alts:['Mar Caribe','el Caribe','mar Caribe'],
+           explain:'La costa norte de Panamá está en el Mar Caribe. La costa sur, en el Océano Pacífico.'},
         ]
       },
       {
@@ -730,15 +1108,30 @@ const CURRICULUM = {
           {type:'mcq', text:'¿A qué edad pueden votar los ciudadanos panameños?',
            opts:['16 años','18 años','21 años','25 años'], answer:1,
            explain:'En Panamá, el derecho al voto se obtiene a los 18 años.'},
-          {type:'fill', text:'¿En qué año se aprobó la Constitución de Panamá que está vigente?', answer:'1972',
+          {type:'fill', text:'¿En qué año se aprobó la Constitución vigente de Panamá?', answer:'1972',
            alts:['1972.'],
-           explain:'La Constitución Política de Panamá fue aprobada en 1972, con varias reformas posteriores.'},
+           explain:'La Constitución Política de Panamá fue aprobada en 1972, con reformas posteriores.'},
           {type:'mcq', text:'¿Cuántos poderes del Estado tiene Panamá?',
            opts:['2','3','4','5'], answer:1,
-           explain:'Panamá tiene 3 poderes: Ejecutivo (Presidente), Legislativo (Asamblea Nacional) y Judicial (Corte Suprema).'},
-          {type:'mcq', text:'¿Cuál es la función de la Asamblea Nacional de Panamá?',
+           explain:'Panamá tiene 3 poderes: Ejecutivo (Presidente), Legislativo (Asamblea) y Judicial (Corte Suprema).'},
+          {type:'mcq', text:'¿Cuál es la función de la Asamblea Nacional?',
            opts:['Dirigir el ejército','Crear y aprobar las leyes','Impartir justicia','Controlar el Canal'], answer:1,
-           explain:'La Asamblea Nacional es el poder legislativo: crea, modifica y aprueba las leyes del país.'},
+           explain:'La Asamblea Nacional es el poder legislativo: crea y aprueba las leyes del país.'},
+          {type:'tf', text:'Panamá tiene sistema de gobierno presidencialista.',
+           answer:true,
+           explain:'Correcto. El Presidente de la República es el jefe de Estado y de gobierno. Es un sistema presidencialista.'},
+          {type:'multiselect', text:'Selecciona los tres poderes del Estado panameño:',
+           opts:['Poder Ejecutivo','Poder Religioso','Poder Legislativo','Poder Judicial'], answers:[0,2,3],
+           explain:'Los tres poderes son: Ejecutivo (Presidente), Legislativo (Asamblea Nacional) y Judicial (Corte Suprema de Justicia).'},
+          {type:'mcq', text:'¿Quién encabeza el Poder Ejecutivo en Panamá?',
+           opts:['El Rey','El Presidente de la República','El Gobernador','El Director General'], answer:1,
+           explain:'El Presidente de la República es el jefe del Poder Ejecutivo en Panamá.'},
+          {type:'fill', text:'La institución que se encarga de hacer justicia y aplicar las leyes es el Poder ___:', answer:'Judicial',
+           alts:['judicial'],
+           explain:'El Poder Judicial (Corte Suprema de Justicia) interpreta y aplica las leyes del país.'},
+          {type:'tf', text:'En una democracia, los ciudadanos participan eligiendo a sus representantes mediante el voto.',
+           answer:true,
+           explain:'Correcto. El sufragio (voto) es el mecanismo central de la democracia representativa. Los ciudadanos eligen a quienes los representan.'},
         ]
       },
       {
@@ -746,7 +1139,7 @@ const CURRICULUM = {
         questions:[
           {type:'mcq', text:'¿Cuál es la capital de Colombia?',
            opts:['Medellín','Cali','Bogotá','Cartagena'], answer:2,
-           explain:'Bogotá es la capital y ciudad más grande de Colombia, ubicada en los Andes a 2,600 m de altura.'},
+           explain:'Bogotá es la capital y ciudad más grande de Colombia, en los Andes a 2,600 m de altura.'},
           {type:'mcq', text:'¿Cuál es el país más grande de América del Sur?',
            opts:['Argentina','Colombia','Perú','Brasil'], answer:3,
            explain:'Brasil es el país más grande de América del Sur y el quinto más grande del mundo.'},
@@ -759,6 +1152,21 @@ const CURRICULUM = {
           {type:'mcq', text:'¿En cuál país se encuentra la mayor parte del río Amazonas?',
            opts:['Perú','Venezuela','Colombia','Brasil'], answer:3,
            explain:'El Amazonas recorre varios países, pero el 60% de su cuenca está en Brasil.'},
+          {type:'tf', text:'Brasil es el único país de América del Sur donde se habla portugués como idioma oficial.',
+           answer:true,
+           explain:'Correcto. Brasil habla portugués. Los demás países de América del Sur hablan español, excepto Surinam (neerlandés) y Guayana (inglés).'},
+          {type:'multiselect', text:'Selecciona los países que hacen frontera con Panamá:',
+           opts:['Colombia','Venezuela','Costa Rica','Ecuador'], answers:[0,2],
+           explain:'Panamá limita con Colombia (al este) y Costa Rica (al oeste). Venezuela y Ecuador no tienen frontera con Panamá.'},
+          {type:'order', text:'Ordena estos países de norte a sur (del más al norte al más al sur):',
+           items:['Argentina','Colombia','Panamá','Chile'], correctOrder:[2,1,3,0],
+           explain:'De norte a sur: Panamá → Colombia → Chile (Costa) → Argentina (sur). Chile y Argentina están en el cono sur.'},
+          {type:'mcq', text:'¿Cuál es la cordillera más larga del mundo, que recorre América del Sur?',
+           opts:['Los Apalaches','Los Alpes','Los Andes','Los Urales'], answer:2,
+           explain:'Los Andes son la cordillera más larga del mundo (~7,000 km), recorriendo el lado oeste de América del Sur.'},
+          {type:'mcq', text:'¿Cuál es el lago navegable más alto del mundo, ubicado entre Perú y Bolivia?',
+           opts:['Lago Nicaragua','Lago Titicaca','Lago Gatún','Lago Maracaibo'], answer:1,
+           explain:'El Lago Titicaca está a 3,812 metros de altura entre Perú y Bolivia. Es el lago navegable más alto del mundo.'},
         ]
       }
     ]
@@ -1074,6 +1482,7 @@ let session = {
   hearts: 3,
   answered: false,
 };
+let qState = {};
 
 // ═══════════════════════════════════════════════════════
 //  SCREENS
@@ -1301,7 +1710,13 @@ function renderQuestion() {
   document.getElementById('q-num').textContent = (session.qi + 1) + '/' + total;
   document.getElementById('ex-bar-fill').style.width = (session.qi / total * 100) + '%';
 
-  const typeLabels = {mcq:'Selección múltiple', fill:'Escribe la respuesta'};
+  qState = { selectedTF: null, selectedMulti: [], tapOrder: [], shuffledIndices: null };
+
+  const typeLabels = {
+    mcq:'Selección múltiple', fill:'Escribe la respuesta',
+    'svg-mcq':'Selección múltiple', tf:'Verdadero o falso',
+    multiselect:'Selecciona todas', order:'Ordena los pasos'
+  };
   document.getElementById('q-type-label').textContent = typeLabels[q.type] || 'Pregunta';
   document.getElementById('q-text').textContent = q.text;
 
@@ -1352,6 +1767,108 @@ function renderQuestion() {
     wrap.appendChild(inp);
     area.appendChild(wrap);
     setTimeout(() => inp.focus(), 50);
+  } else if (q.type === 'svg-mcq') {
+    area.innerHTML = q.svg;
+    const opts = document.createElement('div');
+    opts.className = 'options';
+    q.opts.forEach((opt, i) => {
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = opt;
+      b.dataset.idx = i;
+      b.addEventListener('click', () => {
+        opts.querySelectorAll('.opt').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+        btnCheck.disabled = false;
+      });
+      opts.appendChild(b);
+    });
+    area.appendChild(opts);
+  } else if (q.type === 'tf') {
+    const wrap = document.createElement('div');
+    wrap.className = 'tf-buttons';
+    [['Verdadero', '✓', true], ['Falso', '✗', false]].forEach(([label, icon, val]) => {
+      const b = document.createElement('button');
+      b.className = 'tf-btn';
+      b.innerHTML = `<span class="tf-icon">${icon}</span>${label}`;
+      b.addEventListener('click', () => {
+        wrap.querySelectorAll('.tf-btn').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+        qState.selectedTF = val;
+        btnCheck.disabled = false;
+      });
+      wrap.appendChild(b);
+    });
+    area.appendChild(wrap);
+  } else if (q.type === 'multiselect') {
+    const hint = document.createElement('div');
+    hint.className = 'multiselect-hint';
+    hint.textContent = 'Selecciona todas las respuestas correctas';
+    area.appendChild(hint);
+    const opts = document.createElement('div');
+    opts.className = 'options';
+    q.opts.forEach((opt, i) => {
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = opt;
+      b.dataset.idx = i;
+      b.addEventListener('click', () => {
+        const pos = qState.selectedMulti.indexOf(i);
+        if (pos === -1) {
+          qState.selectedMulti.push(i);
+          b.classList.add('multi-selected');
+        } else {
+          qState.selectedMulti.splice(pos, 1);
+          b.classList.remove('multi-selected');
+        }
+        btnCheck.disabled = qState.selectedMulti.length === 0;
+      });
+      opts.appendChild(b);
+    });
+    area.appendChild(opts);
+  } else if (q.type === 'order') {
+    const indices = q.items.map((_, i) => i);
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    qState.shuffledIndices = indices;
+    const wrap = document.createElement('div');
+    wrap.className = 'order-items';
+    indices.forEach((origIdx, displayPos) => {
+      const b = document.createElement('button');
+      b.className = 'order-item-btn';
+      b.dataset.origIdx = origIdx;
+      b.dataset.displayPos = displayPos;
+      const seqSpan = document.createElement('span');
+      seqSpan.className = 'order-seq-num empty';
+      b.appendChild(seqSpan);
+      const txt = document.createElement('span');
+      txt.textContent = q.items[origIdx];
+      b.appendChild(txt);
+      b.addEventListener('click', () => {
+        const ti = qState.tapOrder.indexOf(origIdx);
+        if (ti !== -1) qState.tapOrder.splice(ti, 1);
+        else qState.tapOrder.push(origIdx);
+        // Recompute all sequence numbers
+        wrap.querySelectorAll('.order-item-btn').forEach(tb => {
+          const tOrig = +tb.dataset.origIdx;
+          const tSeq = tb.querySelector('.order-seq-num');
+          const tPos = qState.tapOrder.indexOf(tOrig);
+          if (tPos !== -1) {
+            tSeq.textContent = tPos + 1;
+            tSeq.className = 'order-seq-num';
+            tb.classList.add('order-tapped');
+          } else {
+            tSeq.className = 'order-seq-num empty';
+            tb.classList.remove('order-tapped');
+          }
+        });
+        btnCheck.disabled = qState.tapOrder.length !== q.items.length;
+      });
+      wrap.appendChild(b);
+    });
+    area.appendChild(wrap);
   }
 
   // Animate in
@@ -1405,6 +1922,44 @@ document.getElementById('btn-check').addEventListener('click', () => {
       hint.textContent = 'Respuesta correcta: ' + q.answer;
       inp.parentNode.appendChild(hint);
     }
+  } else if (q.type === 'svg-mcq') {
+    const sel = document.querySelector('#q-answer-area .opt.selected');
+    const idx = +sel.dataset.idx;
+    correct = idx === q.answer;
+    document.querySelectorAll('#q-answer-area .opt').forEach((b, i) => {
+      b.disabled = true;
+      if (i === q.answer) b.classList.add('correct');
+      else if (i === idx && !correct) b.classList.add('wrong');
+    });
+  } else if (q.type === 'tf') {
+    correct = qState.selectedTF === q.answer;
+    document.querySelectorAll('.tf-btn').forEach(b => {
+      b.disabled = true;
+      const isTrue = b.textContent.includes('Verdadero');
+      if (isTrue === q.answer) b.classList.add('tf-correct');
+      else if (isTrue === qState.selectedTF && !correct) b.classList.add('tf-wrong');
+    });
+  } else if (q.type === 'multiselect') {
+    const sortedSel = [...qState.selectedMulti].sort((a,b)=>a-b);
+    const sortedAns = [...q.answers].sort((a,b)=>a-b);
+    correct = JSON.stringify(sortedSel) === JSON.stringify(sortedAns);
+    document.querySelectorAll('#q-answer-area .opt').forEach((b, i) => {
+      b.disabled = true;
+      const isAns = q.answers.includes(i);
+      const wasSel = qState.selectedMulti.includes(i);
+      if (isAns && wasSel) b.classList.add('multi-correct');
+      else if (isAns && !wasSel) b.classList.add('multi-missed');
+      else if (!isAns && wasSel) b.classList.add('wrong');
+    });
+  } else if (q.type === 'order') {
+    correct = JSON.stringify(qState.tapOrder) === JSON.stringify(q.correctOrder);
+    document.querySelectorAll('.order-item-btn').forEach(b => {
+      b.disabled = true;
+      const origIdx = +b.dataset.origIdx;
+      const tapPos = qState.tapOrder.indexOf(origIdx);
+      const correctPos = q.correctOrder.indexOf(origIdx);
+      b.classList.add(tapPos === correctPos ? 'order-correct' : 'order-wrong');
+    });
   }
 
   // Update BKT
@@ -1430,8 +1985,8 @@ document.getElementById('btn-check').addEventListener('click', () => {
     session.hearts--;
     updateHearts();
     playWrong();
-    // shake wrong options
-    document.querySelectorAll('.opt.wrong,.fill-input.wrong').forEach(el => {
+    // shake wrong elements
+    document.querySelectorAll('.opt.wrong,.fill-input.wrong,.tf-btn.tf-wrong,.order-item-btn.order-wrong').forEach(el => {
       el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
     });
   }
